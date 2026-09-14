@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>00. Design Handoff &amp; Flow Index</title>
+<style>
+  :root{
+    --ink:#12211b;
+    --paper:#faf9f6;
+    --card:#ffffff;
+    --line:#e4e1d8;
+    --green-deep:#0f2f23;
+    --green:#173d2e;
+    --green-soft:#e8efe9;
+    --muted:#6b7169;
+    --accent:#c8722c;
+    --disabled:#a9ada4;
+    --disabled-bg:#f1efe9;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(18,33,27,.06), 0 8px 24px -16px rgba(18,33,27,.25);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Söhne","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:56px 28px 96px;}
+
+  /* ---------- Cover header ---------- */
+  .cover{
+    background:linear-gradient(160deg,var(--green-deep),var(--green) 70%);
+    color:#fbf8f2;
+    border-radius:18px;
+    padding:44px 40px 36px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .cover::after{
+    content:"";
+    position:absolute;
+    right:-60px;top:-60px;
+    width:260px;height:260px;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.10), transparent 70%);
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    letter-spacing:.10em;
+    text-transform:uppercase;
+    font-weight:600;
+    color:#c9e2d4;
+    margin-bottom:18px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  h1{
+    font-size:clamp(28px,4vw,40px);
+    line-height:1.12;
+    margin:0 0 14px;
+    font-weight:700;
+    letter-spacing:-.01em;
+    max-width:14ch;
+  }
+  .cover-meta{
+    margin-top:20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .meta-pill{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:999px;
+    padding:7px 14px;
+    font-size:12.5px;
+    color:#eef3ee;
+    display:flex;
+    gap:6px;
+    align-items:baseline;
+  }
+  .meta-pill b{color:#fff;font-weight:600;}
+  .cover-cta{
+    margin-top:26px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:#fbf8f2;
+    color:var(--green-deep);
+    font-weight:600;
+    font-size:14.5px;
+    padding:12px 20px;
+    border-radius:9px;
+    text-decoration:none;
+    box-shadow:0 6px 18px -8px rgba(0,0,0,.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .cover-cta:hover{transform:translateY(-1px);box-shadow:0 10px 22px -8px rgba(0,0,0,.4);}
+  .cover-cta svg{flex:none;}
+
+  /* ---------- Section ---------- */
+  .section{margin-top:38px;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    background:var(--green);
+    color:#fdfbf6;
+    border-radius:10px;
+    padding:13px 18px;
+    margin-bottom:14px;
+  }
+  .section-head h2{
+    margin:0;
+    font-size:15.5px;
+    font-weight:700;
+    letter-spacing:.01em;
+  }
+  .section-count{
+    font-size:12px;
+    color:#c9e2d4;
+    font-weight:600;
+    white-space:nowrap;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+  @media (max-width:640px){
+    .grid{grid-template-columns:1fr;}
+    .wrap{padding:36px 16px 72px;}
+    .cover{padding:32px 22px 28px;}
+  }
+
+  .item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:13px 15px;
+    text-decoration:none;
+    color:var(--ink);
+    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  }
+  a.item:hover{
+    border-color:var(--green);
+    transform:translateY(-1px);
+    box-shadow:var(--shadow);
+  }
+  .item-label{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:13.5px;
+    font-weight:600;
+    line-height:1.35;
+  }
+  .item-label .status-dot{
+    width:9px;height:9px;border-radius:50%;
+    margin-top:4px;
+    flex:none;
+    background:var(--green);
+  }
+  .item.is-disabled{
+    background:var(--disabled-bg);
+    color:var(--disabled);
+    cursor:default;
+  }
+  .item.is-disabled .status-dot{background:var(--disabled);}
+  .item-note{
+    font-size:11px;
+    color:var(--muted);
+    font-weight:500;
+    white-space:nowrap;
+  }
+  .item.is-disabled .item-note{color:var(--disabled);}
+  .item-arrow{
+    flex:none;
+    opacity:.45;
+  }
+  a.item:hover .item-arrow{opacity:.9;}
+
+  footer{
+    margin-top:52px;
+    padding-top:22px;
+    border-top:1px solid var(--line);
+    font-size:12px;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <div class="eyebrow"><span class="dot"></span> Roll'd &middot; Order Online Reimagining</div>
+    <h1>00. Design Handoff &amp; Flow Index</h1>
+    <div class="cover-meta">
+      <span class="meta-pill">Scope <b>Mobile</b></span>
+      <span class="meta-pill">Source <b>index.html</b></span>
+    </div>
+    <a class="cover-cta" href="index.html">
+      Open full prototype
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+
+  <!-- 1. Sign In / Registration -->
+  <div class="section">
+    <div class="section-head">
+      <h2>1 &middot; Sign In / Registration</h2>
+      <span class="section-count">4 items &middot; Mobile</span>
+    </div>
+    <div class="grid">
+      <a class="item" href="index.html#screen-signin"><span class="item-label"><span class="status-dot"></span>Login / Join Member</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-checkout,otp-overlay,otp-step-phone!add:hidden-step,otp-step-signup!remove:hidden-step"><span class="item-label"><span class="status-dot"></span>Sign Up Form</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-checkout,guest-overlay"><span class="item-label"><span class="status-dot"></span>Guest Checkout Option</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-profile-settings"><span class="item-label"><span class="status-dot"></span>Account</span><span class="item-arrow">→</span></a>
+    </div>
+  </div>
+
+  <!-- 2. Ordering (Menu to Checkout) -->
+  <div class="section">
+    <div class="section-head">
+      <h2>2 &middot; Ordering (Menu to Checkout)</h2>
+      <span class="section-count">13 items &middot; Mobile</span>
+    </div>
+    <div class="grid">
+      <a class="item" href="index.html#screen-landing"><span class="item-label"><span class="status-dot"></span>Homescreen &amp; Menu Page</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Fulfilment Switcher (Pickup/Delivery/Dine-in)</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-menu,screen-menu!add:search-active"><span class="item-label"><span class="status-dot"></span>Menu Search</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-menu-filters"><span class="item-label"><span class="status-dot"></span>Dietary Filter (menu-wide)</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Menu Detail Page</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Item Dietary Modifiers (paid add-ons)</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Special Instructions (item-level)</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-menu,menu-recommend-section!remove:hidden"><span class="item-label"><span class="status-dot"></span>Cross-sell / Frequently Ordered Together</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-cart-v2"><span class="item-label"><span class="status-dot"></span>Cart / Review Page</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-menu,suggestion-overlay"><span class="item-label"><span class="status-dot"></span>Upsell Carousel (cart)</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-checkout"><span class="item-label"><span class="status-dot"></span>Promo Code / Gift Card Entry</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-checkout"><span class="item-label"><span class="status-dot"></span>Checkout - Guest vs Login</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-payment"><span class="item-label"><span class="status-dot"></span>Payment Method</span><span class="item-arrow">→</span></a>
+    </div>
+  </div>
+
+  <!-- 3. Fulfilment Flows -->
+  <div class="section">
+    <div class="section-head">
+      <h2>3 &middot; Fulfilment Flows</h2>
+      <span class="section-count">5 items &middot; Mobile</span>
+    </div>
+    <div class="grid">
+      <a class="item" href="index.html#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Pick Up Flow</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-checkout-delivery"><span class="item-label"><span class="status-dot"></span>Delivery Flow incl. Address Entry</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-checkout-dinein"><span class="item-label"><span class="status-dot"></span>Dine-in Flow incl. Table Number</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Outlet Guest / Login</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Non-HQ Flow</span><span class="item-arrow">→</span></a>
+    </div>
+  </div>
+
+  <!-- 4. Store & Support -->
+  <div class="section">
+    <div class="section-head">
+      <h2>4 &middot; Store &amp; Support</h2>
+      <span class="section-count">2 items &middot; Mobile</span>
+    </div>
+    <div class="grid">
+      <a class="item" href="index.html#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Store Info (map, hours, contact)</span><span class="item-arrow">→</span></a>
+      <a class="item" href="index.html#screen-landing"><span class="item-label"><span class="status-dot"></span>Social Links</span><span class="item-arrow">→</span></a>
+    </div>
+  </div>
+
+  <footer>
+    <span>Roll'd Order Online Reimagining &middot; Design Handoff</span>
+    <span>Links open <code>index.html</code> at the matching screen/state</span>
+  </footer>
+
+</div>
+</body>
+</html>
