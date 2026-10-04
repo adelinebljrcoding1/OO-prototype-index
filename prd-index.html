@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OO-1863 PRD Index</title>
+<style>
+  /* Same palette and type as index.html (00. Design Handoff & Flow Index) */
+  :root{
+    --ink:#12211b; --paper:#faf9f6; --card:#ffffff; --line:#e4e1d8;
+    --green-deep:#0f2f23; --green:#173d2e; --green-soft:#e8efe9;
+    --muted:#6b7169; --accent:#c8722c;
+    --disabled:#a9ada4; --disabled-bg:#f1efe9;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(18,33,27,.06), 0 8px 24px -16px rgba(18,33,27,.25);
+    /* status */
+    --built:#1f6b4a; --built-bg:#e3f1e9;
+    --partial:#8a6d00; --partial-bg:#fbf3d6;
+    --differs:#b4540b; --differs-bg:#fbeee2;
+    --none:#7d8279; --none-bg:#efede7;
+    --decide:#b3261e; --decide-bg:#fce8e6;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Söhne","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:48px 28px 96px;}
+  @media (max-width:640px){.wrap{padding:28px 16px 72px;}}
+
+  /* ---------- Cover ---------- */
+  .cover{background:linear-gradient(160deg,var(--green-deep),var(--green) 70%);color:#fbf8f2;border-radius:18px;padding:36px 36px 30px;box-shadow:var(--shadow);}
+  @media (max-width:640px){.cover{padding:26px 20px 22px;}}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.10em;text-transform:uppercase;font-weight:600;color:#c9e2d4;margin-bottom:14px;}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  h1{font-size:clamp(26px,3.6vw,36px);line-height:1.12;margin:0 0 10px;font-weight:700;letter-spacing:-.01em;}
+  .lede{margin:0;max-width:62ch;color:#d8e6dd;font-size:14.5px;line-height:1.5;}
+  .coverage{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;}
+  .cov{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:6px 12px;font-size:12.5px;color:#eef3ee;display:flex;gap:6px;align-items:baseline;}
+  .cov b{color:#fff;font-weight:700;font-variant-numeric:tabular-nums;}
+  .cover-links{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;}
+  .cover-link{display:inline-flex;align-items:center;gap:8px;color:#fbf8f2;text-decoration:none;font-weight:600;font-size:13.5px;padding:9px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.35);}
+  .cover-link:hover{background:rgba(255,255,255,.08);}
+
+  /* ---------- Controls ---------- */
+  .controls{position:sticky;top:0;z-index:5;background:var(--paper);margin-top:22px;padding:12px 0;display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);}
+  .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .ctl-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--card);}
+  .seg button{font:inherit;font-size:13px;font-weight:600;border:0;background:transparent;color:var(--ink);padding:7px 12px;cursor:pointer;border-right:1px solid var(--line);}
+  .seg button:last-child{border-right:0;}
+  .seg button[aria-pressed="true"]{background:var(--green);color:#fff;}
+  .seg button:focus-visible,summary:focus-visible,.copy-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .jump{display:flex;flex-wrap:wrap;gap:6px;}
+  .jump a{font-size:12.5px;font-weight:600;color:var(--green);text-decoration:none;padding:5px 10px;border-radius:999px;background:var(--green-soft);}
+  .jump a:hover{background:#d9e6dc;}
+
+  /* ---------- Sections ---------- */
+  .flow{margin-top:34px;scroll-margin-top:72px;}
+  .flow-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;background:var(--green);color:#fdfbf6;border-radius:10px;padding:13px 18px;}
+  .flow-head h2{margin:0;font-size:15.5px;font-weight:700;}
+  .flow-meta{font-size:12px;color:#c9e2d4;font-weight:600;white-space:nowrap;}
+  .flow-path{margin:12px 2px 0;font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;}
+  .flow-path .who{font-weight:700;color:var(--ink);min-width:58px;}
+  .flow-path .st{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:2px 8px;}
+  .flow-path .st.opt{border-style:dashed;}
+  .stage{margin-top:16px;}
+  .stage-title{display:flex;align-items:center;gap:10px;margin:0 4px 8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .stage-title::after{content:"";flex:1;height:1px;background:var(--line);}
+  .rows{display:flex;flex-direction:column;gap:8px;}
+
+  /* ---------- Row ---------- */
+  .row{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:4px 12px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;}
+  /* Whole card opens the prototype (link on the title, stretched over the card); the copy button sits above it */
+  .row{position:relative;}
+  .row.is-link{transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease;}
+  .row.is-link:hover{border-color:var(--green);transform:translateY(-1px);box-shadow:var(--shadow);}
+  .row-link{color:inherit;text-decoration:none;}
+  .row-link::after{content:"";position:absolute;inset:0;border-radius:var(--radius);}
+  .row-link:focus-visible{outline:none;}
+  .row:has(.row-link:focus-visible){outline:2px solid var(--accent);outline-offset:2px;}
+  .copy-btn{position:relative;z-index:1;display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 9px;border:1px solid var(--line);border-radius:999px;
+    background:var(--card);color:var(--muted);font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;}
+  .copy-btn:hover{border-color:var(--green);color:var(--green);}
+  .copy-btn.copied{border-color:var(--built);color:var(--built);background:var(--built-bg);}
+  .copy-btn svg{flex:none;}
+  .row.is-none{background:var(--disabled-bg);}
+  .mark{margin-top:3px;width:10px;height:10px;border-radius:50%;background:var(--green);}
+  .row.edge .mark{border-radius:2px;transform:rotate(45deg) scale(.85);background:var(--accent);}
+  .row.is-none .mark{background:var(--disabled);}
+  .body{min-width:0;}
+  .title{font-size:13.5px;font-weight:600;line-height:1.35;}
+  .row.is-none .title{color:#6e736b;}
+  .meta{margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px;color:var(--muted);}
+  .uc{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;background:var(--paper);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink);}
+  .entry{font-weight:600;}
+  .note{margin-top:6px;font-size:12.5px;line-height:1.45;color:#4c5249;}
+  .note b{font-weight:600;color:var(--ink);}
+  .note-table{margin:8px 0;border-collapse:collapse;width:100%;max-width:520px;font-size:12.5px;background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .note-table caption{caption-side:top;text-align:left;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 0 6px;}
+  .note-table th,.note-table td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .note-table th{font-size:11px;font-weight:700;color:var(--muted);background:var(--card);}
+  .note-table tbody tr:last-child td{border-bottom:0;}
+  .note-table td:first-child{font-weight:600;color:var(--ink);white-space:nowrap;}
+  .decision{margin-top:8px;display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border-radius:8px;background:var(--green-soft);font-size:12.5px;line-height:1.45;color:var(--green-deep);}
+  .question{margin-top:8px;display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border-radius:8px;background:var(--decide-bg);font-size:12.5px;line-height:1.45;color:#5f1712;}
+  .question .decision-tag{color:var(--decide);}
+  .decision-tag{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green);padding-top:1px;}
+  .side{display:flex;align-items:center;gap:10px;}
+  .chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;}
+  .s-built{color:var(--built);background:var(--built-bg);}
+  .s-partial{color:var(--partial);background:var(--partial-bg);}
+  .s-differs{color:var(--differs);background:var(--differs-bg);}
+  .s-none{color:var(--none);background:var(--none-bg);}
+  .s-decide{color:var(--decide);background:var(--decide-bg);}
+  .arrow{opacity:.45;font-size:14px;}
+  .row.is-link:hover .arrow{opacity:.9;}
+  @media (max-width:640px){
+    .row{grid-template-columns:14px minmax(0,1fr);}
+    .side{grid-column:2;margin-top:6px;}
+  }
+
+  /* ---------- Legend / other ---------- */
+  .legend{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px 16px;font-size:12px;color:var(--muted);align-items:center;}
+  .legend .k{display:inline-flex;align-items:center;gap:6px;}
+  .legend .mark{margin:0;display:inline-block;}
+  .legend .edge-mark{width:10px;height:10px;border-radius:2px;transform:rotate(45deg) scale(.85);background:var(--accent);display:inline-block;}
+  details.other{margin-top:40px;border:1px solid var(--line);border-radius:12px;background:var(--card);}
+  details.other summary{cursor:pointer;list-style:none;padding:14px 18px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;}
+  details.other summary::-webkit-details-marker{display:none;}
+  details.other summary .hint{font-weight:500;font-size:12px;color:var(--muted);}
+  details.other[open] summary{border-bottom:1px solid var(--line);}
+  .other-grid{padding:14px 18px 18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;}
+  .other-grid a{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:600;color:var(--ink);text-decoration:none;padding:10px 12px;border:1px solid var(--line);border-radius:9px;}
+  .other-grid a:hover{border-color:var(--green);}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+  .empty{padding:16px;border:1px dashed var(--line);border-radius:var(--radius);font-size:13px;color:var(--muted);text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <div class="eyebrow"><span class="dot"></span> Roll'd &middot; OO-1863 Order type selection</div>
+    <h1>PRD Index</h1>
+    <p class="lede">Every OO-1863 use case, by order type and in the order a customer moves through it. Rows with a screen open the prototype there. Edge cases sit under the step they belong to.</p>
+    <div class="coverage" id="coverage"></div>
+    <div class="cover-links">
+      <a class="cover-link" href="index.html">All screens (flow index) →</a>
+      <a class="cover-link" href="design-system.html">Design system →</a>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="ctl">
+      <span class="ctl-label">Open in</span>
+      <div class="seg" id="seg-view">
+        <button type="button" data-v="mobile" aria-pressed="true">Mobile</button>
+        <button type="button" data-v="desktop" aria-pressed="false">Desktop</button>
+      </div>
+      <span class="ctl-label" style="margin-left:6px;">Entry</span>
+      <div class="seg" id="seg-entry">
+        <button type="button" data-v="any" aria-pressed="true">All</button>
+        <button type="button" data-v="nonhq" aria-pressed="false">Non-HQ</button>
+        <button type="button" data-v="hq" aria-pressed="false">HQ</button>
+      </div>
+    </div>
+    <nav class="jump" id="jump" aria-label="Order types"></nav>
+  </div>
+
+  <div class="legend">
+    <span class="k"><span class="mark"></span> Main flow</span>
+    <span class="k"><span class="edge-mark"></span> Edge case</span>
+    <span class="k"><span class="chip s-built">Built</span> matches the PRD</span>
+    <span class="k"><span class="chip s-partial">Partial</span> screen exists, some of the PRD missing</span>
+    <span class="k"><span class="chip s-differs">Differs</span> built differently from the PRD</span>
+    <span class="k"><span class="chip s-none">Not built</span></span>
+    <span class="k"><span class="chip s-decide">Needs decision</span></span>
+  </div>
+
+  <div id="flows"></div>
+  <div id="copy-status" class="sr-only" aria-live="polite"></div>
+
+  <details class="other">
+    <summary>Other screens <span class="hint">Not part of OO-1863</span></summary>
+    <div class="other-grid" id="other"></div>
+  </details>
+
+  <footer>
+    <span>Use cases from the OO-1863 ticket and Slack (22–29 Sep). Status as of 1 Oct 2026.</span>
+    <span>Links open <code>prototype.html</code> in the selected view</span>
+  </footer>
+</div>
+
+<script>
+/* Order types, in the spec's order. Steps: * = timing, skipped for ASAP-only stores. */
+var FLOWS = [
+  {k:'all', name:'Shared', note:'Applies to every order type.',
+   non:['Order type','Required input','Timing*','Menu'], hq:['Order type','Store list','Required input','Timing*','Menu']},
+  {k:'pickup', name:'Pick up', note:'No required input. The shortest flow.',
+   non:['Pick up','Timing*','Menu'], hq:['Pick up','Store list','Timing*','Menu']},
+  {k:'delivery', name:'Delivery', note:'Address and serviceability check before timing.',
+   non:['Delivery','Address','Serviceability','Timing*','Menu'], hq:['Delivery','Store list','Address','Serviceability','Timing*','Menu']},
+  {k:'dinein', name:'Dine-in', note:'Table number is required and read-only after entry.',
+   non:['Dine-in','Table number','Timing*','Menu'], hq:['Dine-in','Store list','Table number','Timing*','Menu']},
+  {k:'room', name:'Room Service', note:'Same as Dine-in, with a room number.',
+   non:['Room Service','Room number','Timing*','Menu'], hq:['Room Service','Store list','Room number','Timing*','Menu']}
+];
+var STAGES = ['Order selection','Store list','Required input','Timing','Menu / cart / checkout','Mid-journey change'];
+
+/* One row per OO-1863 use case. id = spec ID, e = both | nonhq | hq, kind = main | edge,
+   s = built | partial | differs | none | decide, h = prototype hash (null = nothing to open). */
+var R = [
+  // ---- Shared ----
+  {id:'S1', f:'all', e:'nonhq', g:'Order selection', kind:'main', t:'Order types in a single store, with prep time and hours', uc:'UC1 UC5', s:'partial', h:'screen-nonhq',
+   n:'Pick up, Delivery, Dine in, Room Service and Catering shown. <b>Missing:</b> the next-available date on a Closed type (PRD UC5). Proposal for a closed type:' +
+     '<table class="note-table"><caption>Closed order type tile (proposal)</caption>' +
+     '<thead><tr><th scope="col">Situation</th><th scope="col">Tile shows</th></tr></thead><tbody>' +
+     '<tr><td>Reopens later today</td><td>“Opens 5:00 PM”</td></tr>' +
+     '<tr><td>Reopens another day, or no date</td><td>“Closed” (no date)</td></tr>' +
+     '<tr><td>Pre-orders allowed for a later date</td><td>Selectable, goes to the time picker for that day</td></tr>' +
+     '</tbody></table>',
+   q:'Is the next-available date needed on a Closed order type tile when other types are open? A date on another day is information the customer can’t act on, so they will usually pick another type instead. Slack agreed: with no available date, show no date or schedule entry point (mockup: “Closed” + “see available time”). Confirm the proposal above with Vivek. Prototype keeps the plain “Closed” tile until then.'},
+  {id:'S2', f:'all', e:'hq', g:'Order selection', kind:'main', t:'Order types in HQ, without prep time', uc:'UC2', s:'partial', h:'screen-hq-order',
+   n:'No prep time here, because no store has been chosen yet, so any estimate could be wrong. Prep time appears per store in the store list. <b>Missing:</b> only Pick up and Delivery are offered.'},
+  {id:'S3', f:'all', e:'hq', g:'Store list', kind:'main', t:'Store list with prep time and hours per store', uc:'UC2 UC6', s:'partial', h:'screen-outlet-search',
+   n:'Stores show open status and distance. <b>Missing:</b> prep time per store.',
+   q:'Prep time per store is not common in store lists; the live HQ site shows hours and distance, but no prep time. Confirm whether the store list needs it (UC2, UC6) before designing it.'},
+  {id:'S4', f:'all', e:'hq', g:'Store list', kind:'edge', t:'A store is closed for the chosen order type', uc:'UC4', s:'built', h:'screen-outlet-search',
+   n:'Roll’d Spencer Outlet: greyed, “Closed · Opens Thu 17 Jun, 10:00 AM”, and can’t be selected.'},
+  {id:'S5', f:'all', e:'hq', g:'Store list', kind:'main', t:'Select a store, then continue to input and timing', uc:'UC3', s:'built', h:'screen-outlet-search'},
+  {id:'S6', f:'all', e:'both', g:'Mid-journey change', kind:'edge', t:'Change order type from the menu with items in the cart', uc:'UC25', s:'built', h:'screen-menu,call:demoTypeChangePopup',
+   n:'Confirmation first. On “Change and clear cart”, the cart is cleared and the new type’s steps run, from the menu or from checkout:' +
+     '<table class="note-table"><caption>After “Change and clear cart”</caption>' +
+     '<thead><tr><th scope="col">New type</th><th scope="col">What happens next</th></tr></thead><tbody>' +
+     '<tr><td>Delivery</td><td>Straight to the menu (no extra steps yet)</td></tr>' +
+     '<tr><td>Pick up</td><td>Pickup time sheet → menu</td></tr>' +
+     '<tr><td>Room Service</td><td>Room number → Room Service time sheet → menu</td></tr>' +
+     '<tr><td>HQ store change</td><td>New store’s time sheet → menu (S9, S10)</td></tr>' +
+     '</tbody></table>' +
+     '“Keep my order” changes nothing.',
+   d:'The confirmation pop-up is the only message: it explains, before clearing, that the items will be removed because the order type changed. No extra message after clearing.'},
+  {id:'S7', f:'all', e:'both', g:'Mid-journey change', kind:'edge', t:'Change order type from the cart or checkout', uc:'UC26', s:'built', h:'screen-checkout',
+   n:'Checkout “Change” (Pick up, Delivery, Dine in) opens the same order-type sheet as the menu bar: same type goes to the time sheet; a different type with items shows the clear-cart confirmation. Cart has no entry point, by design (read-only).'},
+  {id:'S8', f:'all', e:'both', g:'Mid-journey change', kind:'edge', t:'Cancel an order type change', uc:'UC29', s:'built', h:'screen-menu,call:demoTypeChangePopup',
+   n:'“Keep my order” leaves type, time and cart unchanged.'},
+  {id:'S9', f:'all', e:'hq', g:'Mid-journey change', kind:'edge', t:'HQ Flow — Change store from the menu with items in the cart', uc:'UC27', s:'built', h:'call:demoSidebarStore',
+   n:'Menu side menu: the store name has a chevron (HQ only) and opens the store list. A different store with items: confirmation, cart cleared, then the new store’s time sheet and menu.'},
+  {id:'S10', f:'all', e:'hq', g:'Mid-journey change', kind:'edge', t:'HQ Flow — Change store from the cart or checkout', uc:'UC28', s:'built', h:'call:demoStoreChange',
+   n:'Checkout Outlet row opens the store list with the current store selected. A different store with items: confirmation, cart cleared, then the new store’s time sheet and menu. Cart has no entry point, by design (read-only).'},
+  {id:'S11', f:'all', e:'hq', g:'Mid-journey change', kind:'edge', t:'HQ Flow — Cancel a store change', uc:'UC30', s:'built', h:'call:demoStoreChange',
+   n:'“Keep my order”, back, or choosing the same store returns to checkout with store and cart unchanged.'},
+  {id:'S12', f:'all', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Each editable field has its own entry point on each page', uc:'AC', s:'partial', h:'screen-menu',
+   n:'Cart is read-only by design, so the entry points belong on the menu and checkout. <b>Done:</b> order type and time on the menu bar and on checkout. Store on checkout and in the menu side menu (HQ). <b>Missing:</b> delivery time and address.',
+   d:'The cart is the only read-only page: a review of the order. Every field is editable on checkout, and on the menu bar.'},
+  {id:'S13', f:'all', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Cart as read-only review, editing on checkout (Bopple approach)', uc:'Comments', s:'partial', h:'screen-cart',
+   n:'<b>Done:</b> cart Review is read-only; checkout edits order type, time and store (HQ). <b>Missing on checkout:</b> delivery details. The ticket as written still allows edits on the cart.',
+   d:'The cart is the only read-only page: a review of the order. Every field is editable on checkout, and on the menu bar.'},
+
+  // ---- Pick up ----
+  {id:'P1', f:'pickup', e:'both', g:'Timing', kind:'main', t:'ASAP-only store: timing step skipped', uc:'UC7', s:'built', h:'screen-nonhq,app-body!add:pickup-timing-asap'},
+  {id:'P2', f:'pickup', e:'both', g:'Timing', kind:'main', t:'Pre-order-only store: pick a day and time', uc:'UC8', s:'built', h:'screen-nonhq,app-body!add:pickup-timing-preorder',
+   n:'The Pickup time sheet opens without the ASAP / Schedule cards: straight to Pick a day → Pick a time. Select stays off until a time is picked.'},
+  {id:'P3', f:'pickup', e:'both', g:'Timing', kind:'main', t:'Both enabled: choose ASAP', uc:'UC9', s:'built', h:'call:demoPickupSheet'},
+  {id:'P4', f:'pickup', e:'both', g:'Timing', kind:'main', t:'Both enabled: choose Schedule, then a day and time', uc:'UC10', s:'built', h:'call:demoPickupSchedule'},
+  {id:'P5', f:'pickup', e:'nonhq', g:'Timing', kind:'main', t:'Non-HQ pickup time sheet', uc:'Slack', s:'differs', h:'call:demoPickupSheet',
+   n:'Now ASAP / Schedule → Pick a day → Pick a time → Select. The 29 Sep spec describes Today / Tomorrow / Later tabs. Needs Keith’s approval.'},
+  {id:'P6', f:'pickup', e:'hq', g:'Timing', kind:'main', t:'HQ pickup time picker', uc:'Slack', s:'differs', h:'call:demoPickupSheetHQ',
+   n:'HQ now uses the same two-step sheet. The spec says HQ keeps the classic picker.'},
+  {id:'P7', f:'pickup', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Edit pickup time from menu, cart or checkout', uc:'UC15', s:'differs', h:'call:demoMenuOrderType',
+   n:'Menu bar: order type → time, current choice pre-selected. Checkout: Ready time row. <b>Cart is read-only.</b>'},
+  {id:'P8', f:'pickup', e:'both', g:'Menu / cart / checkout', kind:'edge', t:'Some items may not be available at the chosen time', uc:'UC17', s:'differs', h:'screen-cart,call:demoUnavailableCart',
+   n:'Prototype greys the item and blocks Checkout until it’s removed. PRD: <b>message only</b>, nothing removed or flagged.'},
+
+  // ---- Delivery ----
+  {id:'D1', f:'delivery', e:'both', g:'Required input', kind:'main', t:'Add a serviceable address', uc:'UC13', s:'built', h:'call:demoDeliveryStep',
+   n:'Per designs OOR_0002E1 / E2: “Enter address” (search with suggestions, or “Use current location”) → tap an address → “Checking we deliver to this address…”. <b>Non-HQ:</b> Delivery on the store sheet → address → Delivery time → menu. <b>HQ:</b> Delivery on the order types → address → “N stores deliver to you” (only stores in range of the address) → Delivery time → menu. Saved addresses are not included yet.'},
+  {id:'D2', f:'delivery', e:'both', g:'Required input', kind:'edge', t:'Unserviceable address at order selection', uc:'UC14', s:'built', h:'call:demoDeliveryUnserviceable',
+   n:'Per design OOR_0002E12: a bottom sheet “Sorry, we don’t deliver here · Delivery is not available yet in this area. Please check again or change the address.” with “Change address”, which clears the field to try again. The menu can’t be reached; the address step’s back arrow returns to the order types. HQ shows it when no store delivers to the address.'},
+  {id:'D3', f:'delivery', e:'hq', g:'Required input', kind:'main', t:'HQ step order: store first, or address first?', uc:'Video', s:'differs', h:'call:demoHqDeliveryStores',
+   n:'Built address first: Delivery → Enter address → “2 stores deliver to you” (e.g. 1 Grattan St, Carlton: Lonsdale and Parkville) → Delivery time → menu. Back steps through each. Changing store while on Delivery (side menu, checkout) lists only stores that deliver to the current address. The PRD says store first.',
+   d:'HQ Delivery is address first, like the live HQ site: customers only see stores that can deliver to them, so they never pick a store and then find out it can’t.'},
+  {id:'D4', f:'delivery', e:'both', g:'Timing', kind:'main', t:'ASAP only / pre-order only / both', uc:'Config', s:'built', h:'call:demoDeliveryPreorderOnly',
+   n:'Same three store setups as Pick up, after the address (HQ: after the store):' +
+     '<table class="note-table"><caption>Delivery timing by store setup</caption>' +
+     '<thead><tr><th scope="col">Store setup</th><th scope="col">What the customer sees</th></tr></thead><tbody>' +
+     '<tr><td>ASAP only</td><td>No time step: address → menu. Menu bar “Delivery · ASAP · ~45 mins”; checkout Delivery time row is not tappable.</td></tr>' +
+     '<tr><td>Pre-order only</td><td>“Delivery time” without the ASAP / Schedule cards: Pick a day → Pick a time; Select off until a time is picked.</td></tr>' +
+     '<tr><td>Both (default)</td><td>ASAP (“Delivered in ~45 mins”) or Schedule → day → time.</td></tr>' +
+     '</tbody></table>' +
+     'This row links to the pre-order-only setup; the flow index has all three.'},
+  {id:'D5', f:'delivery', e:'nonhq', g:'Timing', kind:'edge', t:'No delivery date available at all', uc:'Slack', s:'partial', h:'screen-nonhq,app-body!add:delivery-closed',
+   n:'This link shows the store sheet with the Delivery tile “Closed” and not selectable (Delivery is open by default now). <b>Missing:</b> “see available time” link.'},
+  {id:'D6', f:'delivery', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Edit delivery time from menu, cart or checkout', uc:'UC16', s:'built', h:'call:demoDeliveryCheckout',
+   n:'Menu bar: Delivery → Next → Delivery time. Checkout: the “Delivery time” row opens the same sheet. Cart retained. Cart is read-only by design.'},
+  {id:'D7', f:'delivery', e:'both', g:'Menu / cart / checkout', kind:'edge', t:'Some items may not be available at the chosen time', uc:'UC17', s:'none', h:null,
+   n:'The unavailable-item edge case (P8) is built for Pick up only.'},
+  {id:'D8', f:'delivery', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Menu has no edit point for the address', uc:'UC22', s:'built', h:'screen-menu',
+   n:'The menu bar shows “Delivery · time”; choosing Delivery again only opens the time sheet, never the address.'},
+  {id:'D9', f:'delivery', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Change address on the cart (serviceable)', uc:'UC18', s:'differs', h:'call:demoDeliveryCheckout',
+   n:'No address entry point on the cart.',
+   d:'The cart is read-only by design, so the delivery address is changed on checkout (D10, D12).'},
+  {id:'D10', f:'delivery', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Change address on checkout (serviceable)', uc:'UC19', s:'built', h:'call:demoDeliveryCheckout',
+   n:'Checkout “Address” row opens “Enter address” (same search + check). A serviceable address is applied straight away and returns to checkout; the cart is kept.'},
+  {id:'D11', f:'delivery', e:'both', g:'Menu / cart / checkout', kind:'edge', t:'Change address on the cart to an unserviceable one', uc:'UC20', s:'differs', h:'call:demoDeliveryCheckout',
+   n:'No address entry point on the cart.',
+   d:'The cart is read-only by design, so the delivery address is changed on checkout (D10, D12).'},
+  {id:'D12', f:'delivery', e:'both', g:'Menu / cart / checkout', kind:'edge', t:'Change address on checkout to an unserviceable one', uc:'UC21', s:'built', h:'call:demoDeliveryCheckout',
+   n:'Same “Sorry, we don’t deliver here” sheet. The new address is never applied; back returns to checkout with the previous address. HQ: the address must be in range of the current store (e.g. Essendon is only reached by Parkville, so it’s refused for Lonsdale).'},
+
+  // ---- Dine-in ----
+  {id:'T1', f:'dinein', e:'both', g:'Required input', kind:'main', t:'Enter a table number', uc:'UC11', s:'partial', h:'call:demoDineInStep',
+   n:'Non-HQ: Dine in on the store sheet → Table number → menu. <b>Missing:</b> HQ.'},
+  {id:'T2', f:'dinein', e:'both', g:'Required input', kind:'edge', t:'Continue without a table number', uc:'AC', s:'partial', h:'call:demoDineInStep',
+   n:'Non-HQ: Continue shows “Enter your table number to continue.” and stays on the step. <b>Missing:</b> HQ.'},
+  {id:'T8', f:'dinein', e:'nonhq', g:'Required input', kind:'edge', t:'Table number pre-filled from the QR code on the table', uc:'Derived', s:'built', h:'call:demoQrTable',
+   n:'Scanning the table’s QR code with the phone camera opens the site with the table in the link (e.g. <code>?table=12</code>) and lands <b>straight on the Table number step</b>. Only in this scan case, the step shows the <b>outlet card</b> (the same store card as the Non-HQ store sheet: Roll’d Geelong + address) above the field, 12 filled in, and “Filled in from the QR code on your table. Change it if it’s not right.” The customer can still correct it; the same digits-only rules apply. An invalid QR value is ignored and the field stays empty.',
+   d:'The outlet confirmation and QR line are only for the QR-scan Dine-in case. Choosing Dine in on the store sheet shows the plain Table number step.'},
+  {id:'T3', f:'dinein', e:'both', g:'Required input', kind:'main', t:'Table number format, validation or QR prefill', uc:'—', s:'decide', h:'call:demoDineInStep',
+   n:'Proposed input rules, built in the prototype:' +
+     '<table class="note-table"><caption>Table number input rules</caption>' +
+     '<thead><tr><th scope="col">Rule</th><th scope="col">Behaviour</th></tr></thead><tbody>' +
+     '<tr><td>Characters</td><td>Digits only. Number keypad on phones; letters, spaces and symbols are ignored or removed on paste.</td></tr>' +
+     '<tr><td>Length</td><td>1–3 digits (tables 1–999)</td></tr>' +
+     '<tr><td>Zero</td><td>“0” is not valid; leading zeros are dropped (“07” → 7)</td></tr>' +
+     '<tr><td>Empty</td><td>“Enter your table number to continue.”</td></tr>' +
+     '<tr><td>Invalid</td><td>“Enter a valid table number.”</td></tr>' +
+     '<tr><td>Not checked</td><td>Whether the table exists at the store (needs store data / QR prefill)</td></tr>' +
+     '</tbody></table>',
+   q:'Are Roll’d table numbers always numbers? If any store uses tables like “12A” or “Bar 2”, letters need to be allowed. With a QR prefill (T8), should the step be skipped entirely instead of shown pre-filled?'},
+  {id:'T4', f:'dinein', e:'both', g:'Timing', kind:'main', t:'ASAP only / pre-order only / both', uc:'Config', s:'built', h:'call:demoDineInStep',
+   n:'Dine-in uses the “ASAP only” config: the timing step is skipped and the table number goes straight to the menu.',
+   q:'Is Dine-in always ASAP only, or should a store be able to turn on Dine-in pre-orders? The ticket says every order type supports the three timing configs, but only writes timing use cases for Pick up (UC7–UC10). If stores can turn it on, show the time sheet only for those stores. To confirm with Vivek.',
+   d:'Dine-in is ASAP only: the customer is at the table, so there is no time step and no time row on the menu bar or checkout.'},
+  {id:'T5', f:'dinein', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Table number shown read-only on menu, cart and checkout', uc:'UC23', s:'partial', h:'call:demoDineInStep',
+   n:'Menu bar “Dine in · Table 12”, cart Review “Table 12 · Roll’d Geelong”, Dine-in checkout Table number row, none editable. <b>Missing:</b> HQ.'},
+  {id:'T6', f:'dinein', e:'both', g:'Mid-journey change', kind:'edge', t:'Different table: change order type (clears cart)', uc:'PRD', s:'partial', h:'call:demoMenuOrderType',
+   n:'Dine in is on the order-type sheet (menu bar and checkout “Change”, Non-HQ). Switching type with items shows the clear-cart confirmation. <b>Missing:</b> HQ.'},
+  {id:'T7', f:'dinein', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Can a Dine-in pre-order time be edited?', uc:'—', s:'built', h:'screen-checkout-dinein',
+   n:'No: Dine-in has no time to edit. Checkout shows Outlet and Table number only.',
+   d:'Dine-in is ASAP only: the customer is at the table, so there is no time step and no time row on the menu bar or checkout.'},
+
+  // ---- Room Service ----
+  {id:'R1', f:'room', e:'both', g:'Required input', kind:'main', t:'Enter a room number', uc:'UC12', s:'partial', h:'call:demoRoomStep',
+   n:'Non-HQ: Room Service on the store sheet → Room number → Room Service time → menu. <b>Missing:</b> HQ.'},
+  {id:'R2', f:'room', e:'both', g:'Required input', kind:'edge', t:'Continue without a room number', uc:'AC', s:'partial', h:'call:demoRoomStep',
+   n:'Non-HQ: Continue shows “Enter your room number to continue.” and stays on the step. <b>Missing:</b> HQ.'},
+  {id:'R3', f:'room', e:'both', g:'Required input', kind:'main', t:'Room number format or validation', uc:'—', s:'decide', h:'call:demoRoomStep',
+   n:'Proposed input rules, built in the prototype (same as the table number, T3, but up to 4 digits):' +
+     '<table class="note-table"><caption>Room number input rules</caption>' +
+     '<thead><tr><th scope="col">Rule</th><th scope="col">Behaviour</th></tr></thead><tbody>' +
+     '<tr><td>Characters</td><td>Digits only. Number keypad on phones; letters, spaces and symbols are ignored or removed on paste.</td></tr>' +
+     '<tr><td>Length</td><td>1–4 digits (rooms 1–9999, e.g. 1204 = floor 12, room 04)</td></tr>' +
+     '<tr><td>Zero</td><td>“0” is not valid; leading zeros are dropped (“0512” → 512)</td></tr>' +
+     '<tr><td>Empty</td><td>“Enter your room number to continue.”</td></tr>' +
+     '<tr><td>Invalid</td><td>“Enter a valid room number.”</td></tr>' +
+     '<tr><td>Not checked</td><td>Whether the room exists at the venue (needs venue data)</td></tr>' +
+     '</tbody></table>',
+   q:'Are room numbers always numbers? Some venues use rooms like “12B” or “Suite 3”, which would need letters. Are 4 digits enough?'},
+  {id:'R4', f:'room', e:'both', g:'Timing', kind:'main', t:'ASAP only / pre-order only / both', uc:'Config', s:'partial', h:'call:demoRoomStep',
+   n:'Reuses the pickup time sheet (ASAP / Schedule), titled “Room Service time”. Only the “both enabled” config so far.'},
+  {id:'R5', f:'room', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Room number shown read-only on menu, cart and checkout', uc:'UC24', s:'partial', h:'call:demoRoomStep',
+   n:'Menu header “Geelong · Room 1204”, cart Review “Room 1204 · Roll’d Geelong”, checkout Room number row, none editable. <b>Missing:</b> HQ.'},
+  {id:'R6', f:'room', e:'both', g:'Mid-journey change', kind:'edge', t:'Different room: change order type (clears cart)', uc:'PRD', s:'partial', h:'call:demoMenuOrderType',
+   n:'Room Service is on the menu’s order-type sheet (Non-HQ). Switching type with items shows the clear-cart confirmation.'},
+  {id:'R7', f:'room', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Can a Room Service pre-order time be edited?', uc:'—', s:'decide', h:null}
+];
+
+/* Screens with no OO-1863 use case (from index.html) */
+var OTHER = [
+  ['Homescreen','screen-landing'], ['Menu page','screen-menu'], ['Menu search','screen-menu,screen-menu!add:search-active'],
+  ['Sort & Filters','screen-menu-filters'], ['Menu detail page','screen-mealdetail'],
+  ['Cross-sell / Frequently ordered together','screen-menu,menu-recommend-section!remove:hidden'],
+  ['Upsell carousel','screen-menu,suggestion-overlay'], ['Cart / Review','screen-cart'],
+  ['Login / Join member','screen-signin'], ['Sign up form','screen-checkout,otp-overlay,otp-step-phone!add:hidden-step,otp-step-signup!remove:hidden-step'],
+  ['Account','screen-profile-settings'], ['Promo code / Gift card','screen-checkout'], ['Payment method','screen-payment'],
+  ['Delivery checkout','screen-checkout-delivery'], ['Dine-in checkout','screen-checkout-dinein'],
+  ['Store info','screen-outlet-search'], ['Social links','screen-landing']
+];
+
+var STATUS = {built:'Built', partial:'Partial', differs:'Differs', none:'Not built', decide:'Needs decision'};
+var state = {view:'mobile', entry:'any'};
+try { var v = localStorage.getItem('prd-index-view'); if (v === 'mobile' || v === 'desktop') state.view = v; } catch(e){}
+
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function href(h){ return 'prototype.html?view=' + state.view + '#' + h; }
+function entryLabel(e){ return e === 'both' ? 'HQ + Non-HQ' : e === 'hq' ? 'HQ' : 'Non-HQ'; }
+function visible(r){ return state.entry === 'any' || r.e === 'both' || r.e === state.entry; }
+
+function renderCoverage(){
+  var c = {built:0, partial:0, differs:0, none:0, decide:0};
+  R.forEach(function(r){ c[r.s]++; });
+  var withScreen = R.filter(function(r){ return r.h; }).length;
+  document.getElementById('coverage').innerHTML =
+    '<span class="cov"><b>' + withScreen + ' of ' + R.length + '</b> use cases have a screen</span>' +
+    '<span class="cov"><b>' + c.built + '</b> built</span>' +
+    '<span class="cov"><b>' + c.partial + '</b> partial</span>' +
+    '<span class="cov"><b>' + c.differs + '</b> differ from PRD</span>' +
+    '<span class="cov"><b>' + c.none + '</b> not built</span>' +
+    '<span class="cov"><b>' + c.decide + '</b> need a decision</span>';
+}
+
+var COPY_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>';
+var CHECK_ICON = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
+
+function rowHTML(r){
+  var cls = 'row' + (r.kind === 'edge' ? ' edge' : '') + (r.h ? ' is-link' : ' is-none');
+  var inner =
+    '<span class="mark" aria-hidden="true"></span>' +
+    '<div class="body">' +
+      '<div class="title">' + (r.h ? '<a class="row-link" href="' + href(r.h) + '">' + esc(r.t) + '</a>' : esc(r.t)) + '</div>' +
+      '<div class="meta"><span class="uc">' + esc(r.id) + '</span>' +
+        (r.uc && r.uc !== '—' ? '<span class="uc">' + esc(r.uc) + '</span>' : '') +
+        '<span class="entry">' + entryLabel(r.e) + '</span>' +
+        (r.kind === 'edge' ? '<span>Edge case</span>' : '') + '</div>' +
+      (r.n ? '<div class="note">' + r.n + '</div>' : '') +
+      (r.q ? '<div class="question"><span class="decision-tag">Open question</span><span>' + esc(r.q) + '</span></div>' : '') +
+      (r.d ? '<div class="decision"><span class="decision-tag">Design decision</span><span>' + esc(r.d) + '</span></div>' : '') +
+    '</div>' +
+    '<div class="side"><span class="chip s-' + r.s + '">' + STATUS[r.s] + '</span>' +
+      '<button type="button" class="copy-btn" data-id="' + esc(r.id) + '" aria-label="Copy ' + esc(r.id) + ' as text" title="Copy as text">' + COPY_ICON + '<span>Copy</span></button>' +
+      (r.h ? '<span class="arrow" aria-hidden="true">→</span>' : '') + '</div>';
+  return '<div class="' + cls + '" data-id="' + esc(r.id) + '">' + inner + '</div>';
+}
+
+/* Plain-text version of a card, for pasting into Slack or a ticket */
+function rowText(card, r){
+  var flow = FLOWS.filter(function(f){ return f.k === r.f; })[0];
+  var lines = [r.id + ' · ' + r.t,
+    [flow ? flow.name : '', r.g, entryLabel(r.e), r.kind === 'edge' ? 'Edge case' : '', r.uc && r.uc !== '—' ? r.uc : '', 'Status: ' + STATUS[r.s]].filter(Boolean).join(' · ')];
+  var note = card.querySelector('.note');
+  if (note) {
+    var parts = [];
+    [].forEach.call(note.childNodes, function(n){
+      if (n.nodeName === 'TABLE') {
+        var cap = n.querySelector('caption');
+        if (cap) parts.push('\n' + cap.textContent.trim() + ':');
+        [].forEach.call(n.querySelectorAll('tbody tr'), function(tr){
+          parts.push('\n- ' + [].map.call(tr.cells, function(td){ return td.textContent.trim(); }).join(': '));
+        });
+        parts.push('\n');
+      } else parts.push(n.textContent);
+    });
+    lines.push('Note: ' + parts.join('').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim());
+  }
+  if (r.q) lines.push('Open question: ' + r.q);
+  if (r.d) lines.push('Design decision: ' + r.d);
+  if (r.h) lines.push('Prototype: ' + new URL(href(r.h), location.href).href);
+  return lines.join('\n');
+}
+
+function copyText(text){
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+  return new Promise(function(resolve, reject){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy') ? resolve() : reject(); } catch(e){ reject(e); }
+    document.body.removeChild(ta);
+  });
+}
+
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('.copy-btn');
+  if (!btn) return;
+  e.preventDefault();
+  var r = R.filter(function(x){ return x.id === btn.dataset.id; })[0];
+  var card = btn.closest('.row');
+  copyText(rowText(card, r)).then(function(){
+    btn.classList.add('copied'); btn.innerHTML = CHECK_ICON + '<span>Copied</span>';
+    document.getElementById('copy-status').textContent = r.id + ' copied';
+    clearTimeout(btn._t);
+    btn._t = setTimeout(function(){ btn.classList.remove('copied'); btn.innerHTML = COPY_ICON + '<span>Copy</span>'; }, 1600);
+  }, function(){
+    btn.innerHTML = '<span>Copy failed</span>';
+  });
+});
+
+function pathHTML(label, steps){
+  return '<div class="flow-path"><span class="who">' + label + '</span>' +
+    steps.map(function(s){ return '<span class="st' + (s.slice(-1) === '*' ? ' opt' : '') + '">' + esc(s.replace('*','')) + '</span>'; }).join('<span>→</span>') + '</div>';
+}
+
+function render(){
+  document.getElementById('jump').innerHTML = FLOWS.map(function(f){ return '<a href="#flow-' + f.k + '">' + f.name + '</a>'; }).join('');
+  document.getElementById('flows').innerHTML = FLOWS.map(function(f){
+    var rows = R.filter(function(r){ return r.f === f.k && visible(r); });
+    var built = rows.filter(function(r){ return r.h; }).length;
+    var stages = STAGES.map(function(g){
+      var gr = rows.filter(function(r){ return r.g === g; });
+      if (!gr.length) return '';
+      gr.sort(function(a, b){ return (a.kind === 'edge') - (b.kind === 'edge'); });  // main flow first, edge cases under it
+      return '<div class="stage"><div class="stage-title">' + g + '</div><div class="rows">' + gr.map(rowHTML).join('') + '</div></div>';
+    }).join('');
+    return '<section class="flow" id="flow-' + f.k + '">' +
+      '<div class="flow-head"><h2>' + f.name + '</h2><span class="flow-meta">' + rows.length + ' use cases · ' + built + ' with a screen</span></div>' +
+      (state.entry !== 'hq' ? pathHTML('Non-HQ', f.non) : '') + (state.entry !== 'nonhq' ? pathHTML('HQ', f.hq) : '') +
+      (stages || '<div class="stage"><div class="empty">No use cases for this entry.</div></div>') +
+      '</section>';
+  }).join('');
+  document.getElementById('other').innerHTML = OTHER.map(function(o){
+    return '<a href="' + href(o[1]) + '"><span>' + esc(o[0]) + '</span><span class="arrow">→</span></a>';
+  }).join('');
+}
+
+function seg(id, key){
+  var el = document.getElementById(id);
+  el.querySelectorAll('button').forEach(function(b){
+    b.setAttribute('aria-pressed', String(b.dataset.v === state[key]));
+    b.onclick = function(){
+      state[key] = b.dataset.v;
+      el.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+      if (key === 'view') { try { localStorage.setItem('prd-index-view', state.view); } catch(e){} }
+      render();
+    };
+  });
+}
+seg('seg-view', 'view'); seg('seg-entry', 'entry');
+renderCoverage(); render();
+</script>
+</body>
+</html>

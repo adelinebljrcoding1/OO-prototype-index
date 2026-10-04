@@ -28,7 +28,7 @@
     font-family:"Söhne","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:980px;margin:0 auto;padding:56px 28px 96px;}
+  .wrap{max-width:1120px;margin:0 auto;padding:56px 28px 96px;}
 
   /* ---------- Cover header ---------- */
   .cover{
@@ -193,6 +193,33 @@
   }
   a.item:hover .item-arrow{opacity:.9;}
 
+  /* ---------- Mobile / Desktop columns ---------- */
+  .flow-cols{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px;
+    align-items:start;
+  }
+  .flow-col{display:flex;flex-direction:column;gap:8px;}
+  .col-label{
+    display:flex;align-items:center;gap:8px;
+    font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);padding:2px 4px 4px;
+  }
+  .col-icon{font-size:13px;}
+  .item.is-pending .status-dot{background:var(--accent);}
+  .edge-divider{display:flex;align-items:center;gap:10px;margin:10px 4px 2px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .edge-divider::after{content:"";flex:1;height:1px;background:var(--line);}
+  .item.is-pending .item-note{color:var(--accent);}
+  .item-note{margin-left:auto;}
+  .cover-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .cover-ctas .cover-cta{margin-top:0;}
+  .cover-cta-ghost{background:transparent;color:#fbf8f2;border:1px solid rgba(255,255,255,.35);box-shadow:none;}
+  .cover-cta-ghost:hover{background:rgba(255,255,255,.08);}
+  @media (max-width:720px){
+    .flow-cols{grid-template-columns:1fr;}
+  }
+
   footer{
     margin-top:52px;
     padding-top:22px;
@@ -213,86 +240,220 @@
     <div class="eyebrow"><span class="dot"></span> Roll'd &middot; Order Online Reimagining</div>
     <h1>00. Design Handoff &amp; Flow Index</h1>
     <div class="cover-meta">
-      <span class="meta-pill">Scope <b>Mobile</b></span>
+      <span class="meta-pill">Scope <b>Mobile &amp; Desktop</b></span>
       <span class="meta-pill">Source <b>prototype.html</b></span>
     </div>
-    <a class="cover-cta" href="prototype.html">
-      Open full prototype
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-    </a>
-  </div>
-
-  <!-- 1. Sign In / Registration -->
-  <div class="section">
-    <div class="section-head">
-      <h2>1 &middot; Sign In / Registration</h2>
-      <span class="section-count">4 items &middot; Mobile</span>
-    </div>
-    <div class="grid">
-      <a class="item" href="prototype.html#screen-signin"><span class="item-label"><span class="status-dot"></span>Login / Join Member</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-checkout,otp-overlay,otp-step-phone!add:hidden-step,otp-step-signup!remove:hidden-step"><span class="item-label"><span class="status-dot"></span>Sign Up Form</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-checkout,guest-overlay"><span class="item-label"><span class="status-dot"></span>Guest Checkout Option</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-profile-settings"><span class="item-label"><span class="status-dot"></span>Account</span><span class="item-arrow">→</span></a>
+    <div class="cover-ctas">
+      <a class="cover-cta" href="prototype.html?view=mobile">Open mobile prototype
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="cover-cta cover-cta-ghost" href="prototype.html?view=desktop">Open desktop prototype
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="cover-cta cover-cta-ghost" href="prd-index.html">OO-1863 PRD Index
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="cover-cta cover-cta-ghost" href="design-system.html">Design system
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
   </div>
 
-  <!-- 2. Ordering (Menu to Checkout) -->
+  <!-- 0. Foundations -->
   <div class="section">
     <div class="section-head">
-      <h2>2 &middot; Ordering (Menu to Checkout)</h2>
-      <span class="section-count">17 items &middot; Mobile</span>
+      <h2>0 &middot; Foundations</h2>
+      <span class="section-count">1 item &middot; Mobile + Desktop</span>
     </div>
-    <div class="grid">
-      <a class="item" href="prototype.html#screen-landing"><span class="item-label"><span class="status-dot"></span>Homescreen</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-menu"><span class="item-label"><span class="status-dot"></span>Menu Page</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Fulfilment Switcher (Pickup/Delivery/Dine-in)</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-menu,screen-menu!add:search-active"><span class="item-label"><span class="status-dot"></span>Menu Search</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-menu-filters"><span class="item-label"><span class="status-dot"></span>Dietary Filter (menu-wide)</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Menu Detail Page</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Item Dietary Modifiers (paid add-ons)</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Special Instructions (item-level)</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-menu,menu-recommend-section!remove:hidden"><span class="item-label"><span class="status-dot"></span>Cross-sell / Frequently Ordered Together</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-cart"><span class="item-label"><span class="status-dot"></span>Cart / Review Page</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-menu,suggestion-overlay"><span class="item-label"><span class="status-dot"></span>Upsell Carousel (cart)</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-checkout"><span class="item-label"><span class="status-dot"></span>Promo Code / Gift Card Entry</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-checkout,screen-checkout!add:no-loyalty"><span class="item-label"><span class="status-dot"></span>Checkout Guest only (No Loyalty, No Login)</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-checkout,screen-checkout!add:trigger-mode,otp-overlay!add:open"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + Login Loyalty</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-checkout,cart-account-card!remove:hidden,cart-guest-block!add:hidden,cart-name-section!add:hidden,cart-loyalty-triggers!add:hidden,cart-footer-note!add:hidden,cart-footer-earn-note!remove:hidden"><span class="item-label"><span class="status-dot"></span>Logged-in Checkout (loyalty program enabled)</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-checkout,screen-checkout!add:trigger-mode"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + New Login</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-payment"><span class="item-label"><span class="status-dot"></span>Payment Method</span><span class="item-arrow">→</span></a>
+    <div class="flow-cols">
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
+        <a class="item" href="design-system.html?view=mobile"><span class="item-label"><span class="status-dot"></span>Design System &mdash; Typography, spacing &amp; components</span><span class="item-arrow">→</span></a>
+      </div>
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
+        <a class="item" href="design-system.html?view=desktop"><span class="item-label"><span class="status-dot"></span>Design System &mdash; Typography, spacing &amp; components</span><span class="item-arrow">→</span></a>
+      </div>
     </div>
   </div>
 
-  <!-- 3. Fulfilment Flows -->
+  <!-- 1. HQ and Non-HQ -->
   <div class="section">
     <div class="section-head">
-      <h2>3 &middot; Fulfilment Flows</h2>
-      <span class="section-count">5 items &middot; Mobile</span>
+      <h2>1 &middot; HQ and Non-HQ</h2>
+      <span class="section-count">2 items &middot; Mobile + Desktop</span>
     </div>
-    <div class="grid">
-      <a class="item" href="prototype.html#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Pick Up Flow</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-checkout-delivery"><span class="item-label"><span class="status-dot"></span>Delivery Flow incl. Address Entry</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-checkout-dinein"><span class="item-label"><span class="status-dot"></span>Dine-in Flow incl. Table Number</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Outlet Guest / Login</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Non-HQ Flow</span><span class="item-arrow">→</span></a>
+    <div class="flow-cols">
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
+        <a class="item" href="prototype.html?view=mobile#screen-hq-order"><span class="item-label"><span class="status-dot"></span>HQ Flow &mdash; Select Order Type</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Non-HQ Flow &mdash; Select Order Type</span><span class="item-arrow">→</span></a>
+      </div>
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
+        <a class="item" href="prototype.html?view=desktop#screen-hq-order"><span class="item-label"><span class="status-dot"></span>HQ Flow &mdash; Select Order Type</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Non-HQ Flow &mdash; Select Order Type</span><span class="item-arrow">→</span></a>
+      </div>
     </div>
   </div>
 
-  <!-- 4. Store & Support -->
+  <!-- 2. Fulfilment Flows -->
   <div class="section">
     <div class="section-head">
-      <h2>4 &middot; Store &amp; Support</h2>
-      <span class="section-count">2 items &middot; Mobile</span>
+      <h2>2 &middot; Fulfilment Flows</h2>
+      <span class="section-count">8 items &middot; Mobile + Desktop</span>
     </div>
-    <div class="grid">
-      <a class="item" href="prototype.html#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Store Info (map, hours, contact)</span><span class="item-arrow">→</span></a>
-      <a class="item" href="prototype.html#screen-landing"><span class="item-label"><span class="status-dot"></span>Social Links</span><span class="item-arrow">→</span></a>
+    <div class="flow-cols">
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
+        <a class="item" href="prototype.html?view=mobile#screen-nonhq,app-body!add:pickup-timing-asap"><span class="item-label"><span class="status-dot"></span>Pick up &mdash; ASAP</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#call:demoDeliveryStep"><span class="item-label"><span class="status-dot"></span>Delivery Flow incl. Address Entry (Non-HQ)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#call:demoHqDeliveryStep"><span class="item-label"><span class="status-dot"></span>HQ Flow &mdash; Delivery: address, then stores that deliver to you</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-nonhq,app-body!add:pickup-timing-preorder"><span class="item-label"><span class="status-dot"></span>Pick up &mdash; pre-order only store</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#call:demoDeliveryAsapOnly"><span class="item-label"><span class="status-dot"></span>Delivery &mdash; ASAP only store (skips time step)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#call:demoDeliveryPreorderOnly"><span class="item-label"><span class="status-dot"></span>Delivery &mdash; pre-order only store</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#call:demoDineInStep"><span class="item-label"><span class="status-dot"></span>Dine-in Flow incl. Table Number (Non-HQ)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#call:demoRoomStep"><span class="item-label"><span class="status-dot"></span>Room Service Flow incl. Room Number (Non-HQ)</span><span class="item-arrow">→</span></a>
+      </div>
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
+        <a class="item" href="prototype.html?view=desktop#screen-nonhq,app-body!add:pickup-timing-asap"><span class="item-label"><span class="status-dot"></span>Pick up &mdash; ASAP</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#call:demoDeliveryStep"><span class="item-label"><span class="status-dot"></span>Delivery Flow incl. Address Entry (Non-HQ)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#call:demoHqDeliveryStep"><span class="item-label"><span class="status-dot"></span>HQ Flow &mdash; Delivery: address, then stores that deliver to you</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-nonhq,app-body!add:pickup-timing-preorder"><span class="item-label"><span class="status-dot"></span>Pick up &mdash; pre-order only store</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#call:demoDeliveryAsapOnly"><span class="item-label"><span class="status-dot"></span>Delivery &mdash; ASAP only store (skips time step)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#call:demoDeliveryPreorderOnly"><span class="item-label"><span class="status-dot"></span>Delivery &mdash; pre-order only store</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#call:demoDineInStep"><span class="item-label"><span class="status-dot"></span>Dine-in Flow incl. Table Number (Non-HQ)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#call:demoRoomStep"><span class="item-label"><span class="status-dot"></span>Room Service Flow incl. Room Number (Non-HQ)</span><span class="item-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Sign In / Registration -->
+  <div class="section">
+    <div class="section-head">
+      <h2>3 &middot; Sign In / Registration</h2>
+      <span class="section-count">3 items &middot; Mobile + Desktop</span>
+    </div>
+    <div class="flow-cols">
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
+        <a class="item" href="prototype.html?view=mobile#screen-signin"><span class="item-label"><span class="status-dot"></span>Login / Join Member</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-checkout,otp-overlay,otp-step-phone!add:hidden-step,otp-step-signup!remove:hidden-step"><span class="item-label"><span class="status-dot"></span>Sign Up Form</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-profile-settings"><span class="item-label"><span class="status-dot"></span>Account</span><span class="item-arrow">→</span></a>
+      </div>
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
+        <a class="item is-pending" href="prototype.html?view=desktop#screen-signin"><span class="item-label"><span class="status-dot"></span>Login / Join Member</span><span class="item-note">Mobile layout for now</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-checkout,otp-overlay,otp-step-phone!add:hidden-step,otp-step-signup!remove:hidden-step"><span class="item-label"><span class="status-dot"></span>Sign Up Form</span><span class="item-arrow">→</span></a>
+        <a class="item is-pending" href="prototype.html?view=desktop#screen-profile-settings"><span class="item-label"><span class="status-dot"></span>Account</span><span class="item-note">Mobile layout for now</span><span class="item-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Ordering (Menu to Cart) -->
+  <div class="section">
+    <div class="section-head">
+      <h2>4 &middot; Ordering (Menu to Cart)</h2>
+      <span class="section-count">11 items + 6 edge cases &middot; Mobile + Desktop</span>
+    </div>
+    <div class="flow-cols">
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
+        <a class="item" href="prototype.html?view=mobile#screen-landing"><span class="item-label"><span class="status-dot"></span>Homescreen</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-menu"><span class="item-label"><span class="status-dot"></span>Menu Page</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Fulfilment Switcher (Pickup/Delivery/Dine-in)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-menu,screen-menu!add:search-active"><span class="item-label"><span class="status-dot"></span>Menu Search</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-menu-filters"><span class="item-label"><span class="status-dot"></span>Dietary Filter (menu-wide)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Menu Detail Page</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Item Dietary Modifiers (paid add-ons)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Special Instructions (item-level)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-menu,menu-recommend-section!remove:hidden"><span class="item-label"><span class="status-dot"></span>Cross-sell / Frequently Ordered Together</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-cart"><span class="item-label"><span class="status-dot"></span>Cart / Review Page</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-menu,suggestion-overlay"><span class="item-label"><span class="status-dot"></span>Upsell Carousel (cart)</span><span class="item-arrow">→</span></a>
+        <div class="edge-divider">Edge case</div>
+        <a class="item" href="prototype.html?view=mobile#screen-cart,call:demoUnavailableCart"><span class="item-label"><span class="status-dot"></span>Some items in the cart may not be available at that time</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-menu,call:demoTypeChangePopup"><span class="item-label"><span class="status-dot"></span>Changing order type with items in the cart (clears cart)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#call:demoSidebarStore"><span class="item-label"><span class="status-dot"></span>Changing store from the menu side menu (HQ, clears cart)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#call:demoStoreChange"><span class="item-label"><span class="status-dot"></span>Changing store from checkout (HQ, clears cart)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile&amp;table=12#call:demoQrTable"><span class="item-label"><span class="status-dot"></span>Dine-in: table number pre-filled from the table&rsquo;s QR code (Non-HQ)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#call:demoDeliveryUnserviceable"><span class="item-label"><span class="status-dot"></span>Delivery: address we can&rsquo;t deliver to (Non-HQ)</span><span class="item-arrow">→</span></a>
+      </div>
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
+        <a class="item" href="prototype.html?view=desktop#screen-landing"><span class="item-label"><span class="status-dot"></span>Homescreen</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-menu"><span class="item-label"><span class="status-dot"></span>Menu Page</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Fulfilment Switcher (Pickup/Delivery/Dine-in)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-menu,screen-menu!add:search-active"><span class="item-label"><span class="status-dot"></span>Menu Search</span><span class="item-arrow">→</span></a>
+        <a class="item is-pending" href="prototype.html?view=desktop#screen-menu-filters"><span class="item-label"><span class="status-dot"></span>Dietary Filter (menu-wide)</span><span class="item-note">Mobile layout for now</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Menu Detail Page</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Item Dietary Modifiers (paid add-ons)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Special Instructions (item-level)</span><span class="item-arrow">→</span></a>
+        <div class="item is-disabled"><span class="item-label"><span class="status-dot"></span>Cross-sell / Frequently Ordered Together</span><span class="item-note">Not yet</span></div>
+        <a class="item" href="prototype.html?view=desktop#screen-cart"><span class="item-label"><span class="status-dot"></span>Cart / Review Page</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-menu,suggestion-overlay"><span class="item-label"><span class="status-dot"></span>Upsell Carousel (cart)</span><span class="item-arrow">→</span></a>
+        <div class="edge-divider">Edge case</div>
+        <a class="item" href="prototype.html?view=desktop#screen-cart,call:demoUnavailableCart"><span class="item-label"><span class="status-dot"></span>Some items in the cart may not be available at that time</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-menu,call:demoTypeChangePopup"><span class="item-label"><span class="status-dot"></span>Changing order type with items in the cart (clears cart)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#call:demoSidebarStore"><span class="item-label"><span class="status-dot"></span>Changing store from the menu side menu (HQ, clears cart)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#call:demoStoreChange"><span class="item-label"><span class="status-dot"></span>Changing store from checkout (HQ, clears cart)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop&amp;table=12#call:demoQrTable"><span class="item-label"><span class="status-dot"></span>Dine-in: table number pre-filled from the table&rsquo;s QR code (Non-HQ)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#call:demoDeliveryUnserviceable"><span class="item-label"><span class="status-dot"></span>Delivery: address we can&rsquo;t deliver to (Non-HQ)</span><span class="item-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Check Out -->
+  <div class="section">
+    <div class="section-head">
+      <h2>5 &middot; Check Out</h2>
+      <span class="section-count">6 items &middot; Mobile + Desktop</span>
+    </div>
+    <div class="flow-cols">
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
+        <a class="item" href="prototype.html?view=mobile#screen-checkout"><span class="item-label"><span class="status-dot"></span>Promo Code / Gift Card Entry</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-checkout,screen-checkout!add:no-loyalty"><span class="item-label"><span class="status-dot"></span>Checkout Guest only (No Loyalty, No Login)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-checkout,screen-checkout!add:trigger-mode,otp-overlay!add:open"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + Login Loyalty</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-checkout,cart-account-card!remove:hidden,cart-guest-block!add:hidden,cart-name-section!add:hidden,cart-loyalty-triggers!add:hidden,cart-footer-note!add:hidden,cart-footer-earn-note!remove:hidden"><span class="item-label"><span class="status-dot"></span>Logged-in Checkout (loyalty program enabled)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-checkout,screen-checkout!add:trigger-mode"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + New Login</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-payment"><span class="item-label"><span class="status-dot"></span>Payment Method</span><span class="item-arrow">→</span></a>
+      </div>
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
+        <a class="item" href="prototype.html?view=desktop#screen-checkout"><span class="item-label"><span class="status-dot"></span>Promo Code / Gift Card Entry</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-checkout,screen-checkout!add:no-loyalty"><span class="item-label"><span class="status-dot"></span>Checkout Guest only (No Loyalty, No Login)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-checkout,screen-checkout!add:trigger-mode,otp-overlay!add:open"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + Login Loyalty</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-checkout,cart-account-card!remove:hidden,cart-guest-block!add:hidden,cart-name-section!add:hidden,cart-loyalty-triggers!add:hidden,cart-footer-note!add:hidden,cart-footer-earn-note!remove:hidden"><span class="item-label"><span class="status-dot"></span>Logged-in Checkout (loyalty program enabled)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-checkout,screen-checkout!add:trigger-mode"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + New Login</span><span class="item-arrow">→</span></a>
+        <a class="item is-pending" href="prototype.html?view=desktop#screen-payment"><span class="item-label"><span class="status-dot"></span>Payment Method</span><span class="item-note">Mobile layout for now</span><span class="item-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Store & Support -->
+  <div class="section">
+    <div class="section-head">
+      <h2>6 &middot; Store &amp; Support</h2>
+      <span class="section-count">2 items &middot; Mobile + Desktop</span>
+    </div>
+    <div class="flow-cols">
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
+        <a class="item" href="prototype.html?view=mobile#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Store Info (map, hours, contact)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=mobile#screen-landing"><span class="item-label"><span class="status-dot"></span>Social Links</span><span class="item-arrow">→</span></a>
+      </div>
+      <div class="flow-col">
+        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
+        <a class="item" href="prototype.html?view=desktop#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Store Info (map, hours, contact)</span><span class="item-arrow">→</span></a>
+        <a class="item" href="prototype.html?view=desktop#screen-landing"><span class="item-label"><span class="status-dot"></span>Social Links</span><span class="item-arrow">→</span></a>
+      </div>
     </div>
   </div>
 
   <footer>
     <span>Roll'd Order Online Reimagining &middot; Design Handoff</span>
-    <span>Links open <code>prototype.html</code> at the matching screen/state</span>
+    <span>Links open <code>prototype.html</code> at the matching screen/state &middot; <code>?view=mobile</code> / <code>?view=desktop</code> forces the layout</span>
   </footer>
 
 </div>
