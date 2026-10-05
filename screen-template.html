@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roll'd Screen Template</title>
+<!--
+  Roll'd Order Online — new screen starter (mobile mock-up)
+  ---------------------------------------------------------
+  Copy this file to start a new screen. Everything outside the
+  "YOUR SCREEN CONTENT" block is the shared device mock-up and must not
+  change, so every screen has the same size and frame as prototype.html.
+
+  Frame spec (see design-system.html → Phone frame)
+  - Screen: 390 × 844 px (iPhone 12/13/14 viewport), corner radius 44px
+  - Frame: 10px #111 ring (box-shadow), outer size 410 × 864 px
+  - Status bar 34px + browser bar 37px → content area 390 × 773 px
+  - Page background #e7e5e1, screen background #faf7f2
+  - Type: only the classes / variables in design-system.css
+-->
+<link rel="stylesheet" href="design-system.css?v=2026-09-29b">
+<style>
+  :root{
+    --green-dark:#173d31;
+    --green-mid:#1e5443;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:#e7e5e1;font-family:var(--font-sans);}
+  strong,b{font-weight:var(--fw-semibold);}
+  body{display:flex;align-items:flex-start;justify-content:center;min-height:100vh;padding:24px 0;}
+
+  /* ---- Device mock-up: do not change ---- */
+  .phone{
+    position:relative;
+    width:390px;
+    height:844px;
+    background:#faf7f2;
+    border-radius:44px;
+    box-shadow:0 30px 60px rgba(0,0,0,.35), 0 0 0 10px #111;
+    overflow:hidden;
+  }
+  .screen{position:absolute;inset:0;display:flex;flex-direction:column;}
+  .statusbar{
+    position:relative;z-index:5;width:100%;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 26px 0;
+    font-size:15px;font-weight:600;color:#111; /* device chrome: exempt from type tokens */
+  }
+  .statusbar .icons{display:flex;align-items:center;gap:6px;}
+  .browser-bar{display:flex;justify-content:center;padding:6px 0 4px;}
+  .browser-bar .url-pill{
+    display:flex;align-items:center;gap:6px;
+    background:#eee;color:#555;font-size:13px; /* browser chrome: exempt */
+    padding:6px 14px;border-radius:999px;
+  }
+
+  /* ---- Standard screen parts (same as prototype.html) ---- */
+  .cart-header{
+    display:flex;align-items:center;justify-content:center;position:relative;
+    padding:14px 20px 12px;border-bottom:1px solid #eee;flex-shrink:0;
+  }
+  .cart-header h2{margin:0;color:#111;line-height:normal;} /* matches prototype top bar height (46px) */
+  .back-btn{
+    position:absolute;left:10px;top:8px;
+    display:flex;align-items:center;justify-content:center;
+    width:36px;height:36px;padding:4px;border:none;background:none;cursor:pointer;
+  }
+  .cart-scroll{flex:1;overflow-y:auto;padding:16px 20px 110px;}
+  .cart-footer{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:14px 20px 26px;background:#fff;box-shadow:0 -6px 16px rgba(0,0,0,.06);
+  }
+  .btn-add{
+    width:100%;border:none;background:var(--green-dark);color:#fff;
+    padding:16px 20px;border-radius:20px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .section-heading{margin:8px 0 12px;color:#111;}
+  .copy{margin:0 0 16px;color:#555;}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="screen" id="screen-new">
+
+    <!-- Status bar: always first -->
+    <div class="statusbar">
+      <span>9:41</span>
+      <div class="icons">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5"/><rect x="5" y="5" width="3" height="7"/><rect x="10" y="3" width="3" height="9"/><rect x="15" y="0" width="3" height="12"/></svg>
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 4.5C4.5 1 11.5 1 15 4.5"/><path d="M3.5 7C6 4.7 10 4.7 12.5 7"/><circle cx="8" cy="10" r="1" fill="currentColor" stroke="none"/></svg>
+        <svg width="24" height="12" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1"><rect x="0.5" y="0.5" width="20" height="11" rx="2.5"/><rect x="2" y="2" width="16" height="8" rx="1" fill="currentColor" stroke="none"/><rect x="21" y="4" width="2" height="4" fill="currentColor"/></svg>
+      </div>
+    </div>
+
+    <!-- Browser bar: always second -->
+    <div class="browser-bar">
+      <div class="url-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        rolld.orderup.com/branch
+      </div>
+    </div>
+
+    <!-- ===== YOUR SCREEN CONTENT (390 × 773 px available) ===== -->
+
+    <!-- Top bar: back button + screen title (headline) -->
+    <div class="cart-header">
+      <button class="back-btn" aria-label="Back"><img src="Icon Back.svg" width="22" height="22" alt=""></button>
+      <h2 class="t-headline">Screen title</h2>
+    </div>
+
+    <!-- Scrolling body. Bottom padding leaves room for the footer. -->
+    <div class="cart-scroll">
+      <h3 class="section-heading t-title-3">Section heading</h3>
+      <p class="copy t-body">Body copy uses .t-body (15 / 400). Pick every text style by role from design-system.html.</p>
+    </div>
+
+    <!-- Sticky footer with the primary action -->
+    <div class="cart-footer">
+      <button class="btn-add t-headline">Primary action</button>
+    </div>
+
+    <!-- ===== END SCREEN CONTENT ===== -->
+  </div>
+</div>
+</body>
+</html>

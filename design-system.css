@@ -1,0 +1,98 @@
+/* ==========================================================================
+   Roll'd Order Online — Typography tokens (v1)
+   Single source of truth for font size, weight, line-height and tracking.
+   Reference page: design-system.html
+
+   Desktop values switch on html.is-desktop (the same class prototype.html
+   sets from ?view=desktop / the width media query), so one class name gives
+   the right size on both layouts.
+
+   Rules
+   - Two weights in use: 400 regular and 600 semibold. 700 is reserved.
+   - Each role has its own default weight token (--fw-title-1 …). Use it
+     instead of --fw-bold so a role's weight can change in one place.
+   - Only the sizes below. No 15.5px, no 17px, no 19px.
+   - Text inputs are always 16px (smaller triggers iOS zoom-on-focus).
+   ========================================================================== */
+
+:root{
+  --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+
+  /* Weights */
+  --fw-regular:400;
+  --fw-semibold:600;
+  --fw-bold:700;
+
+  /* Default weight per role. Emphasis is semibold everywhere: titles,
+     headlines, callouts, overlines, badges, prices, links. --fw-bold (700)
+     is reserved: no role uses it, so nothing outweighs a heading. */
+  --fw-display:600;
+  --fw-title-1:600;
+  --fw-title-2:600;
+  --fw-title-3:600;
+  --fw-headline:600;
+  --fw-callout:600;
+  --fw-overline:600;
+
+  /* Size / line-height pairs — mobile */
+  --fs-display:28px;   --lh-display:1.2;    /* Confirmation heroes */
+  --fs-title-1:22px;   --lh-title-1:1.25;   /* Screen / page titles */
+  --fs-title-2:20px;   --lh-title-2:1.3;    /* Sheet & modal titles */
+  --fs-title-3:18px;   --lh-title-3:1.3;    /* Section headings in a screen */
+  --fs-headline:16px;  --lh-headline:1.35;  /* Card titles, totals, buttons, top-bar titles */
+  --fs-body:15px;      --lh-body:1.5;       /* Paragraphs, descriptions, rows */
+  --fs-callout:14px;   --lh-callout:1.4;    /* Compact item names, links, pills */
+  --fs-input:16px;     --lh-input:1.3;      /* Text fields — never below 16px */
+  --fs-footnote:13px;  --lh-footnote:1.4;   /* Meta: addresses, dates, hints */
+  --fs-caption:12px;   --lh-caption:1.3;    /* Badges, tags, form labels */
+  --fs-overline:11px;  --lh-overline:1.2;   /* Uppercase micro-labels */
+
+  --ls-overline:.06em;
+
+  /* Spacing — detail pages (menu item / meal deal) */
+  --space-page-x:20px;      /* left & right margin of all content */
+  --space-title-desc:8px;   /* item title → description */
+  --space-intro:24px;       /* description → first section */
+  --space-heading:12px;     /* section heading → its first row */
+  --space-row:12px;         /* option row → option row */
+  --space-chip:8px;         /* chip → chip (allergens, tags) */
+  --space-section:40px;     /* end of one section → next section heading */
+  --space-footer:110px;     /* bottom padding so the sticky footer never covers content */
+
+  /* Option card (choice rows, add-on rows). Outer edge → content is 16px: 1px border + 15px padding. */
+  --option-border:1px;
+  --option-pad:15px;
+  --option-control:20px;    /* radio / checkbox size, and the name's line-height */
+  --option-min-height:52px; /* 16 + 20 + 16 */
+  --option-gap:12px;        /* text ↔ control */
+  --option-radius:14px;
+}
+
+/* Desktop: only the title tiers grow; reading sizes stay the same. */
+html.is-desktop{
+  --fs-display:32px;
+  --fs-title-1:26px;
+  --fs-title-2:22px;
+  --fs-title-3:20px;
+}
+
+/* --------------------------------------------------------------------------
+   Text styles — apply one per text element, then (optionally) one weight
+   modifier. Each style ships with its default weight.
+   -------------------------------------------------------------------------- */
+.t-display {font-size:var(--fs-display); line-height:var(--lh-display); font-weight:var(--fw-display);}
+.t-title-1 {font-size:var(--fs-title-1); line-height:var(--lh-title-1); font-weight:var(--fw-title-1);}
+.t-title-2 {font-size:var(--fs-title-2); line-height:var(--lh-title-2); font-weight:var(--fw-title-2);}
+.t-title-3 {font-size:var(--fs-title-3); line-height:var(--lh-title-3); font-weight:var(--fw-title-3);}
+.t-headline{font-size:var(--fs-headline);line-height:var(--lh-headline);font-weight:var(--fw-headline);}
+.t-body    {font-size:var(--fs-body);    line-height:var(--lh-body);    font-weight:var(--fw-regular);}
+.t-callout {font-size:var(--fs-callout); line-height:var(--lh-callout); font-weight:var(--fw-callout);}
+.t-input   {font-size:var(--fs-input);   line-height:var(--lh-input);   font-weight:var(--fw-regular);}
+.t-footnote{font-size:var(--fs-footnote);line-height:var(--lh-footnote);font-weight:var(--fw-regular);}
+.t-caption {font-size:var(--fs-caption); line-height:var(--lh-caption); font-weight:var(--fw-regular);}
+.t-overline{font-size:var(--fs-overline);line-height:var(--lh-overline);font-weight:var(--fw-overline);
+            letter-spacing:var(--ls-overline);text-transform:uppercase;}
+
+.fw-regular {font-weight:var(--fw-regular);}
+.fw-semibold{font-weight:var(--fw-semibold);}
+.fw-bold    {font-weight:var(--fw-bold);}

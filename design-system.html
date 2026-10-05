@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01. Design System</title>
+<script>
+  // Same switch the prototype uses: ?view=desktop|mobile forces the layout.
+  (function(){
+    var v = new URLSearchParams(location.search).get('view');
+    if (v === 'desktop') document.documentElement.classList.add('is-desktop');
+  })();
+</script>
+<link rel="stylesheet" href="design-system.css?v=2026-09-29b">
+<style>
+  :root{
+    --ink:#12211b;
+    --paper:#faf9f6;
+    --card:#ffffff;
+    --line:#e4e1d8;
+    --green-deep:#0f2f23;
+    --green:#173d2e;
+    --green-soft:#e8efe9;
+    --muted:#6b7169;
+    --accent:#c8722c;
+    --bad:#b3412f;
+    --bad-soft:#f8e9e5;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(18,33,27,.06), 0 8px 24px -16px rgba(18,33,27,.25);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Söhne","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:56px 28px 96px;}
+  code{font-family:var(--mono);font-size:.92em;background:var(--green-soft);padding:1px 5px;border-radius:4px;}
+
+  /* ---------- Cover ---------- */
+  .back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--green);text-decoration:none;margin-bottom:16px;}
+  .back:hover{text-decoration:underline;}
+  .cover{
+    background:linear-gradient(160deg,var(--green-deep),var(--green) 70%);
+    color:#fbf8f2;border-radius:18px;padding:44px 40px 36px;position:relative;overflow:hidden;box-shadow:var(--shadow);
+  }
+  .cover::after{content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.10), transparent 70%);}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.10em;text-transform:uppercase;font-weight:600;color:#c9e2d4;margin-bottom:18px;}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  h1{font-size:clamp(28px,4vw,40px);line-height:1.12;margin:0 0 14px;font-weight:700;letter-spacing:-.01em;max-width:18ch;}
+  .cover p{margin:0;max-width:62ch;font-size:15px;line-height:1.55;color:#dfe9e2;}
+  .cover-meta{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px;}
+  .meta-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:7px 14px;font-size:12.5px;color:#eef3ee;display:flex;gap:6px;align-items:baseline;}
+  .meta-pill b{color:#fff;font-weight:600;}
+
+  /* ---------- Contents ---------- */
+  .toc{margin-top:18px;padding:16px 20px;}
+  .toc-title{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .toc ol{margin:0;padding-left:20px;columns:2;column-gap:32px;font-size:14px;line-height:1.9;}
+  .toc li{break-inside:avoid;color:var(--muted);}
+  .toc a{color:var(--green);font-weight:600;text-decoration:none;}
+  .toc a:hover{text-decoration:underline;}
+  .section{scroll-margin-top:16px;}
+  @media (max-width:640px){.toc ol{columns:1;}}
+
+  /* ---------- Section ---------- */
+  .section{margin-top:38px;}
+  .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--green);color:#fdfbf6;border-radius:10px;padding:13px 18px;margin-bottom:14px;}
+  .section-head h2{margin:0;font-size:15.5px;font-weight:700;letter-spacing:.01em;}
+  .section-count{font-size:12px;color:#c9e2d4;font-weight:600;}
+  .lede{font-size:14px;line-height:1.55;color:var(--muted);margin:0 0 14px;max-width:75ch;}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);}
+
+  /* ---------- Audit stats ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+  .stat{padding:16px 16px 14px;}
+  .stat .k{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .stat .v{display:flex;align-items:baseline;gap:8px;margin-top:8px;font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .stat .v s{color:var(--bad);text-decoration-thickness:2px;font-size:22px;}
+  .stat .v .arrow{color:var(--muted);font-size:16px;font-weight:600;}
+  .stat .n{margin-top:6px;font-size:12.5px;color:var(--muted);line-height:1.4;}
+  @media (max-width:820px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+  /* ---------- Toggle ---------- */
+  .seg{display:inline-flex;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:3px;}
+  .seg button{font:inherit;font-size:12.5px;font-weight:600;color:#dfe9e2;background:none;border:0;border-radius:6px;padding:6px 12px;cursor:pointer;}
+  .seg button[aria-pressed="true"]{background:#fbf8f2;color:var(--green-deep);}
+
+  /* ---------- Type scale ---------- */
+  .scale{overflow:hidden;}
+  .row{display:grid;grid-template-columns:150px minmax(0,1fr) 210px;gap:18px;align-items:center;padding:18px 20px;border-top:1px solid var(--line);}
+  .row:first-child{border-top:0;}
+  .row .name{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--green);}
+  .row .name small{display:block;font-family:inherit;color:var(--muted);font-weight:500;margin-top:3px;font-size:11.5px;}
+  .row .specimen{font-family:var(--font-sans);color:#111;margin:0;min-width:0;overflow-wrap:anywhere;}
+  .row .spec{font-family:var(--mono);font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums;}
+  .row .spec .use{display:block;font-family:"Inter",-apple-system,sans-serif;color:var(--muted);font-size:12.5px;line-height:1.4;margin-top:4px;}
+  .row .spec .grow{color:var(--accent);font-weight:700;}
+  @media (max-width:760px){
+    .row{grid-template-columns:1fr;gap:8px;padding:16px;}
+  }
+
+  /* ---------- Weights ---------- */
+  .weights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+  .weight{padding:18px;}
+  .weight .sample{font-family:var(--font-sans);font-size:30px;line-height:1.1;color:#111;}
+  .weight .label{margin-top:10px;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--green);}
+  .weight .for{margin-top:6px;font-size:13px;color:var(--muted);line-height:1.45;}
+  .weight.retired{background:var(--bad-soft);border-color:#eccfc7;}
+  .weight.retired .label{color:var(--bad);}
+  .retired-row{margin-top:10px;padding:12px 16px;font-size:13px;line-height:1.5;color:var(--ink);}
+  .retired-row b{color:var(--bad);}
+  @media (max-width:720px){.weights{grid-template-columns:1fr;}}
+
+  /* ---------- Rules ---------- */
+  .rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .rule{padding:14px 16px;font-size:13.5px;line-height:1.5;}
+  .rule b{display:block;font-size:13.5px;margin-bottom:2px;}
+  .rule .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:4px;padding:2px 6px;margin-bottom:6px;}
+  .rule .tag.do{background:var(--green-soft);color:var(--green);}
+  .rule .tag.dont{background:var(--bad-soft);color:var(--bad);}
+  @media (max-width:720px){.rules{grid-template-columns:1fr;}}
+
+  /* ---------- Migration table ---------- */
+  .filter{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .filter button{font:inherit;font-size:12px;font-weight:600;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;cursor:pointer;}
+  .filter button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff;}
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:820px;}
+  td.note{min-width:220px;}
+  th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--line);background:#fcfbf8;}
+  td{padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.4;}
+  tr:last-child td{border-bottom:0;}
+  td.sel{font-family:var(--mono);font-size:12px;color:var(--ink);}
+  td.sel a{color:var(--green);text-decoration:none;border-bottom:1px solid var(--line);}
+  td.sel a:hover{border-bottom-color:var(--green);}
+  td.sel a span{opacity:.5;font-family:inherit;}
+  td.before{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;}
+  td.before.changed{text-decoration:line-through;text-decoration-color:rgba(179,65,47,.6);}
+  td.after{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;}
+  td.after.changed{color:var(--green);font-weight:700;}
+  td.to{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green);white-space:nowrap;}
+  td.note{color:var(--muted);}
+
+  /* ---------- Code ---------- */
+  .code{position:relative;}
+  .code pre{margin:0;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;color:#e6efe8;background:var(--green-deep);border-radius:var(--radius);}
+  .code .copy{position:absolute;top:10px;right:10px;font:inherit;font-size:12px;font-weight:600;color:var(--green-deep);background:#fbf8f2;border:0;border-radius:6px;padding:6px 10px;cursor:pointer;}
+  .steps{margin:0 0 14px;padding-left:20px;font-size:14px;line-height:1.7;}
+
+  /* ---------- Spacing ---------- */
+  .space-grid{display:grid;grid-template-columns:390px minmax(0,1fr);gap:18px;align-items:start;}
+  .space-demo{background:#faf7f2;padding:16px 0 20px;border-radius:var(--radius);border:1px solid var(--line);font-family:var(--font-sans);color:#111;overflow:hidden;}
+  .space-demo .in{padding:0 var(--space-page-x);position:relative;}
+  .space-demo .d-title{color:#173d31;}
+  .space-demo .d-desc{color:#555;margin-top:var(--space-title-desc);}
+  .space-demo .d-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--space-heading);}
+  .space-demo .d-head .hint{font-size:var(--fs-caption);color:#9a9a9a;font-weight:400;}
+  .space-demo .d-chips{display:flex;flex-wrap:wrap;gap:var(--space-chip);}
+  .space-demo .d-chip{padding:6px 11px;border-radius:20px;background:#f4f4f2;border:1px solid #e8e8e5;}
+  .space-demo .d-rows{display:flex;flex-direction:column;gap:var(--space-row);}
+  .space-demo .d-row,.oc{display:flex;justify-content:space-between;align-items:center;gap:var(--option-gap);min-height:var(--option-min-height);padding:var(--option-pad);background:#fff;border:var(--option-border) solid #eee;border-radius:var(--option-radius);box-shadow:0 1px 4px rgba(0,0,0,.05);box-sizing:border-box;}
+  .space-demo .d-row{line-height:var(--option-control);}
+  .space-demo .d-radio,.oc .radio{width:var(--option-control);height:var(--option-control);border-radius:50%;border:1.5px solid #ccc;flex-shrink:0;box-sizing:border-box;}
+  /* ---------- Option card ---------- */
+  .oc-grid{display:grid;grid-template-columns:390px minmax(0,1fr);gap:18px;align-items:start;}
+  .oc-stage{background:#faf7f2;box-shadow:inset 0 0 0 1px var(--line);border-radius:var(--radius);padding:28px var(--space-page-x) 20px;display:flex;flex-direction:column;gap:var(--space-row);font-family:var(--font-sans);color:#111;}
+  .oc{position:relative;width:100%;}
+  .oc .nm{font-size:var(--fs-callout);font-weight:var(--fw-semibold);line-height:var(--option-control);}
+  .oc .pr{font-size:var(--fs-footnote);font-weight:var(--fw-semibold);color:#e33;margin-top:6px;}
+  .oc .info{flex:1;min-width:0;}
+  .oc.sel .radio{border-color:#1e5443;background:#1e5443;background-clip:content-box;padding:3px;}
+  .oc.na .nm{color:#aaa;} .oc.na .radio{border-color:#ddd;background:#eee;}
+  .oc .thumb{width:44px;height:44px;border-radius:8px;flex-shrink:0;background:repeating-conic-gradient(from 0deg,#f7c927 0deg 10deg,#f5b700 10deg 20deg);}
+  .oc-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:6px 0 -4px;}
+  .oc-label:first-child{margin-top:0;}
+  /* measurement overlay on the annotated card */
+  .oc.anno{outline:1px dashed rgba(200,114,44,.5);outline-offset:0;}
+  .oc.anno .m{position:absolute;background:rgba(200,114,44,.16);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent);}
+  /* Offsets are from inside the 1px border, so -1px reaches the card's outer edge. */
+  .oc.anno .m.l{left:-1px;top:-1px;bottom:-1px;width:16px;} .oc.anno .m.r{right:-1px;top:-1px;bottom:-1px;width:16px;}
+  .oc.anno .m.t{top:-1px;left:15px;right:15px;height:16px;} .oc.anno .m.b{bottom:-1px;left:15px;right:15px;height:16px;}
+  .oc.anno .m.g{top:15px;bottom:15px;width:12px;right:35px;} /* 15 padding + 20 radio */
+  .oc.anno .m.l,.oc.anno .m.r{writing-mode:vertical-rl;}
+  @media (max-width:860px){.oc-grid{grid-template-columns:1fr;}.oc-stage{max-width:390px;}}
+  .space-demo .gap{position:relative;display:flex;align-items:center;}
+  .space-demo .gap span{position:absolute;right:6px;font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--accent);background:#fff5ec;border-radius:4px;padding:0 5px;line-height:1.5;}
+  .space-demo .gap::before{content:"";position:absolute;left:var(--space-page-x);right:var(--space-page-x);top:0;bottom:0;background:repeating-linear-gradient(45deg,rgba(200,114,44,.14) 0 4px,transparent 4px 8px);}
+  .space-demo .margin-mark{position:absolute;top:0;bottom:0;width:var(--space-page-x);background:rgba(200,114,44,.08);}
+  .space-table td.tok{font-family:var(--mono);font-size:12px;color:var(--green);font-weight:600;white-space:nowrap;}
+  .space-table td.val{font-family:var(--mono);font-size:12px;white-space:nowrap;}
+  @media (max-width:860px){.space-grid{grid-template-columns:1fr;}.space-demo{max-width:390px;}}
+
+  /* ---------- Phone frame ---------- */
+  .frame-grid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:18px;align-items:start;}
+  .frame-fig{padding:20px;display:flex;justify-content:center;}
+  .mini-phone{position:relative;width:156px;height:338px;border-radius:18px;background:#faf7f2;box-shadow:0 0 0 4px #111,0 12px 24px rgba(0,0,0,.25);overflow:hidden;display:flex;flex-direction:column;font-size:10px;color:var(--muted);}
+  .mini-phone .band{display:flex;align-items:center;justify-content:center;border-bottom:1px dashed #d8d4ca;flex-shrink:0;}
+  .mini-phone .sb{height:14px;background:#f1eee6;}
+  .mini-phone .bb{height:15px;background:#ece9e1;}
+  .mini-phone .content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;color:var(--green);font-weight:700;}
+  .mini-phone .content small{font-weight:500;color:var(--muted);}
+  .spec-table td:first-child{font-weight:600;white-space:nowrap;}
+  .spec-table td.mono{font-family:var(--mono);font-size:12px;}
+  .frame-rules{margin:12px 0 0;padding-left:20px;font-size:13.5px;line-height:1.6;}
+  .template-link{display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:var(--green);color:#fff;text-decoration:none;font-size:13.5px;font-weight:600;padding:10px 16px;border-radius:8px;}
+  .template-link:hover{background:var(--green-deep);}
+  @media (max-width:720px){.frame-grid{grid-template-columns:1fr;}}
+
+  footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+  @media (max-width:640px){
+    .wrap{padding:28px 16px 72px;}
+    .cover{padding:32px 22px 28px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="index.html">← Flow index</a>
+
+  <div class="cover">
+    <div class="eyebrow"><span class="dot"></span> Roll'd &middot; Order Online Reimagining</div>
+    <h1>01. Design System</h1>
+    <p>Typography, spacing and components for every new screen, mobile and desktop. Pick a text style by its <b>role</b> (screen title, sheet title, card title…), never by eye. Desktop only enlarges the four title tiers; reading sizes stay put.</p>
+    <div class="cover-meta">
+      <span class="meta-pill">Tokens <b>design-system.css</b></span>
+      <span class="meta-pill">Font <b>System (SF Pro / Segoe / Roboto)</b></span>
+      <span class="meta-pill">Weights <b>400 · 600</b></span>
+    </div>
+  </div>
+
+  <!-- Contents -->
+  <nav class="panel toc" aria-label="Contents">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#audit">Why this exists &middot; audit</a></li>
+      <li><a href="#type-scale">Type scale</a></li>
+      <li><a href="#weights">Weights</a></li>
+      <li><a href="#rules">Rules for new screens</a></li>
+      <li><a href="#migration">Migration map</a></li>
+      <li><a href="#spacing">Spacing &middot; detail pages</a></li>
+      <li><a href="#option-card">Option card</a></li>
+      <li><a href="#phone-frame">Phone frame &middot; mobile mock-up</a></li>
+      <li><a href="#usage">Using it in prototype.html</a></li>
+      <li><a href="screen-template.html" target="_blank" rel="noopener">New screen template <span aria-hidden="true">↗</span></a></li>
+    </ol>
+  </nav>
+
+  <!-- Audit -->
+  <div class="section" id="audit">
+    <div class="section-head"><h2>Why this exists &middot; audit of prototype.html</h2><span class="section-count">298 type rules scanned</span></div>
+    <div class="stats">
+      <div class="panel stat"><div class="k">Font sizes</div><div class="v"><s>19</s><span class="arrow">→</span>11</div><div class="n">9px to 38px, incl. 13.5, 17, 19, 23px</div></div>
+      <div class="panel stat"><div class="k">Font weights</div><div class="v"><s>5</s><span class="arrow">→</span>2</div><div class="n">500, 700 and 900 retired</div></div>
+      <div class="panel stat"><div class="k">Screen-title sizes</div><div class="v"><s>7</s><span class="arrow">→</span>1</div><div class="n">16, 17, 19, 20, 22, 23, 26px, at both 600 and 700</div></div>
+      <div class="panel stat"><div class="k">Uppercase tracking</div><div class="v"><s>6</s><span class="arrow">→</span>1</div><div class="n">.02em to .08em, now .06em everywhere</div></div>
+    </div>
+  </div>
+
+  <!-- Type scale -->
+  <div class="section" id="type-scale">
+    <div class="section-head">
+      <h2>Type scale</h2>
+      <div class="seg" role="group" aria-label="Layout">
+        <button type="button" data-view="mobile" aria-pressed="true">📱 Mobile</button>
+        <button type="button" data-view="desktop" aria-pressed="false">🖥 Desktop</button>
+      </div>
+    </div>
+    <p class="lede">Specimens render at real size from <code>design-system.css</code>. Toggle to Desktop to see which tiers grow (<span style="color:var(--accent);font-weight:700">orange</span>). The values on the right are read live from the page.</p>
+    <div class="panel scale" id="scale"></div>
+  </div>
+
+  <!-- Weights -->
+  <div class="section" id="weights">
+    <div class="section-head"><h2>Weights</h2><span class="section-count">2 in use &middot; 1 reserved &middot; 2 retired</span></div>
+    <div class="weights">
+      <div class="panel weight"><div class="sample fw-regular">Bánh mì 400</div><div class="label">--fw-regular · 400</div><div class="for">Paragraphs, descriptions, meta, inputs, prices that aren't the total.</div></div>
+      <div class="panel weight"><div class="sample fw-semibold">Bánh mì 600</div><div class="label">--fw-semibold · 600</div><div class="for">All emphasis: every title, headline and callout (incl. buttons, item names, links, pills), overlines, badges, prices, selected options, nav items.</div></div>
+      <div class="panel weight retired"><div class="sample fw-bold">Bánh mì 700</div><div class="label">--fw-bold · 700 · reserved</div><div class="for">Not used by any role. All emphasis (overlines, badges, prices, links, bold meta) is 600, so no small text outweighs a heading. Keep the token for a future need; don't use it on screens.</div></div>
+    </div>
+    <div class="panel retired-row"><b>Per-role tokens:</b> each role reads its weight from its own token (<code>--fw-display</code>, <code>--fw-title-1</code> … <code>--fw-callout</code>, <code>--fw-overline</code>, all 600 today), so a role can change weight in one place without touching any screen.<br><b>Retired:</b> <code>500</code> (used on <code>.mealdetail-desc</code>, <code>.signin-benefit-row</code>): use 400. <code>900</code> (<code>.visa-icon</code>): this is a logo mark, so swap it for the real card-brand SVG. Also retired: the stray <code>'Inter'</code> font-family on <code>.mealdetail-desc</code>. Inter is never loaded, so that element falls back to the system font anyway.</div>
+  </div>
+
+  <!-- Rules -->
+  <div class="section" id="rules">
+    <div class="section-head"><h2>Rules for new screens</h2><span class="section-count">6 rules</span></div>
+    <div class="rules">
+      <div class="panel rule"><span class="tag do">Do</span><b>Choose by role, not by size</b>Ask "is this a screen title, a sheet title, or a section heading?" and use that style. If none fits, reuse the closest one. Don't add a size.</div>
+      <div class="panel rule"><span class="tag do">Do</span><b>One title per screen</b>Each screen gets exactly one <code>t-title-1</code>. Bottom sheets and modals use <code>t-title-2</code>. Headings inside a screen use <code>t-title-3</code>.</div>
+      <div class="panel rule"><span class="tag do">Do</span><b>Let the tokens handle desktop</b>Never write <code>html.is-desktop .x{font-size:…}</code>. Title tiers already grow on <code>html.is-desktop</code>. If an element needs a different <em>role</em> on desktop, swap the class.</div>
+      <div class="panel rule"><span class="tag do">Do</span><b>Inputs are 16px</b>Every <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code> and <code>&lt;textarea&gt;</code> uses <code>t-input</code>. Below 16px, iOS Safari zooms the page on focus.</div>
+      <div class="panel rule"><span class="tag dont">Don't</span><b>Flip hierarchy with weight</b>A group heading must be clearly bigger or bolder than its options (meal detail: 16/600 group titles over 14/600 options). Before migration, the meal-detail modifier titles (14/600) matched the variant names (14/600) and were lighter than the add-on names (14/700).</div>
+      <div class="panel rule"><span class="tag dont">Don't</span><b>Go below 11px</b>The smallest text is <code>t-overline</code> at 11px. Counter badges (e.g. <code>.filter-badge</code>, 9px before migration) use 11px semibold.</div>
+    </div>
+  </div>
+
+  <!-- Migration -->
+  <div class="section" id="migration">
+    <div class="section-head"><h2>Migration map &middot; existing selectors → token</h2><span class="section-count" id="mig-count"></span></div>
+    <p class="lede"><b>Before</b> is the value in the prototype before migration. <b>Now</b> is the current value, read live from <code>design-system.css</code> (switch Mobile / Desktop above to see both). Rows in <b style="color:var(--green)">green</b> changed; grey rows already matched. Click a selector to open that screen in the prototype, with the element outlined in orange. Icons, emoji, flags and close glyphs are out of scope: they're icon sizes, not type. The Adyen payment overlay (<code>.adyen-*</code>) is also exempt, because in production Adyen's drop-in styles it.</p>
+    <p class="lede"><b style="color:var(--green)">Migration status: ✅ complete</b> (28 Sep 2026). Every screen in <code>prototype.html</code> now reads its type from <code>design-system.css</code>: 251 token references, and no hard-coded text sizes left. <b>Still hard-coded on purpose:</b> emoji and product thumbnails, flags, glyph buttons (× + − ✓), the avatar initials, the logo wordmark, the phone status bar and browser address-bar mock-ups, the Adyen overlay, the flow-index and inspector tools, and <code>line-height:1</code> on pill badges.</p>
+    <div class="filter" id="mig-filter"></div>
+    <div class="panel table-wrap">
+      <table>
+        <thead><tr><th>Selector</th><th>Before</th><th>Now</th><th>Token</th><th>Note</th></tr></thead>
+        <tbody id="mig-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Spacing -->
+  <div class="section" id="spacing">
+    <div class="section-head"><h2>Spacing &middot; detail pages</h2><span class="section-count">8 tokens &middot; menu items &amp; meal deals</span></div>
+    <p class="lede">Every menu-item and meal-deal detail page follows the same rhythm. Use the <code>--space-*</code> tokens from <code>design-system.css</code> and never hard-code these gaps. The example on the left is 390px wide, the real screen width, and is built from the same tokens. The orange bands show each gap.</p>
+    <div class="space-grid">
+      <div class="space-demo" aria-hidden="true">
+        <div class="in"><div class="d-title t-title-2">1 Soldier &amp; 1 Drink</div></div>
+        <div class="gap" style="height:var(--space-title-desc)"><span>8</span></div>
+        <div class="in"><div class="d-desc t-body" style="margin-top:0">Pick 1 x of your favourite Fresh Roll, and score 1 FREE Standard Drink.</div></div>
+        <div class="gap" style="height:var(--space-intro)"><span>24</span></div>
+        <div class="in"><div class="d-head t-headline" style="margin-bottom:0">Allergens</div></div>
+        <div class="gap" style="height:var(--space-heading)"><span>12</span></div>
+        <div class="in"><div class="d-chips t-caption"><span class="d-chip">🌾 Gluten</span><span class="d-chip"><img src="assets-pho/allergens/soybean.png" width="14" height="14" alt="" style="vertical-align:-2px"> Soybeans</span><span class="d-chip"><img src="assets-pho/allergens/sesame.png" width="14" height="14" alt="" style="vertical-align:-2px"> Sesame</span></div></div>
+        <div class="gap" style="height:var(--space-section)"><span>40</span></div>
+        <div class="in"><div class="d-head t-headline" style="margin-bottom:0">Spice level <span class="hint">Required</span></div></div>
+        <div class="gap" style="height:var(--space-heading)"><span>12</span></div>
+        <div class="in"><div class="d-row t-callout" style="font-weight:600">Mild <span class="d-radio"></span></div></div>
+        <div class="gap" style="height:var(--space-row)"><span>12</span></div>
+        <div class="in"><div class="d-row t-callout" style="font-weight:600">Medium <span class="d-radio"></span></div></div>
+      </div>
+      <div>
+        <div class="panel table-wrap">
+          <table class="space-table" style="min-width:0">
+            <thead><tr><th>Token</th><th>Value</th><th>Rule</th></tr></thead>
+            <tbody id="space-body"></tbody>
+          </table>
+        </div>
+        <ul class="frame-rules">
+          <li><b>Option rows:</b> see <a href="#option-card">Option card</a> below for the card's inner spacing.</li>
+          <li><b>No margins on rows.</b> Space comes from the parent: side padding from the body, <code>gap</code> between rows, and the heading's bottom margin above the first row.</li>
+          <li><b>One gap per boundary.</b> If two containers meet, split the gap so the visible space still adds up to the token. For example, standalone Allergens uses 16px below plus the body's 24px on top, giving 40px.</li>
+          <li><b>No description?</b> The first section still starts 24px under the title.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option card -->
+  <div class="section" id="option-card">
+    <div class="section-head"><h2>Option card &middot; choice &amp; add-on rows</h2><span class="section-count">6 tokens &middot; <code style="background:transparent;color:#c9e2d4">.variant-row</code>, <code style="background:transparent;color:#c9e2d4">.addon-row</code></span></div>
+    <p class="lede">Every selectable row on a detail page uses the same card: <b>16px from the outer edge to the content on all four sides</b>. That's a 1px border plus 15px padding. The name's line-height matches the 20px radio, so a one-line card is exactly 52px tall. The cards below are real size and built from the tokens.</p>
+    <div class="oc-grid">
+      <div class="oc-stage" aria-hidden="true">
+        <div class="oc-label">Measured</div>
+        <div class="oc anno"><span class="m l">16</span><span class="m r">16</span><span class="m t">16</span><span class="m b">16</span><span class="m g">12</span><div class="info"><div class="nm">Medium</div></div><span class="radio"></span></div>
+        <div class="oc-label">States</div>
+        <div class="oc sel"><div class="info"><div class="nm">Mild</div></div><span class="radio"></span></div>
+        <div class="oc"><div class="info"><div class="nm">Hot</div></div><span class="radio"></span></div>
+        <div class="oc na"><div class="info"><div class="nm">Extra hot · unavailable</div></div><span class="radio"></span></div>
+        <div class="oc-label">With price &amp; photo</div>
+        <div class="oc"><div class="info"><div class="nm">Large</div><div class="pr">+$3.00</div></div><span class="radio"></span></div>
+        <div class="oc sel"><span class="thumb"></span><div class="info"><div class="nm">Roll BBQ Chicken</div><div class="pr">+$0.00</div></div><span class="radio"></span></div>
+      </div>
+      <div>
+        <div class="panel table-wrap">
+          <table class="space-table" style="min-width:0">
+            <thead><tr><th>Measurement</th><th>Value</th><th>How</th></tr></thead>
+            <tbody>
+              <tr><td>Card size (one line)</td><td class="val">350 × 52px</td><td>Full width inside the 20px page margins; <code>min-height:var(--option-min-height)</code></td></tr>
+              <tr><td>Card left edge → name</td><td class="val">16px</td><td>1px border + 15px padding</td></tr>
+              <tr><td>Card top → name / name → card bottom</td><td class="val">16px each</td><td>Name is 14px / 600 with a 20px line-height, the same height as the radio</td></tr>
+              <tr><td>Name → radio</td><td class="val">12px</td><td>The card's <code>gap</code> (<code>--option-gap</code>)</td></tr>
+              <tr><td>Radio → card right edge</td><td class="val">16px</td><td>1px border + 15px padding</td></tr>
+              <tr><td>Card top → radio / radio → card bottom</td><td class="val">16px each</td><td>20px radio in a 52px card</td></tr>
+              <tr><td>Border &amp; corners</td><td class="val">1px #eee · 14px</td><td>Shadow <code>0 1px 4px rgba(0,0,0,.05)</code>, background <code>#fff</code></td></tr>
+              <tr><td>Radio</td><td class="val">20 × 20px</td><td>1.5px <code>#ccc</code> ring; selected: <code>#1e5443</code> ring with an 11px dot (3px inset); unavailable: <code>#ddd</code> ring on <code>#eee</code></td></tr>
+              <tr><td>Price line</td><td class="val">+6px, 13px</td><td>Footnote size below the name; the card grows to 73px, and the 16px edges stay</td></tr>
+              <tr><td>Photo</td><td class="val">44 × 44px</td><td>8px radius, 12px before the name; the card grows (76px), and the 16px edges stay</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel table-wrap" style="margin-top:10px">
+          <table class="space-table" style="min-width:0">
+            <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+            <tbody id="option-body"></tbody>
+          </table>
+        </div>
+        <ul class="frame-rules">
+          <li><b>Never set a fixed height.</b> Use <code>min-height</code>, so cards with a price line, photo or two-line name grow while keeping 16px on every side.</li>
+          <li><b>Controls</b> (radio, checkbox, the add-on "Add" button) sit on the right, 16px in, centred vertically.</li>
+          <li>Cards stack <code>--space-row</code> (12px) apart. The first card sits <code>--space-heading</code> (12px) under its heading.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone frame -->
+  <div class="section" id="phone-frame">
+    <div class="section-head"><h2>Phone frame &middot; mobile mock-up</h2><span class="section-count">Same on every screen</span></div>
+    <p class="lede">Every mobile screen sits in the same device frame as <code>prototype.html</code>. Start new screens from <code>screen-template.html</code>, which has the frame, status bar and browser bar already built in, and only change what's inside the content area.</p>
+    <div class="frame-grid">
+      <div class="panel frame-fig" aria-hidden="true">
+        <div class="mini-phone">
+          <div class="band sb">Status bar · 34</div>
+          <div class="band bb">Browser bar · 37</div>
+          <div class="content">Content area<small>390 × 773</small></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel table-wrap">
+          <table class="spec-table" style="min-width:0">
+            <thead><tr><th>Part</th><th>Size</th><th>CSS</th></tr></thead>
+            <tbody>
+              <tr><td>Screen</td><td>390 × 844 px (iPhone 12/13/14 viewport)</td><td class="mono">.phone{width:390px;height:844px}</td></tr>
+              <tr><td>Corners</td><td>44px radius</td><td class="mono">border-radius:44px</td></tr>
+              <tr><td>Frame</td><td>10px black ring; outside 410 × 864 px</td><td class="mono">box-shadow:0 30px 60px rgba(0,0,0,.35), 0 0 0 10px #111</td></tr>
+              <tr><td>Status bar</td><td>390 × 34 px, "9:41" + signal / wifi / battery</td><td class="mono">.statusbar{padding:16px 26px 0}</td></tr>
+              <tr><td>Browser bar</td><td>390 × 37 px, URL pill <code>rolld.orderup.com/branch</code></td><td class="mono">.browser-bar{padding:6px 0 4px}</td></tr>
+              <tr><td>Content area</td><td>390 × 773 px</td><td class="mono">.screen{position:absolute;inset:0}</td></tr>
+              <tr><td>Colours</td><td>Page <code>#e7e5e1</code>, screen <code>#faf7f2</code></td><td class="mono">body / .phone background</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="frame-rules">
+          <li>Don't resize or restyle the frame, status bar or browser bar. They're device chrome, and they don't use the type tokens.</li>
+          <li>Screen content uses 20px side padding, the <code>.cart-header</code> top bar (back arrow <code>Icon Back.svg</code>, headline title) and, when there's a main action, the sticky <code>.cart-footer</code>.</li>
+          <li>Leave 110px at the bottom of scrolling content so the footer doesn't cover it.</li>
+          <li>Desktop (<code>?view=desktop</code> or 1024px and wider) drops the frame and the two bars; the page fills the window.</li>
+        </ul>
+        <a class="template-link" href="screen-template.html" target="_blank" rel="noopener">Open screen-template.html <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to use -->
+  <div class="section" id="usage">
+    <div class="section-head"><h2>Using it in prototype.html</h2><span class="section-count">2 steps</span></div>
+    <ol class="steps">
+      <li>Add <code>&lt;link rel="stylesheet" href="design-system.css"&gt;</code> in <code>&lt;head&gt;</code>, after the <code>is-desktop</code> script.</li>
+      <li>For new screens, use the classes (<code>class="t-title-1"</code>) or the variables inside your own selectors:</li>
+    </ol>
+    <div class="code">
+      <button class="copy" type="button" data-copy="snippet">Copy</button>
+<pre id="snippet">/* New screen: Rewards */
+.rewards-title   { font-size:var(--fs-title-1);  line-height:var(--lh-title-1);  font-weight:var(--fw-title-1); }
+.rewards-section { font-size:var(--fs-title-3);  line-height:var(--lh-title-3);  font-weight:var(--fw-title-3); }
+.reward-name     { font-size:var(--fs-headline); line-height:var(--lh-headline); font-weight:var(--fw-headline); }
+.reward-desc     { font-size:var(--fs-body);     line-height:var(--lh-body);     font-weight:var(--fw-regular); }
+.reward-expiry   { font-size:var(--fs-footnote); line-height:var(--lh-footnote); font-weight:var(--fw-regular); }
+
+/* …or in markup */
+&lt;h2 class="t-title-1"&gt;Your rewards&lt;/h2&gt;
+&lt;p class="t-body"&gt;Earn 1 point for every $1 spent.&lt;/p&gt;</pre>
+    </div>
+  </div>
+
+  <footer>
+    <span>Roll'd Order Online Reimagining &middot; Design System v1</span>
+    <span>Source of truth: <code>design-system.css</code></span>
+  </footer>
+</div>
+
+<script>
+  var SCALE = [
+    {t:'display',  cls:'t-display',  text:'Order placed!', use:'Confirmation hero: order success.', grows:true},
+    {t:'title-1',  cls:'t-title-1',  text:'Choose your pickup time', use:'One per screen: the screen/page title.', grows:true},
+    {t:'title-2',  cls:'t-title-2',  text:'Continue as guest?', use:'Bottom sheets, modals, OTP steps, desktop cart panel, payment processing.', grows:true},
+    {t:'title-3',  cls:'t-title-3',  text:'Rice Paper Rolls', use:'Section headings inside a screen: menu categories, order details.', grows:true},
+    {t:'headline', cls:'t-headline', text:'Lemongrass Beef Bánh Mì', use:'Card & list titles, store names, totals, all buttons, compact top-bar titles.'},
+    {t:'body',     cls:'t-body',     text:'Grilled lemongrass beef, pickled carrot, cucumber, coriander and chilli in a crisp baguette.', use:'Paragraphs, item descriptions, sheet copy, settings rows.'},
+    {t:'callout',  cls:'t-callout',  text:'Add more items', use:'Compact item names in grids, text links, filter pills, add-on names.'},
+    {t:'input',    cls:'t-input',    text:'0412 345 678', use:'Every text field, select and search bar. Fixed at 16px.'},
+    {t:'footnote', cls:'t-footnote', text:"Roll'd Rundle Mall · 0.4 km · Open until 9pm", use:'Addresses, dates, meta lines, hints, secondary prices.'},
+    {t:'caption',  cls:'t-caption',  text:'Vegan  ·  Earn 45 points', use:'Badges & tags (add fw-semibold), form labels, helper text.'},
+    {t:'overline', cls:'t-overline', text:'Pickup details', use:'Uppercase micro-labels above groups or fields.'}
+  ];
+
+  var MIG = [
+    ['.order-success-title','26 / 600','display','ok'],
+    ['.order-status-title','24 / 600','title-2','Stage heading under the hero photo'],
+    ['.payment-processing-title','23 / 700','title-2','Weight to 600. Interim loading state, not a confirmation hero'],
+    ['.lang-header-row h2','26 / 700','title-2','Weight to 600. Language picker is a sheet'],
+    ['.signin-heading','20 / 700','title-2','Sits under the Rollers Club logo, not the screen title'],
+    ['.profile-title','20 / 600','title-2','Sits under the Back to Home link, like the sign-in heading'],
+    ['.payment-title-row .payment-title','20 / 600','title-2','Centred top-bar title (Confirmation)'],
+    ['h3.order-heading','19 / 700','title-2','Matches the sheet title (Store) above it'],
+    ['html.is-desktop .screen-cart .cart-header h2','22','title-1','Desktop cart is a full page: swap class instead of override'],
+    ['.sheet-header h2','22 / 700','title-2','Weight to 600. Desktop stays 22'],
+    ['.terms-sheet h2','22 / 700','title-2','Weight to 600'],
+    ['.guest-sheet h2','19 / 700','title-2','Weight to 600'],
+    ['.suggestion-sheet-header h2','19 / 700','title-2','Weight to 600'],
+    ['#otp-step-phone h2, #otp-step-verify h2','19 / 700','title-2','Weight to 600. Signup step is 20 today: all three steps now match'],
+    ['#otp-step-signup h2, .otp-body h2','20 / 700','title-2','Weight to 600'],
+    ['.reorder-modal-title','17 / 700','title-2','Weight to 600'],
+    ['html.is-desktop .desk-cart-head h2','19 / 700','title-2','Weight to 600'],
+    ['.mealdetail-hero-text .name','17 / 600','title-2','Item name is the hero of the detail page'],
+    ['.otp-digit, .otp-digits-full .otp-digit','20–22 / 700','title-2','Weight to 600. Tabular numerals'],
+    ['.date-pill .day-num','22 / 700','title-2','Weight to 600'],
+    ['.section-title','20 / 700','title-3','Weight to 600'],
+    ['.menu-section-title','19 / 600','title-3','ok'],
+    ['.order-details-heading','18 / 600','title-3','ok'],
+    ['.order-details-store','20 / 600','title-3','ok'],
+    ['.catering-detail-hero-text .name','20 / 700','title-3','Weight to 600'],
+    ['.btn-primary','17 / 700','headline','Weight to 600. All buttons are 16/600'],
+    ['.btn-add, .btn-outline, .btn-success-primary, .mf-apply-btn','16 / 700','headline','Weight to 600'],
+    ['.mealdetail-header h2, .cart-header h2','16–17 / 700','headline','Weight to 600. Compact top-bar titles'],
+    ['.mealdetail-section-title','14 / 600','headline','Group title now outranks its options'],
+    ['.cart-section-title','16 / 600','headline','ok'],
+    ['.store-name, .outlet-name, .oh-item-name, .landing-account-title','16 / 700','headline','Weight to 600'],
+    ['.sidebar-item, .sidebar-outlet, .qty-value','17 / 700','headline','Weight to 600'],
+    ['.cart-total-row.grand, .checkout-total-row','16 / 700','headline','Weight to 600'],
+    ['.adyen-header h2, .adyen-pay-btn','17 / 700 caps','headline','Exempt: Adyen drop-in (third-party UI)'],
+    ['.option (fulfilment method buttons)','16 / 700','headline','Weight to 600'],
+    ['.mealdetail-desc','15 / 500 Inter','body','Weight to 400, drop Inter'],
+    ['.signin-benefit-row','15 / 500','body','Weight to 400'],
+    ['.guest-sheet p, #otp-step-* p','13 / 1.5','body','Sheet copy matches .otp-body>p'],
+    ['.otp-body>p, .order-success-sub, .order-status-sub','15','body','ok'],
+    ['.settings-row','15 / 600','body + fw-semibold','ok'],
+    ['.time-slot, .order-details-item-row','15 / 400','body','ok'],
+    ['.welcome-toast','15 / 700','body + fw-semibold',''],
+    ['.cat-tab','15 / 700','callout','Weight to 600'],
+    ['.checkout-link','15 / 700','headline','Text action under the Return button (Continue to checkout)'],
+    ['.landing-dollars-row','15 / 700','body + fw-semibold','ok'],
+    ['.meal-name, .recommend-name','14 / 700','callout','Weight to 600'],
+    ['.addon-row .addon-name','14 / 700','callout + fw-semibold','Matches .variant-name: options in a group share one weight'],
+    ['.link-btn, .cart-add-more-link, .filter-pill, .mf-pill','14 / 700','callout','Weight to 600'],
+    ['.landing-tile-label, .variant-row .variant-name','14 / 600','callout + fw-semibold','ok'],
+    ['.terms-sheet p, .terms-sheet ul','14 / 1.6','callout + fw-regular','Legal copy'],
+    ['.cart-total-row, .checkout-summary-row, .store-address','14','callout + fw-regular','ok'],
+    ['.signin-phone-row input','16','input','ok'],
+    ['.phone-input-row input, .menu-search-bar, .search-input-pill input, .outlet-search-pill input','15','input','15px zooms on iOS'],
+    ['.signup-field input/select, .cart-phone-input-row input','14','input','14px zooms on iOS'],
+    ['.outlet-address','13 / 1.5','footnote','Line-height to 1.4'],
+    ['.meal-price-row, .order-details-meta, .oh-item-date, .landing-account-sub','13','footnote','ok'],
+    ['.extra-name','13 / 700','footnote + fw-semibold','ok'],
+    ['.meal-sub, .recommend-sub, .reorder-modal-sub','12','footnote','Readable meta: 12 to 13'],
+    ['.meal-badge, .tag-badge, .outlet-tag, .verified-badge','12 / 700 / .02em','caption + fw-semibold','Drop letter-spacing'],
+    ['.signup-field label, .otp-label, .cart-phone-hint, .guest-note','12','caption','ok'],
+    ['.allergen-chip','12 / 400','caption','ok'],
+    ['.extra-sub, .guest-link-note, .landing-tab','11','caption','Min body text is 12'],
+    ['.payment-preferred-tag, .reorder-card-date','11 / 700 / .03em','overline','Tracking to .06em'],
+    ['.mf-section-label','11 / 700 / .05em','overline','Tracking to .06em'],
+    ['.cart-section-title-minor, .filters-reset-link','12 / 600–700 / .04em','overline',''],
+    ['html.is-desktop .screen-menu .menu-toolbar::before','12 / 700 / .08em','overline',''],
+    ['.screen-menu-filters .cart-header h2','14 / 700 / .06em caps','headline','Weight to 600. A top-bar title, not a label'],
+    ['.filter-badge','9 / 700','overline size, no caps','Below minimum']
+  ];
+
+
+  // Where each selector lives in prototype.html: [hash, view?, highlight selector?, click-first selector?].
+  // hash uses the prototype's deep-link format (see index.html).
+  var OTP = 'screen-checkout,screen-checkout!add:trigger-mode,otp-overlay!add:open';
+  var SIGNUP = 'screen-checkout,otp-overlay,otp-step-phone!add:hidden-step,otp-step-signup!remove:hidden-step';
+  var LOGGEDIN = 'screen-checkout,cart-account-card!remove:hidden,cart-guest-block!add:hidden,cart-name-section!add:hidden,cart-loyalty-triggers!add:hidden,cart-footer-note!add:hidden,cart-footer-earn-note!remove:hidden';
+  var LINKS = {
+    '.order-success-title':['screen-order-success'],
+    '.order-status-title':['screen-order-status'],
+    '.payment-processing-title':['screen-payment'],
+    '.lang-header-row h2':['screen-landing,lang-overlay'],
+    '.signin-heading':['screen-signin'],
+    '.profile-title':['screen-profile-settings'],
+    '.payment-title-row .payment-title':['screen-payment'],
+    'h3.order-heading':['screen-nonhq'],
+    'html.is-desktop .screen-cart .cart-header h2':['screen-cart','desktop','#screen-cart .cart-header h2'],
+    '.sheet-header h2':['screen-nonhq'],
+    '.terms-sheet h2':['screen-checkout,terms-overlay'],
+    '.guest-sheet h2':['screen-checkout,guest-overlay'],
+    '.suggestion-sheet-header h2':['screen-menu,suggestion-overlay'],
+    '#otp-step-phone h2, #otp-step-verify h2':[OTP,null,'#otp-step-phone h2'],
+    '#otp-step-signup h2, .otp-body h2':[SIGNUP,null,'#otp-step-signup h2'],
+    '.reorder-modal-title':['screen-menu,reorder-modal-overlay'],
+    'html.is-desktop .desk-cart-head h2':['screen-menu','desktop','.desk-cart-head h2'],
+    '.mealdetail-hero-text .name':['screen-mealdetail'],
+    '.otp-digit, .otp-digits-full .otp-digit':['screen-otp','mobile','.otp-digit'],
+    '.date-pill .day-num':['screen-picktime'],
+    '.section-title':['screen-picktime'],
+    '.menu-section-title':['screen-menu','mobile','#screen-menu .menu-section-title'],
+    '.order-details-heading':['screen-order-details'],
+    '.order-details-store':['screen-order-details'],
+    '.catering-detail-hero-text .name':['screen-catering-detail'],
+    '.btn-primary':['screen-picktime'],
+    '.btn-add, .btn-outline, .btn-success-primary, .mf-apply-btn':['screen-mealdetail','mobile','#screen-mealdetail .btn-add'],
+    '.mealdetail-header h2, .cart-header h2':['screen-mealdetail','mobile','.mealdetail-header h2'],
+    '.mealdetail-section-title':['screen-mealdetail'],
+    '.cart-section-title':['screen-checkout','mobile','#screen-checkout .cart-section-title'],
+    '.store-name, .outlet-name, .oh-item-name, .landing-account-title':['screen-nonhq','mobile','.store-name'],
+    '.sidebar-item, .sidebar-outlet, .qty-value':['screen-menu,sidebar-overlay','mobile','.sidebar-item'],
+    '.cart-total-row.grand, .checkout-total-row':['screen-checkout','mobile','#screen-checkout .cart-total-row.grand'],
+    '.adyen-header h2, .adyen-pay-btn':['screen-checkout,adyen-overlay','mobile','.adyen-header h2'],
+    '.option (fulfilment method buttons)':['screen-nonhq','mobile','#screen-nonhq .option'],
+    '.mealdetail-desc':['screen-menu',null,'#mealdetail-desc','#screen-menu .meal-card:not([data-category="mealdeal"])'],
+    '.signin-benefit-row':['screen-signin'],
+    '.guest-sheet p, #otp-step-* p':['screen-checkout,guest-overlay','mobile','.guest-sheet p'],
+    '.otp-body>p, .order-success-sub, .order-status-sub':['screen-otp','mobile','.otp-body>p'],
+    '.settings-row':['screen-landing,account-settings-overlay'],
+    '.time-slot, .order-details-item-row':['screen-picktime','mobile','.time-slot'],
+    '.welcome-toast':['screen-menu'],
+    '.cat-tab':['screen-menu','mobile','#screen-menu .cat-tab'],
+    '.checkout-link':['screen-menu,suggestion-overlay','mobile','.checkout-link'],
+    '.landing-dollars-row':['screen-landing,landing-account-loggedin!remove:hidden,landing-account-loggedout!add:hidden'],
+    '.meal-name, .recommend-name':['screen-menu','mobile','#screen-menu .meal-name'],
+    '.addon-row .addon-name':['screen-menu',null,'.addon-row .addon-name','#screen-menu .meal-card:not([data-category="mealdeal"])'],
+    '.link-btn, .cart-add-more-link, .filter-pill, .mf-pill':[OTP,null,'#otp-overlay .link-btn'],
+    '.landing-tile-label, .variant-row .variant-name':['screen-landing','mobile','.landing-tile-label'],
+    '.terms-sheet p, .terms-sheet ul':['screen-checkout,terms-overlay','mobile','.terms-sheet p'],
+    '.cart-total-row, .checkout-summary-row, .store-address':['screen-checkout','mobile','#screen-checkout .cart-total-row'],
+    '.signin-phone-row input':['screen-signin'],
+    '.phone-input-row input, .menu-search-bar, .search-input-pill input, .outlet-search-pill input':[OTP,null,'#otp-overlay .phone-input-row input'],
+    '.signup-field input/select, .cart-phone-input-row input':['screen-checkout,guest-overlay','mobile','#guest-overlay input'],
+    '.outlet-address':['screen-outlet-search'],
+    '.meal-price-row, .order-details-meta, .oh-item-date, .landing-account-sub':['screen-menu','mobile','#screen-menu .meal-price-row'],
+    '.extra-name':['screen-menu,suggestion-overlay'],
+    '.meal-sub, .recommend-sub, .reorder-modal-sub':['screen-menu','mobile','#screen-menu .meal-sub'],
+    '.meal-badge, .tag-badge, .outlet-tag, .verified-badge':['screen-menu','mobile','#screen-menu .meal-badge'],
+    '.signup-field label, .otp-label, .cart-phone-hint, .guest-note':['screen-checkout,guest-overlay','mobile','#guest-overlay label'],
+    '.allergen-chip':['screen-menu',null,'.allergen-chip','#screen-menu .meal-card:not([data-category="mealdeal"])'],
+    '.extra-sub, .guest-link-note, .landing-tab':['screen-menu,suggestion-overlay','mobile','.extra-sub'],
+    '.payment-preferred-tag, .reorder-card-date':[LOGGEDIN+',cart-saved-card-row!remove:hidden'],
+    '.mf-section-label':['screen-menu-filters'],
+    '.cart-section-title-minor, .filters-reset-link':['screen-menu-filters','mobile','.filters-reset-link'],
+    'html.is-desktop .screen-menu .menu-toolbar::before':['screen-menu','desktop','#screen-menu .menu-toolbar'],
+    '.screen-menu-filters .cart-header h2':['screen-menu-filters'],
+    '.filter-badge':['screen-menu,screen-menu!add:search-active,search-filter-count!remove:hidden']
+  };
+  function linkFor(sel){
+    var l = LINKS[sel]; if (!l) return null;
+    var hl = l[2] || sel.split(',')[0].trim();
+    return 'prototype.html?view=' + (l[1] || 'mobile') + '&hl=' + encodeURIComponent(hl) +
+      (l[3] ? '&click=' + encodeURIComponent(l[3]) : '') + '#' + l[0];
+  }
+
+  function specFor(el){
+    var cs = getComputedStyle(el);
+    var lh = parseFloat(cs.lineHeight) / parseFloat(cs.fontSize);
+    return parseFloat(cs.fontSize) + 'px / ' + cs.fontWeight + ' / ' + (isFinite(lh) ? (+lh.toFixed(2)) : cs.lineHeight);
+  }
+
+  var scaleEl = document.getElementById('scale');
+  scaleEl.innerHTML = SCALE.map(function(s){
+    return '<div class="row">' +
+      '<div class="name">.' + s.cls + '<small>--fs-' + s.t + '</small></div>' +
+      '<p class="specimen ' + s.cls + '">' + s.text + '</p>' +
+      '<div class="spec" data-grows="' + (s.grows ? 1 : 0) + '"><span class="v"></span><span class="use">' + s.use + '</span></div>' +
+    '</div>';
+  }).join('');
+
+  function refresh(){
+    var desk = document.documentElement.classList.contains('is-desktop');
+    scaleEl.querySelectorAll('.row').forEach(function(row){
+      var spec = row.querySelector('.spec');
+      var v = spec.querySelector('.v');
+      v.textContent = specFor(row.querySelector('.specimen'));
+      v.className = 'v' + (desk && spec.dataset.grows === '1' ? ' grow' : '');
+    });
+    document.querySelectorAll('.seg button').forEach(function(b){
+      b.setAttribute('aria-pressed', String((b.dataset.view === 'desktop') === desk));
+    });
+  }
+  document.querySelectorAll('.seg button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.documentElement.classList.toggle('is-desktop', b.dataset.view === 'desktop');
+      var u = new URL(location.href); u.searchParams.set('view', b.dataset.view);
+      history.replaceState(null, '', u);
+      refresh();
+      renderMig();
+    });
+  });
+  refresh();
+
+  // Spacing tokens table: values read live from design-system.css
+  var SPACE = [
+    ['--space-page-x','Left and right margin of all content'],
+    ['--space-title-desc','Item title → description'],
+    ['--space-intro','Description → first section'],
+    ['--space-heading','Section heading → its first row'],
+    ['--space-row','Option row → option row'],
+    ['--space-chip','Chip → chip (allergens, tags)'],
+    ['--space-section','End of one section → next section heading'],
+    ['--space-footer','Bottom padding so the sticky footer never covers content']
+  ];
+  function renderSpace(){
+    var root = getComputedStyle(document.documentElement);
+    document.getElementById('space-body').innerHTML = SPACE.map(function(r){
+      return '<tr><td class="tok">' + r[0] + '</td><td class="val">' + (root.getPropertyValue(r[0]).trim() || '—') + '</td><td>' + r[1] + '</td></tr>';
+    }).join('');
+  }
+  var OPTION = [
+    ['--option-border','Card border width'],
+    ['--option-pad','Inner padding on all sides (+ border = 16px)'],
+    ['--option-control','Radio / checkbox size, and the name\'s line-height'],
+    ['--option-min-height','Minimum card height (16 + 20 + 16)'],
+    ['--option-gap','Name ↔ control, photo ↔ name'],
+    ['--option-radius','Corner radius']
+  ];
+  function renderOption(){
+    var root = getComputedStyle(document.documentElement);
+    document.getElementById('option-body').innerHTML = OPTION.map(function(r){
+      return '<tr><td class="tok">' + r[0] + '</td><td class="val">' + (root.getPropertyValue(r[0]).trim() || '—') + '</td><td>' + r[1] + '</td></tr>';
+    }).join('');
+  }
+  renderSpace(); renderOption();
+  window.addEventListener('load', function(){ renderSpace(); renderOption(); });
+
+  // Migration table
+  var tokens = ['all'].concat(SCALE.map(function(s){ return s.t; }));
+  var active = 'all';
+  var body = document.getElementById('mig-body');
+  var filterEl = document.getElementById('mig-filter');
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  // Current size / weight for a row's token, from the live CSS variables.
+  var WMOD = {'fw-regular':'--fw-regular','fw-semibold':'--fw-semibold','fw-bold':'--fw-bold'};
+  function nowFor(to, note, desktopOnly){
+    if (/^Exempt/.test(note)) return null;
+    var html = document.documentElement, had = html.classList.contains('is-desktop');
+    if (desktopOnly && !had) html.classList.add('is-desktop');
+    var root = getComputedStyle(html);
+    var tok = to.split(' ')[0];
+    var size = parseFloat(root.getPropertyValue('--fs-' + tok));
+    var mod = (to.match(/fw-(regular|semibold|bold)/) || [])[0];
+    var wVar = mod ? WMOD[mod] : ('--fw-' + tok);
+    var w = parseInt(root.getPropertyValue(wVar), 10) || parseInt(root.getPropertyValue('--fw-regular'), 10);
+    if (desktopOnly && !had) html.classList.remove('is-desktop');
+    return {size:size, weight:w};
+  }
+  function changedFrom(before, now){
+    if (!now) return false;
+    var sizes = before.match(/^[\d.]+(?:–[\d.]+)?/);
+    var w = before.match(/\/\s*(\d{3})\b/);
+    if (!sizes || sizes[0].indexOf('–') > -1) return true;
+    if (parseFloat(sizes[0]) !== now.size) return true;
+    if (w && parseInt(w[1], 10) !== now.weight) return true;
+    return false;
+  }
+  function renderMig(){
+    var rows = MIG.filter(function(r){ return active === 'all' || r[2].split(' ')[0] === active; });
+    body.innerHTML = rows.map(function(r){
+      var desktopOnly = /^html\.is-desktop/.test(r[0]);
+      var now = nowFor(r[2], r[3], desktopOnly);
+      var changed = changedFrom(r[1], now);
+      var nowTxt = now ? now.size + ' / ' + now.weight + (desktopOnly ? ' desktop' : '') : 'exempt';
+      // Before/Now already show weight changes, so drop "Weight to 600".
+      var note = r[3].replace(/^ok$/, '').replace(/^Weight to 600\.?\s*/, '');
+      if (!changed && now) note = note || 'Already matched';
+      var href = linkFor(r[0]);
+      var sel = href ? '<a href="' + href + '" target="_blank" rel="noopener" title="Open in prototype">' + esc(r[0]) + ' <span aria-hidden="true">↗</span></a>' : esc(r[0]);
+      return '<tr><td class="sel">' + sel + '</td><td class="before' + (changed ? ' changed' : '') + '">' + r[1] + '</td>' +
+        '<td class="after' + (changed ? ' changed' : '') + '">' + nowTxt + '</td>' +
+        '<td class="to">' + r[2] + '</td><td class="note">' + esc(note) + '</td></tr>';
+    }).join('');
+    document.getElementById('mig-count').textContent = rows.length + ' of ' + MIG.length + ' rows';
+    filterEl.querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.t === active)); });
+  }
+  filterEl.innerHTML = tokens.map(function(t){ return '<button type="button" data-t="' + t + '">' + t + '</button>'; }).join('');
+  filterEl.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    active = b.dataset.t; renderMig();
+  });
+  renderMig();
+
+  document.querySelector('[data-copy]').addEventListener('click', function(e){
+    var btn = e.currentTarget;
+    var text = document.getElementById('snippet').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function(){
+      btn.textContent = 'Copied'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1400);
+    }, function(){ btn.textContent = 'Select & copy'; });
+  });
+</script>
+</body>
+</html>
