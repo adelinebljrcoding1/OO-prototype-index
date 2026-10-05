@@ -219,7 +219,7 @@ var R = [
      '<tr><td>Reopens another day, or no date</td><td>“Closed” (no date)</td></tr>' +
      '<tr><td>Pre-orders allowed for a later date</td><td>Selectable, goes to the time picker for that day</td></tr>' +
      '</tbody></table>',
-   q:'Is the next-available date needed on a Closed order type tile when other types are open? A date on another day is information the customer can’t act on, so they will usually pick another type instead. Slack agreed: with no available date, show no date or schedule entry point (mockup: “Closed” + “see available time”). Confirm the proposal above with Vivek. Both states can be previewed from the flow index edge cases: “Opens 5:00 PM” (reopens later today) and the plain “Closed” tile.'},
+   q:'Is the next-available date needed on a Closed order type tile when other types are open? A date on another day is information the customer can’t act on, so they will usually pick another type instead. Slack agreed: with no available date, show no date or schedule entry point (mockup: “Closed” + “see available time”). Confirm the proposal above with the team. Both states can be previewed from the flow index edge cases: “Opens 5:00 PM” (reopens later today) and the plain “Closed” tile.'},
   {id:'S2', f:'all', e:'hq', g:'Order selection', kind:'main', t:'Order types in HQ, without prep time', uc:'UC2', s:'partial', h:'screen-hq-order',
    n:'No prep time here, because no store has been chosen yet, so any estimate could be wrong. Prep time appears per store in the store list. <b>Missing:</b> only Pick up and Delivery are offered.'},
   {id:'S3', f:'all', e:'hq', g:'Store list', kind:'main', t:'Store list with prep time and hours per store', uc:'UC2 UC6', s:'partial', h:'screen-outlet-search',
@@ -331,7 +331,7 @@ var R = [
    q:'Are Roll’d table numbers always numbers? If any store uses tables like “12A” or “Bar 2”, letters need to be allowed. With a QR prefill (T8), should the step be skipped entirely instead of shown pre-filled?'},
   {id:'T4', f:'dinein', e:'both', g:'Timing', kind:'main', t:'ASAP only / pre-order only / both', uc:'Config', s:'built', h:'call:demoDineInStep',
    n:'Dine-in uses the “ASAP only” config: the timing step is skipped and the table number goes straight to the menu.',
-   q:'Is Dine-in always ASAP only, or should a store be able to turn on Dine-in pre-orders? The ticket says every order type supports the three timing configs, but only writes timing use cases for Pick up (UC7–UC10). If stores can turn it on, show the time sheet only for those stores. To confirm with Vivek.',
+   q:'Is Dine-in always ASAP only, or should a store be able to turn on Dine-in pre-orders? The ticket says every order type supports the three timing configs, but only writes timing use cases for Pick up (UC7–UC10). If stores can turn it on, show the time sheet only for those stores. To confirm with the team.',
    d:'Dine-in is ASAP only: the customer is at the table, so there is no time step and no time row on the menu bar or checkout.'},
   {id:'T5', f:'dinein', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Table number shown read-only on menu, cart and checkout', uc:'UC23', s:'partial', h:'call:demoDineInStep',
    n:'Menu bar “Dine in · Table 12”, cart Review “Table 12 · Roll’d Geelong”, Dine-in checkout Table number row, none editable. <b>Missing:</b> HQ.'},
