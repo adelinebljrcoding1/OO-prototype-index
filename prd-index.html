@@ -219,7 +219,7 @@ var R = [
      '<tr><td>Reopens another day, or no date</td><td>“Closed” (no date)</td></tr>' +
      '<tr><td>Pre-orders allowed for a later date</td><td>Selectable, goes to the time picker for that day</td></tr>' +
      '</tbody></table>',
-   q:'Is the next-available date needed on a Closed order type tile when other types are open? A date on another day is information the customer can’t act on, so they will usually pick another type instead. Slack agreed: with no available date, show no date or schedule entry point (mockup: “Closed” + “see available time”). Confirm the proposal above with Vivek. Prototype keeps the plain “Closed” tile until then.'},
+   q:'Is the next-available date needed on a Closed order type tile when other types are open? A date on another day is information the customer can’t act on, so they will usually pick another type instead. Slack agreed: with no available date, show no date or schedule entry point (mockup: “Closed” + “see available time”). Confirm the proposal above with Vivek. Both states can be previewed from the flow index edge cases: “Opens 5:00 PM” (reopens later today) and the plain “Closed” tile.'},
   {id:'S2', f:'all', e:'hq', g:'Order selection', kind:'main', t:'Order types in HQ, without prep time', uc:'UC2', s:'partial', h:'screen-hq-order',
    n:'No prep time here, because no store has been chosen yet, so any estimate could be wrong. Prep time appears per store in the store list. <b>Missing:</b> only Pick up and Delivery are offered.'},
   {id:'S3', f:'all', e:'hq', g:'Store list', kind:'main', t:'Store list with prep time and hours per store', uc:'UC2 UC6', s:'partial', h:'screen-outlet-search',
@@ -261,7 +261,9 @@ var R = [
   {id:'P2', f:'pickup', e:'both', g:'Timing', kind:'main', t:'Pre-order-only store: pick a day and time', uc:'UC8', s:'built', h:'screen-nonhq,app-body!add:pickup-timing-preorder',
    n:'The Pickup time sheet opens without the ASAP / Schedule cards: straight to Pick a day → Pick a time. Select stays off until a time is picked.'},
   {id:'P3', f:'pickup', e:'both', g:'Timing', kind:'main', t:'Both enabled: choose ASAP', uc:'UC9', s:'built', h:'call:demoPickupSheet'},
-  {id:'P4', f:'pickup', e:'both', g:'Timing', kind:'main', t:'Both enabled: choose Schedule, then a day and time', uc:'UC10', s:'built', h:'call:demoPickupSchedule'},
+  {id:'P4', f:'pickup', e:'both', g:'Timing', kind:'main', t:'Both enabled: choose Schedule, then a day and time', uc:'UC10', s:'built', h:'call:demoPickupSchedule',
+   n:'Today follows the real clock and date. <b>ASAP</b> shows its own estimate: now + the order type’s prep time (Pick up / Room Service 30 mins, Delivery 45 mins), rounded up to 5 mins, e.g. “Ready in ~30 mins · around 1:05 PM”. <b>Schedule → Today</b> starts at least 15 mins after that estimate (1:30 PM), with “Need it sooner? Choose ASAP” above the times. Pre-order-only stores (no ASAP) start Today at now + prep time. Past the last possible ASAP, ASAP is off (“Not available now”) and the sheet moves to Tomorrow.',
+   d:'ASAP and Schedule never overlap: ASAP means “as soon as you can”, Schedule means “a later time I choose”, so no time tile does the same job as ASAP.'},
   {id:'P5', f:'pickup', e:'nonhq', g:'Timing', kind:'main', t:'Non-HQ pickup time sheet', uc:'Slack', s:'differs', h:'call:demoPickupSheet',
    n:'Now ASAP / Schedule → Pick a day → Pick a time → Select. The 29 Sep spec describes Today / Tomorrow / Later tabs. Needs Keith’s approval.'},
   {id:'P6', f:'pickup', e:'hq', g:'Timing', kind:'main', t:'HQ pickup time picker', uc:'Slack', s:'differs', h:'call:demoPickupSheetHQ',

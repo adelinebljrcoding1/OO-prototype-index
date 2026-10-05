@@ -483,6 +483,11 @@
     margin-top:12px;
     color:#8a8a8a;
   }
+  .pt-sooner{margin:-4px 0 12px;font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#666;font-weight:var(--fw-regular);}
+  .pt-sooner-link{border:none;background:none;padding:0;font:inherit;font-weight:var(--fw-semibold);color:var(--green-mid);text-decoration:underline;cursor:pointer;}
+  .time-empty{padding:16px;border:1px dashed #ddd;border-radius:12px;text-align:center;font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#666;}
+  .pt-mode-card.is-disabled{border-color:#e6e3db;background:#f4f2ec;color:#9a9a9a;cursor:not-allowed;}
+  .pt-mode-card.is-disabled .pt-mode-sub{color:#9a9a9a;}
   .time-group-label::after{content:"";flex:1;height:1px;background:#e5e2da;}
   .time-group-label:first-child,.time-group-label.first-visible{margin-top:0;}
   /* ---- Pickup time sheet ---- */
@@ -507,6 +512,9 @@
   .delivery-closed-tile{display:none !important;}
   #app-body.delivery-closed .delivery-closed-tile{display:flex !important;}
   #app-body.delivery-closed #screen-nonhq [data-type="delivery"]{display:none;}
+  .delivery-opens-later-tile{display:none !important;}
+  #app-body.delivery-opens-later .delivery-opens-later-tile{display:flex !important;}
+  #app-body.delivery-opens-later #screen-nonhq [data-type="delivery"]{display:none;}
   /* Delivery address step (OOR_0002E1 / E2 / E12) */
   .addr-search{position:relative;display:flex;align-items:center;margin-top:var(--space-intro);}
   .addr-search-icon{position:absolute;left:16px;color:#1f9d55;pointer-events:none;}
@@ -3885,6 +3893,10 @@
           <button class="option disabled delivery-closed-tile" disabled>
             <span>Delivery</span><span class="time">Closed</span>
           </button>
+          <!-- S1 proposal (open question): closed now but reopens later today → show the time. Shown with #app-body.delivery-opens-later -->
+          <button class="option disabled delivery-opens-later-tile" disabled>
+            <span>Delivery</span><span class="time">Opens 5:00 PM</span>
+          </button>
           <button class="option" data-type="dinein" onclick="chooseDineIn(this)">
             <span>Dine in</span><span class="option-right"><span class="time">30 mins</span><svg class="option-check" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l6 6L20 6"/></svg></span>
           </button>
@@ -4497,16 +4509,18 @@
               <button class="date-pill" data-date="Sat 19 Jun" onclick="selectPickupDate(this)"><span>SAT</span><span class="day-num">19</span><span>JUN</span></button>
             </div>
             <h3 class="section-title">Pick a time</h3>
+            <!-- Today only, when ASAP is offered: anything sooner than the first slot is ASAP's job -->
+            <p class="pt-sooner hidden" id="pt-sooner">Need it sooner? <button type="button" class="pt-sooner-link" onclick="selectPickupMode('asap')">Choose ASAP</button></p>
           </div>
 
           <div class="time-grid" id="time-grid">
             <div class="time-group-label t-overline" role="heading" aria-level="3">Morning</div>
-            <button class="time-slot" data-past="1" onclick="choosePickupSlot(this)">7:00 - 7:15 AM</button>
-            <button class="time-slot" data-past="1" onclick="choosePickupSlot(this)">7:15 - 7:30 AM</button>
-            <button class="time-slot" data-past="1" onclick="choosePickupSlot(this)">7:30 - 7:45 AM</button>
-            <button class="time-slot" data-past="1" onclick="choosePickupSlot(this)">7:45 - 8:00 AM</button>
-            <button class="time-slot" data-past="1" onclick="choosePickupSlot(this)">8:00 - 8:15 AM</button>
-            <button class="time-slot" data-past="1" onclick="choosePickupSlot(this)">8:15 - 8:30 AM</button>
+            <button class="time-slot" onclick="choosePickupSlot(this)">7:00 - 7:15 AM</button>
+            <button class="time-slot" onclick="choosePickupSlot(this)">7:15 - 7:30 AM</button>
+            <button class="time-slot" onclick="choosePickupSlot(this)">7:30 - 7:45 AM</button>
+            <button class="time-slot" onclick="choosePickupSlot(this)">7:45 - 8:00 AM</button>
+            <button class="time-slot" onclick="choosePickupSlot(this)">8:00 - 8:15 AM</button>
+            <button class="time-slot" onclick="choosePickupSlot(this)">8:15 - 8:30 AM</button>
             <button class="time-slot" onclick="choosePickupSlot(this)">8:30 - 8:45 AM</button>
             <button class="time-slot" onclick="choosePickupSlot(this)">8:45 - 9:00 AM</button>
             <button class="time-slot" onclick="choosePickupSlot(this)">9:00 - 9:15 AM</button>
@@ -4560,6 +4574,7 @@
             <button class="time-slot" onclick="choosePickupSlot(this)">8:30 - 8:45 PM</button>
             <button class="time-slot" onclick="choosePickupSlot(this)">8:45 - 9:00 PM</button>
           </div>
+          <div class="time-empty hidden" id="time-empty" role="status">No more times today. Pick another day.</div>
 
         </div>
 
@@ -7980,20 +7995,77 @@
      "Select" confirms and closes the sheet. */
   var pickupChoice = {type:'asap'};           // or {type:'slot', dayLabel, time}
   var pickupPending = {type:'asap'};          // Non-HQ, not yet confirmed: 'asap' | 'schedule' (no slot yet) | 'slot'
-  var pickupDay = 'Today';                    // day shown under Schedule: 'Today' | 'Tomorrow' | 'Fri 18 Jun' …
+  var pickupDay = 'Today';                    // day shown under Schedule: 'Today' | 'Tomorrow' | e.g. 'Fri 9 Oct' (real dates, see renderDayPills)
+
+  /* Day pills follow the real date: Today, Tomorrow, then the next two days. Labels: "Today", "Tomorrow",
+     then "Fri 9 Oct" (used in the menu bar, cart and checkout). */
+  function dayAfter(n){ var d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + n); return d; }
+  function shortDayLabel(d){
+    return d.toLocaleDateString('en-AU', {weekday:'short'}) + ' ' + d.getDate() + ' ' + d.toLocaleDateString('en-AU', {month:'short'});
+  }
+  function renderDayPills(){
+    [].forEach.call(document.querySelectorAll('#pt-dates .date-pill'), function(p, i){
+      var d = dayAfter(i);
+      p.dataset.date = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : shortDayLabel(d);
+      p.setAttribute('aria-label', i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : d.toLocaleDateString('en-AU', {weekday:'long', day:'numeric', month:'long'}));
+      var spans = p.querySelectorAll('span');
+      spans[0].textContent = i === 0 ? 'TODAY' : d.toLocaleDateString('en-AU', {weekday:'short'}).toUpperCase();
+      spans[1].textContent = d.getDate();
+      spans[2].textContent = d.toLocaleDateString('en-AU', {month:'short'}).toUpperCase();
+    });
+    /* Closed HQ store reopens tomorrow at 10:00 AM */
+    [].forEach.call(document.querySelectorAll('.outlet-card[data-closed-for]'), function(c){
+      c.dataset.nextOpen = 'Opens ' + shortDayLabel(dayAfter(1)) + ', 10:00 AM';
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){ renderDayPills(); applyOutletClosures('pickup'); });
   var pickupSheetOrigin = 'entry';            // 'entry' (after Pick up), 'menu' (header pill → order type) or 'checkout'
   var pickupFlow = 'nonhq';                   // 'nonhq' | 'hq' (set by the HQ store-selection Next); both use this sheet
 
   function slotLabel(btn){ return btn.textContent.trim().replace(' - ', ' – '); }
-  function firstTodaySlot(){ return document.querySelector('#time-grid .time-slot:not([data-past])'); }
-  function asapTimeText(){ var f = firstTodaySlot(); return f ? '~' + f.textContent.trim().split(' - ')[0] + ' ' + f.textContent.trim().slice(-2) : ''; }
+  /* Today's times follow the real clock: a slot is gone once its start is less than the minimum prep
+     time (30 mins) away. Slots are 15 mins, labelled "start - end AM/PM", so start = end − 15. */
+  /* ASAP vs Schedule (design decision, P4): ASAP has its own estimate = now + the order type's prep time,
+     rounded up to 5 mins. When ASAP is offered, Today's schedule starts at least 15 mins after that
+     estimate, so no slot duplicates ASAP. Pre-order-only stores start at now + prep time. */
+  var MIN_PREP_MINS = 30;
+  var SCHEDULE_GAP_MINS = 15;
+  var STORE_LAST_SLOT_END = 21 * 60;          // store closes 9:00 PM
+  function prepFor(type){ return type === 'delivery' ? 45 : MIN_PREP_MINS; }
+  function asapReadyMins(type){ var t = nowMins() + prepFor(type); return Math.ceil(t / 5) * 5; }
+  function asapAvailable(type){ return asapReadyMins(type) <= STORE_LAST_SLOT_END; }
+  function todayThreshold(type){
+    return timingModeFor(type) === 'preorder' ? nowMins() + prepFor(type) : asapReadyMins(type) + SCHEDULE_GAP_MINS;
+  }
+  function slotStartMins(btn){
+    var m = btn.textContent.trim().match(/-\s*(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    return ((+m[1] % 12) + (m[3].toUpperCase() === 'PM' ? 12 : 0)) * 60 + (+m[2]) - 15;
+  }
+  function nowMins(){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
+  function isGoneToday(btn, type){ return slotStartMins(btn) < todayThreshold(type || timeSheetFor); }
+  function fmtMins(t){ var h = Math.floor(t / 60), m = t % 60; return ((h % 12) || 12) + ':' + (m < 10 ? '0' : '') + m + ' ' + (h < 12 ? 'AM' : 'PM'); }
+  /* ASAP estimate as a clock time; '' when the store can't make it before closing */
+  function asapTimeText(type){ type = type || 'pickup'; return asapAvailable(type) ? '~' + fmtMins(asapReadyMins(type)) : ''; }
   function pickupDayLabel(){ return pickupDay; }
 
   /* Shows only bookable slots for the day and hides a group label with nothing under it. */
   function renderPickupSlots(){
     var grid = document.getElementById('time-grid');
+    /* Nothing left today: ASAP is off and the schedule moves to tomorrow. A chosen slot that has
+       since passed is dropped. */
+    var todayOpen = asapAvailable(timeSheetFor);      // ASAP still possible before closing
+    if (pickupPending.type === 'slot' && pickupPending.dayLabel === 'Today') {
+      var still = [].some.call(grid.querySelectorAll('.time-slot'), function(b){ return slotLabel(b) === pickupPending.time && !isGoneToday(b); });
+      if (!still) pickupPending = {type:'schedule'};
+    }
+    if (!todayOpen && pickupPending.type === 'asap') { pickupPending = {type:'schedule'}; if (pickupDay === 'Today') pickupDay = 'Tomorrow'; }
+    var asapCard = document.getElementById('pt-mode-asap');
+    asapCard.classList.toggle('is-disabled', !todayOpen);
+    asapCard.setAttribute('aria-disabled', String(!todayOpen));
+    asapCard.querySelector('.pt-mode-sub').textContent = !todayOpen ? 'Not available now'
+      : (timeSheetFor === 'delivery' ? 'Delivered in ' + DELIVERY_EST : 'Ready in ~' + prepFor(timeSheetFor) + ' mins') + ' · around ' + fmtMins(asapReadyMins(timeSheetFor));
     [].forEach.call(grid.querySelectorAll('.time-slot'), function(b){
-      b.classList.toggle('hidden', pickupDay === 'Today' && b.hasAttribute('data-past'));
+      b.classList.toggle('hidden', pickupDay === 'Today' && isGoneToday(b));
       var chosen = pickupPending.type === 'slot' && pickupPending.dayLabel === pickupDayLabel() && pickupPending.time === slotLabel(b);
       b.classList.toggle('selected', chosen);
     });
@@ -8007,6 +8079,7 @@
     labels.forEach(function(l){ l.classList.remove('first-visible'); });
     var firstVis = labels.find(function(l){ return !l.classList.contains('hidden'); });
     if (firstVis) firstVis.classList.add('first-visible');
+    var anyVisible = [].some.call(grid.querySelectorAll('.time-slot'), function(b){ return !b.classList.contains('hidden'); });
     var preorderOnly = timingModeFor(timeSheetFor) === 'preorder';
     if (preorderOnly && pickupPending.type === 'asap') pickupPending = {type:'schedule'};
     document.querySelector('#screen-picktime .pt-mode').classList.toggle('hidden', preorderOnly);
@@ -8018,6 +8091,12 @@
     /* Step 2 (day + time) only under Schedule */
     document.getElementById('pt-schedule').classList.toggle('hidden', asap);
     grid.classList.toggle('hidden', asap);
+    document.getElementById('time-empty').classList.toggle('hidden', asap || anyVisible);
+    var asapOffered = timingModeFor(timeSheetFor) !== 'preorder';
+    document.getElementById('time-empty').textContent = asapOffered && todayOpen
+      ? 'No more times to schedule today. Choose ASAP, or pick another day.'
+      : 'No more times today. Pick another day.';
+    document.getElementById('pt-sooner').classList.toggle('hidden', asap || pickupDay !== 'Today' || !asapOffered || !todayOpen || !anyVisible);
     [].forEach.call(document.querySelectorAll('#pt-dates .date-pill'), function(p){ p.classList.toggle('selected', p.dataset.date === pickupDay); });
     /* Select: ASAP is ready to go; Schedule needs a slot on the day being viewed. */
     var ready = asap || (pickupPending.type === 'slot' && pickupPending.dayLabel === pickupDay);
@@ -8026,6 +8105,7 @@
   }
 
   function selectPickupMode(mode){
+    if (mode === 'asap' && !asapAvailable(timeSheetFor)) return;   // too late for ASAP today
     if (mode === 'asap') pickupPending = {type:'asap'};
     else if (pickupPending.type === 'asap') pickupPending = {type:'schedule'};
     renderPickupSlots();
@@ -8046,12 +8126,13 @@
   var PICKUP_STORE_SHORT = 'Geelong';
   function pickupTimeParts(){
     return pickupChoice.type === 'slot' ? {day:pickupChoice.dayLabel, time:pickupChoice.time}
-                                        : {day:'ASAP', time:asapTimeText()};
+                                        : {day:'ASAP', time:asapTimeText('pickup')};
   }
   function writeDayTime(el, p){
     if (!el) return;
     el.innerHTML = '';
     el.appendChild(document.createTextNode(p.day));
+    if (!p.time) return;
     var sep = document.createElement('span'); sep.className = 'sep'; sep.textContent = '|';
     el.appendChild(sep);
     el.appendChild(document.createTextNode(p.time));
@@ -8062,7 +8143,7 @@
     var cur = selectedOrderMethod === 'delivery' ? dl : pk;
     var dineIn = selectedOrderMethod === 'dinein';
     [].forEach.call(document.querySelectorAll('.filter-pill .pickup-time-label'), function(el){
-      el.textContent = dineIn ? (tableNumber ? 'Table ' + tableNumber : 'ASAP') : cur.day + ' · ' + cur.time;   // Dine-in: ASAP only, show the table
+      el.textContent = dineIn ? (tableNumber ? 'Table ' + tableNumber : 'ASAP') : cur.day + (cur.time ? ' · ' + cur.time : '');   // Dine-in: ASAP only, show the table
     });
     /* Order success / status rows are pickup-only */
     [].forEach.call(document.querySelectorAll('.order-success-row .pickup-time-label'), function(el){ el.textContent = pk.day + ' · ' + pk.time; });
@@ -8119,6 +8200,7 @@
 
   /* Opening always shows the confirmed choice: ASAP, or Schedule on the slot's day. */
   function resetPickupTiming(){
+    renderDayPills();
     if (pickupChoice.type !== 'asap' && pickupChoice.type !== 'slot') pickupChoice = {type:'asap'};
     pickupPending = pickupChoice;           // reopening drops any unconfirmed selection
     pickupDay = pickupChoice.type === 'slot' ? pickupChoice.dayLabel : 'Today';
