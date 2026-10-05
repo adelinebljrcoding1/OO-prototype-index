@@ -4473,7 +4473,7 @@
     <div class="picktime-sheet-backdrop">
       <div class="picktime-sheet">
         <div class="picktime-sheet-header">
-          <button class="back-btn" onclick="goBackFromPickTime()">
+          <button class="back-btn" id="picktime-dismiss" onclick="goBackFromPickTime()" aria-label="Back">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
           </button>
         </div>
@@ -4599,7 +4599,7 @@
     <div class="picktime-sheet-backdrop">
       <div class="picktime-sheet">
         <div class="picktime-sheet-header">
-          <button class="back-btn" onclick="goBackFromAddress()" aria-label="Back">
+          <button class="back-btn" id="addr-dismiss" onclick="goBackFromAddress()" aria-label="Back">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
           </button>
         </div>
@@ -7610,13 +7610,27 @@
     addrOrigin = origin;
     addrPending = null;
     var scr = document.getElementById('screen-address');
-    document.getElementById('addr-input').value = '';
+    /* From checkout this edits the current address: prefilled, and dismissed with ✕ (nothing changes) */
+    var editing = origin === 'checkout' && !!deliveryAddress;
+    document.getElementById('addr-input').value = editing ? deliveryAddress : '';
+    document.getElementById('addr-title').textContent = editing ? 'Change address' : 'Enter address';
+    setSheetDismiss('addr-dismiss', origin === 'checkout');
     closeOutOfRange(true);
     renderAddrResults('');
+    document.getElementById('addr-clear').classList.toggle('hidden', !editing);
     setAddrStatus(null);
     scr.classList.toggle('over-menu', origin !== 'entry');
     scr.classList.remove('hidden');
     requestAnimationFrame(function(){ requestAnimationFrame(function(){ scr.classList.add('open'); }); });
+  }
+
+  /* Sheet header button: ✕ when the sheet edits one field over checkout (closing changes nothing), ‹ when it is a step in a flow */
+  var ICON_BACK = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>';
+  var ICON_CLOSE = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  function setSheetDismiss(id, close){
+    var b = document.getElementById(id);
+    b.innerHTML = close ? ICON_CLOSE : ICON_BACK;
+    b.setAttribute('aria-label', close ? 'Close' : 'Back');
   }
 
   function closeAddressStep(then){
@@ -8033,6 +8047,7 @@
     setTimeSheetTitle();
     var picktime = document.getElementById('screen-picktime');
     pickupSheetOrigin = 'entry';
+    setSheetDismiss('picktime-dismiss', false);
     picktime.classList.remove('over-menu');
     resetPickupTiming();
     picktime.classList.remove('hidden');
@@ -8328,6 +8343,7 @@
     if (timingModeFor(timeSheetFor) === 'asap') { finishWithoutTime(timeSheetFor, origin); return; }
     setTimeSheetTitle();
     pickupSheetOrigin = origin;
+    setSheetDismiss('picktime-dismiss', origin === 'checkout');
     var picktime = document.getElementById('screen-picktime');
     picktime.classList.add('over-menu');
     resetPickupTiming();
