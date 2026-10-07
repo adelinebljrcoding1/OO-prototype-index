@@ -159,18 +159,32 @@
   }
   .landing-logo-row{display:flex;justify-content:center;padding:64px 20px 36px;}
   .landing-logo-color{width:170px;height:auto;display:block;}
-  .landing-body{padding:0 20px 8px;flex:1;}
-  .landing-account-card{
-    background:#fff;
-    border-radius:16px;
-    padding:16px;
-    margin-bottom:20px;
-    box-shadow:0 2px 10px rgba(0,0,0,.06);
-    cursor:pointer;
+  .landing-body{padding:0 24px 8px;}
+  .landing-resume{
+    display:flex;align-items:center;gap:12px;width:100%;margin:0 0 16px;padding:14px 16px 14px 20px;text-align:left;font:inherit;
+    background:var(--green-dark);color:#fff;border:none;border-radius:14px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.12);
   }
-  .landing-account-row{display:flex;align-items:center;gap:12px;}
-  .landing-account-title{font-size:var(--fs-headline);font-weight:var(--fw-headline);color:var(--green-dark);}
-  .landing-account-sub{font-size:var(--fs-footnote);color:#777;margin-top:2px;font-weight:var(--fw-regular);}
+  .landing-resume.hidden{display:none;}
+  .landing-resume-text{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .landing-resume-title{font-size:var(--fs-callout);font-weight:var(--fw-semibold);}
+  .landing-resume-sub{margin-top:2px;font-size:var(--fs-caption);color:#cfe3d8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .landing-resume-cta{flex:none;display:inline-flex;align-items:center;gap:2px;font-size:var(--fs-callout);font-weight:var(--fw-semibold);
+    background:#fff;color:var(--green-dark);padding:8px 10px 8px 14px;border-radius:999px;}
+  .landing-account-card{
+    background:#fff;border-radius:14px;padding:16px 20px;margin-bottom:40px;
+    box-shadow:0 2px 6px rgba(0,0,0,.12);cursor:pointer;
+  }
+  .landing-account-row{display:flex;align-items:center;gap:10px;}
+  .landing-leaf{width:22px;height:auto;flex:none;}
+  .landing-account-title{font-size:var(--fs-callout);font-weight:var(--fw-semibold);color:var(--green-dark);}
+  .landing-account-sub{font-size:var(--fs-caption);color:var(--green-dark);margin-top:1px;font-weight:var(--fw-regular);}
+  .landing-join-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    margin-top:14px;padding:12px 16px;border-radius:10px;background:#fafafa;border:1px solid #efefef;color:var(--green-dark);
+  }
+  .landing-join-title{display:block;font-size:var(--fs-callout);font-weight:var(--fw-regular);}
+  .landing-join-sub{display:block;font-size:var(--fs-caption);font-weight:var(--fw-regular);margin-top:1px;}
+  .landing-join-row .chev{flex:none;}
   .landing-dollars-row{
     display:flex;align-items:center;justify-content:space-between;
     margin-top:14px;padding-top:14px;
@@ -178,33 +192,53 @@
     font-size:var(--fs-body);font-weight:var(--fw-semibold);color:var(--green-dark);
   }
   .landing-dollars-row .chev{color:#bbb;flex-shrink:0;}
-  .landing-tiles-row{display:flex;gap:12px;margin-bottom:20px;}
-  .landing-tile{
-    flex:1;border:none;padding:8px;box-sizing:border-box;cursor:pointer;
-    border-radius:14px;overflow:hidden;position:relative;
-    aspect-ratio:1/1.05;background:#fff;
-    display:flex;flex-direction:column;gap:8px;
+  .landing-tiles-row,.landing-tiles-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 4px;}
+  .landing-tiles-grid{row-gap:16px;}
+  .landing-art-tile{border:none;padding:0;background:none;cursor:pointer;border-radius:8px;overflow:hidden;display:block;box-shadow:0 1px 3px rgba(0,0,0,.12);}
+  .landing-art-tile[aria-disabled="true"]{cursor:default;}
+  .landing-art-tile img{width:100%;height:auto;display:block;}
+  .landing-rewards-note{display:block;width:120px;height:auto;margin:12px 46px 4px auto;}
+  /* Rollers Club + bonus Roll'd Dollars: full-width green band */
+  .landing-club{background:#afd7c5;padding:18px 20px 22px;}
+  .landing-club-card{display:block;width:100%;border:none;padding:0;background:none;cursor:pointer;}
+  .landing-club-card img{width:100%;height:auto;display:block;}
+  .landing-bonus-heading{margin:22px 0 0;text-align:center;line-height:0;}
+  .landing-bonus-heading img{width:82%;max-width:240px;height:auto;}
+  .landing-bonus-intro{margin:12px 0 18px;text-align:center;font-size:var(--fs-caption);line-height:1.35;color:#3b5a4c;}
+  .bonus-list{display:flex;flex-direction:column;gap:18px;}
+  .bonus-card{position:relative;background:#fff;border:1px solid #d9d9d9;border-radius:6px;box-shadow:0 3px 0 #c9c9c9;overflow:hidden;}
+  .bonus-limit{
+    position:absolute;top:0;left:50%;transform:translate(-50%,-50%);z-index:1;
+    background:var(--green-dark);color:#fff;font-size:11px;line-height:1;padding:4px 10px 5px;border-radius:999px;white-space:nowrap;
   }
-  .landing-tile img{width:100%;flex:1;min-height:0;object-fit:contain;display:block;border-radius:8px;}
-  .landing-tile-label{
-    background:#173d31;color:#fff;
-    font-size:var(--fs-callout);font-weight:var(--fw-semibold);
-    text-align:center;padding:8px 4px;border-radius:8px;
-  }
-  .landing-rewards-note{
-    text-align:center;font-size:var(--fs-footnote);color:var(--green-dark);
-    font-weight:var(--fw-semibold);margin-bottom:8px;
-  }
+  .bonus-card{overflow:visible;}
+  .bonus-main{display:flex;align-items:center;justify-content:space-between;padding:12px 30px 10px;}
+  .bonus-col{display:flex;flex-direction:column;line-height:1.1;color:#111;}
+  .bonus-col small{font-size:var(--fs-caption);}
+  .bonus-col b{font-size:27px;font-weight:600;letter-spacing:-.01em;}
+  .bonus-get{align-items:flex-end;color:var(--green-dark);}
+  .bonus-get small{color:var(--green-dark);}
+  .bonus-get b{color:#1b8a4c;}
+  .bonus-icon{width:30px;height:30px;}
+  .bonus-foot{background:#d6d6d6;color:#555;text-align:center;font-size:11px;padding:5px 8px;border-radius:0 0 6px 6px;}
+  .landing-bonus-note{margin:20px 6px 0;text-align:center;font-size:var(--fs-footnote);line-height:1.35;color:#3b5a4c;}
+  .landing-bonus-note b{font-weight:var(--fw-semibold);}
+  .landing-more{padding-top:26px;padding-bottom:24px;}
+  .landing-links{display:flex;flex-direction:column;margin:28px 0 0;}
+  .landing-links button{border:none;padding:0;background:none;cursor:pointer;display:block;line-height:0;}
+  .landing-links img{width:100%;height:auto;}
+  .landing-social{display:flex;justify-content:center;gap:6px;margin-top:20px;}
+  .landing-social a{width:23px;height:23px;border-radius:50%;background:#111;color:#fff;display:inline-flex;align-items:center;justify-content:center;}
   .landing-tabbar{
-    display:flex;flex-shrink:0;
-    border-top:1px solid #e5e0d3;background:#fff;
+    display:flex;flex-shrink:0;position:sticky;bottom:0;z-index:2;
+    border-top:1px solid #d9d5ca;background:#f3efe6;
     padding:8px 0 14px;
   }
   .landing-tab{
-    flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
-    border:none;background:none;font-size:var(--fs-caption);color:#8a8a8a;cursor:pointer;font-weight:var(--fw-regular);
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    border:none;background:none;font-size:var(--fs-caption);color:#4f9a72;cursor:pointer;font-weight:var(--fw-regular);
   }
-  .landing-tab.active{color:var(--green-mid);font-weight:var(--fw-semibold);}
+  .landing-tab.active{color:var(--green-dark);font-weight:var(--fw-semibold);}
   .landing-tab svg{display:block;}
 
   .start-order-wrap{
@@ -483,8 +517,6 @@
     margin-top:12px;
     color:#8a8a8a;
   }
-  .pt-sooner{margin:-4px 0 12px;font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#666;font-weight:var(--fw-regular);}
-  .pt-sooner-link{border:none;background:none;padding:0;font:inherit;font-weight:var(--fw-semibold);color:var(--green-mid);text-decoration:underline;cursor:pointer;}
   .time-empty{padding:16px;border:1px dashed #ddd;border-radius:12px;text-align:center;font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#666;}
   .pt-mode-card.is-disabled{border-color:#e6e3db;background:#f4f2ec;color:#9a9a9a;cursor:not-allowed;}
   .pt-mode-card.is-disabled .pt-mode-sub{color:#9a9a9a;}
@@ -492,14 +524,21 @@
   .time-group-label:first-child,.time-group-label.first-visible{margin-top:0;}
   /* ---- Pickup time sheet ---- */
   .pickup-sheet-title{margin:6px 0 0;color:#111;}
-  /* Step 1: ASAP | Schedule cards (same selected state as the time tiles) */
-  .pt-mode{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 0;}
-  .pt-mode-card{position:relative;display:flex;flex-direction:column;gap:2px;text-align:left;padding:14px 16px;
+  /* Step 1: ASAP above Schedule, radio cards (team review 6 Oct). Selected state matches the time tiles. */
+  .pt-mode{display:grid;grid-template-columns:1fr;gap:10px;margin:16px 0 0;}
+  .pt-mode-card{position:relative;display:flex;flex-direction:column;gap:2px;text-align:left;padding:14px 16px 14px 50px;
     border-radius:12px;border:1.5px solid #ddd;background:#fff;color:#111;font:inherit;cursor:pointer;}
+  .pt-mode-card::before{content:"";position:absolute;left:16px;top:50%;width:20px;height:20px;margin-top:-10px;box-sizing:border-box;
+    border-radius:50%;border:2px solid #b9b9b9;background:#fff;transition:border-color .15s ease,border-width .15s ease;}
+  .pt-mode-card.selected::before{border-color:var(--green-dark);border-width:6px;}
+  .pt-mode-card.is-disabled::before{border-color:#d6d3cb;}
+  /* The sheet is only as tall as the two cards; choosing Schedule expands it for the days and times */
+  #screen-picktime .picktime-sheet{height:auto;max-height:96%;min-height:0;}
+  #screen-picktime .picktime-sheet.is-expanded{height:96%;}
+  #screen-picktime .picktime-sheet.is-resizing{transition:transform .35s ease,height .3s ease;}
   .pt-mode-name{font-size:var(--fs-headline);font-weight:var(--fw-headline);}
   .pt-mode-sub{font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#666;font-weight:var(--fw-regular);}
   .pt-mode-card.selected{background:#eaf2ea;border-color:var(--green-dark);color:var(--green-dark);}
-  .pt-mode-card.selected .pt-mode-name::after{content:"\2713";margin-left:6px;}
   /* Step 2 (Schedule): Pick a day → Pick a time */
   .pt-schedule .section-title{margin:var(--space-intro) 0 var(--space-heading);}
   /* Day pills: today + 3 days, one row, equal widths */
@@ -533,6 +572,26 @@
     font:inherit;font-size:var(--fs-body);color:#111;text-align:left;cursor:pointer;}
   .addr-results li.is-top button,.addr-results li button:hover,.addr-results li button:focus-visible{background:#f2f2f2;}
   .addr-results .addr-empty{padding:16px 20px;font-size:var(--fs-footnote);color:#666;}
+  /* Saved addresses + "Save this address" (logged in) */
+  .addr-saved{margin-top:22px;}
+  .addr-saved.hidden,.addr-save.hidden{display:none;}
+  .addr-saved-title{font-size:var(--fs-overline);font-weight:var(--fw-overline);letter-spacing:var(--ls-overline);text-transform:uppercase;color:#8a8a8a;margin-bottom:6px;}
+  .addr-saved-list{list-style:none;margin:0 -20px;padding:0;}
+  .addr-saved-list button{display:flex;align-items:center;gap:12px;width:100%;padding:12px 20px;border:none;border-bottom:1px solid #eee;background:#fff;
+    font:inherit;text-align:left;cursor:pointer;}
+  .addr-saved-list button:hover,.addr-saved-list button:focus-visible{background:#f2f2f2;}
+  .addr-saved-list svg{flex:none;color:var(--green-mid);}
+  .addr-saved-label{display:block;font-size:var(--fs-callout);font-weight:var(--fw-semibold);color:#111;}
+  .addr-saved-addr{display:block;font-size:var(--fs-footnote);color:#666;margin-top:1px;}
+  .addr-save{margin-top:16px;padding:12px 14px;border:1px solid #ece7dc;border-radius:12px;background:#faf8f3;}
+  .addr-save-row{display:flex;align-items:center;justify-content:space-between;font-size:var(--fs-callout);color:#111;}
+  .addr-save-labels{display:flex;gap:8px;margin-top:10px;}
+  .addr-save.is-off .addr-save-labels{display:none;}
+  .addr-label-chip{border:1.5px solid #ddd;background:#fff;border-radius:999px;padding:6px 14px;font:inherit;font-size:var(--fs-footnote);
+    font-weight:var(--fw-semibold);color:var(--green-mid);cursor:pointer;}
+  .addr-label-chip.selected{border-color:var(--green-dark);background:#eaf2ea;color:var(--green-dark);}
+  html.is-desktop .addr-saved-list,html.is-desktop .addr-results{margin-left:-32px;margin-right:-32px;}
+  html.is-desktop .addr-saved-list button{padding-left:32px;padding-right:32px;}
   .addr-status{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#555;}
   .addr-status.hidden{display:none;}
   .addr-spinner{flex:none;width:14px;height:14px;border:2px solid #cfcac0;border-top-color:var(--green-mid);border-radius:50%;animation:addrspin .8s linear infinite;}
@@ -565,6 +624,9 @@
     font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#666;font-weight:var(--fw-regular);}
   /* Opened from the menu pill: dim the menu behind instead of a solid screen. */
   .screen-picktime.over-menu{background:rgba(0,0,0,.35);z-index:40;}
+  /* Start-of-order steps: dark overlay over the page underneath (kept visible by syncUnderlays) */
+  .screen-picktime:not(.over-menu){background:rgba(0,0,0,.45);}
+  .screen-picktime:not(.over-menu) .statusbar{visibility:hidden;}
   .screen-picktime.over-menu .statusbar{visibility:hidden;}
   /* Pickup timing choice (earliest / schedule later) — option cards from the design system */
   .pickup-when{display:flex;flex-direction:column;gap:var(--space-row);}
@@ -676,6 +738,13 @@
     transition:max-height .25s ease, opacity .2s ease, padding .25s ease;
   }
   .combined-filter-pill{flex:1;min-width:0;}
+  .type-filter-pill{flex:0 1 auto;}
+  .type-filter-pill:has(+ .time-filter-pill.hidden){flex:1 1 auto;}   /* Dine-in: no time selector, so the type selector takes the full width */
+  .time-filter-pill{flex:1 1 auto;}
+  .time-filter-pill .pill-clock{flex:none;color:var(--green-mid);}
+  .time-filter-pill.hidden{display:none;}
+  .time-filter-pill.is-static{cursor:default;}
+  .time-filter-pill.is-static .pill-chevron{display:none;}
   .filter-pill.combined-filter-pill{height:40px;padding:0 14px;font-weight:var(--fw-semibold);background:#ffffff;}
   .combined-filter-pill .combined-filter-sep{color:#bbb;font-weight:var(--fw-regular);}
   .combined-filter-pill span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -754,6 +823,11 @@
     cursor:pointer;
   }
   .toolbar-divider{flex:0 0 auto;width:1px;height:22px;background:#ddd;}
+  /* Category row arrows (desktop only) */
+  .cat-arrow{display:none;flex:0 0 auto;align-items:center;justify-content:center;width:36px;height:36px;border-radius:999px;
+    border:1px solid #e2ddd2;background:#fff;color:var(--green-dark);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.06);}
+  .cat-arrow:hover{border-color:var(--green-dark);}
+  .cat-arrow.is-off{visibility:hidden;}
   .cat-tab{
     flex:0 0 auto;
     border:1.5px solid transparent;
@@ -3431,7 +3505,6 @@
     border-radius:999px;
     padding:5px 12px;
   }
-  .bookmark-btn{border:none;background:none;color:#ccc;cursor:pointer;padding:2px;flex-shrink:0;align-self:flex-start;}
   .outlet-card-bottom{
     display:flex;
     align-items:center;
@@ -3444,17 +3517,6 @@
   }
   .outlet-status{display:flex;align-items:center;gap:4px;color:var(--green-mid);}
   .outlet-distance{display:flex;align-items:center;gap:4px;color:#9a9a9a;font-weight:var(--fw-regular);}
-  .outlet-preferred-row{
-    display:none;
-    align-items:center;
-    justify-content:space-between;
-    margin-top:14px;
-    padding-top:14px;
-    border-top:1px solid #ece0be;
-    font-size:var(--fs-callout);
-    color:#111;font-weight:var(--fw-regular);
-  }
-  .outlet-card.selected .outlet-preferred-row{display:flex;}
   .outlet-next-footer{
     position:absolute;
     left:0;right:0;bottom:0;
@@ -3554,7 +3616,7 @@
   html.is-desktop body{display:block;padding:0;background:#faf7f2;overflow:hidden;}
   html.is-desktop .phone{width:100%;height:100vh;border-radius:0;box-shadow:none;overflow:clip;}
   /* mobile-only chrome */
-  html.is-desktop .statusbar,html.is-desktop .browser-bar,html.is-desktop .mealdetail-topbar,html.is-desktop .landing-tabbar,html.is-desktop .screen-menu .menu-header,html.is-desktop .sheet-handle,html.is-desktop .view-toggle-btn{display:none !important;}
+  html.is-desktop .statusbar,html.is-desktop .browser-bar,html.is-desktop .mealdetail-topbar,html.is-desktop .screen-menu .menu-header,html.is-desktop .sheet-handle,html.is-desktop .view-toggle-btn{display:none !important;}
   html.is-desktop .screen{top:var(--desk-h);}
   /* ---- desktop header ---- */
   html.is-desktop .desk-header{
@@ -3565,15 +3627,31 @@
       width:100%;padding:0 24px 0 40px;
       display:flex;align-items:center;gap:36px;
     }
-  html.is-desktop .desk-logo{background:none;border:none;padding:0;cursor:pointer;display:flex;}
-  html.is-desktop .desk-logo img{height:34px;width:auto;display:block;}
-  html.is-desktop .desk-nav{display:flex;gap:4px;}
-  html.is-desktop .desk-nav button{
-      background:none;border:none;font:inherit;font-size:var(--fs-body);font-weight:var(--fw-semibold);
-      color:var(--green-dark);padding:10px 14px;border-radius:10px;cursor:pointer;
+  html.is-desktop .desk-menu-btn{display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-left:-10px;border-radius:999px;}
+  html.is-desktop .desk-menu-btn:hover{background:#f3efe4;}
+  /* side menu: no phone status bar above it on desktop */
+  html.is-desktop .sidebar-header{margin-top:0;}
+  /* desktop: log in / join lives in the header, so not repeated at the foot of the side menu */
+  html.is-desktop #sidebar-login-footer{display:none;}
+  html.is-desktop .desk-order-ctl{
+      display:flex;align-items:center;gap:8px;min-width:0;max-width:560px;height:44px;padding:0 14px 0 18px;
+      background:#fff;border:1px solid #e2e2e2;border-radius:999px;cursor:pointer;
+      font:inherit;font-size:var(--fs-callout);font-weight:var(--fw-semibold);color:var(--green-dark);transition:border-color .15s ease;
     }
-  html.is-desktop .desk-nav button:hover{background:#f3efe4;}
-  html.is-desktop .desk-nav button.active{background:#eaf2ea;}
+  html.is-desktop .desk-order-ctl.hidden{display:none;}
+  html.is-desktop .desk-order-ctl:hover{border-color:var(--green-dark);}
+  html.is-desktop .desk-order-ctl:focus-visible{outline:2px solid var(--green-dark);outline-offset:2px;}
+  html.is-desktop .desk-order-ctl > span{white-space:nowrap;}
+  html.is-desktop .desk-order-where{overflow:hidden;text-overflow:ellipsis;min-width:0;font-weight:var(--fw-regular);color:#444;}
+  html.is-desktop .desk-order-sep{color:#bbb;font-weight:var(--fw-regular);}
+  html.is-desktop .desk-order-ctl .pill-chevron{flex-shrink:0;width:20px;height:20px;transform:rotate(-90deg);margin-left:4px;}
+  html.is-desktop .desk-time-ctl{margin-left:-24px;}          /* sits next to the order type control */
+  /* Dine-in (no time control): the order type control spans the space both controls take for other types */
+  html.is-desktop .desk-order-ctl:not(.hidden):has(+ .desk-time-ctl.hidden){min-width:440px;}
+  html.is-desktop .desk-order-ctl:has(+ .desk-time-ctl.hidden) .pill-chevron{margin-left:auto;}
+  html.is-desktop .desk-time-ctl .pill-clock{flex:none;color:var(--green-mid);}
+  html.is-desktop .desk-time-ctl.is-static{cursor:default;}
+  html.is-desktop .desk-time-ctl.is-static .pill-chevron{display:none;}
   html.is-desktop .desk-actions{margin-left:auto;display:flex;align-items:center;gap:12px;}
   html.is-desktop .desk-account-btn{
       background:none;border:1.5px solid var(--green-dark);color:var(--green-dark);
@@ -3609,17 +3687,36 @@
   html.is-desktop .guest-sheet{max-height:85vh;}
   html.is-desktop .otp-overlay.open .otp-sheet,html.is-desktop .guest-overlay.open .guest-sheet,html.is-desktop .method-overlay.open .method-sheet,html.is-desktop .suggestion-overlay.open .suggestion-sheet{transform:none;opacity:1;}
   html.is-desktop .welcome-toast,html.is-desktop .suggestion-toast{left:calc(50% - 210px);right:calc(50% - 210px);top:calc(var(--desk-h) + 16px);}
-  /* ---- landing ---- */
-  html.is-desktop .screen-landing .hero{padding-top:0;justify-content:center;}
-  html.is-desktop .screen-landing .landing-logo-row{padding:0 20px 36px;}
-  html.is-desktop .screen-landing .landing-logo-color{width:230px;}
-  html.is-desktop .screen-landing .landing-body{flex:0 0 auto;width:100%;max-width:880px;margin:0 auto;padding:0 32px 40px;}
-  html.is-desktop .screen-landing .landing-account-card{padding:22px 26px;margin-bottom:24px;}
-  html.is-desktop .screen-landing .landing-tiles-row{gap:24px;margin-bottom:24px;}
-  html.is-desktop .screen-landing .landing-tile{aspect-ratio:4/3;padding:12px;transition:transform .25s ease,box-shadow .25s ease;}
-  html.is-desktop .screen-landing .landing-tile:hover{transform:translateY(-4px);box-shadow:0 18px 36px rgba(0,0,0,.18);}
-  html.is-desktop .screen-landing .landing-tile-label{font-size:var(--fs-title-3);}
-  html.is-desktop .screen-landing .landing-rewards-note{font-size:var(--fs-callout);}
+  /* Nomni loyalty landing: no Online Ordering header */
+  html.is-desktop.on-loyalty .desk-header{display:none;}
+  html.is-desktop.on-loyalty .screen-landing{top:0;}
+  html.is-desktop.on-loyalty #landing-hero{padding-top:80px;}   /* 80px above the logo (ID selector: #landing-hero sets padding-top:0) */
+  html.is-desktop #landing-hero{justify-content:flex-start;}
+  /* Sizes from the live page (OO New Design Desktop, read at 2x): 480px column, 284px logo,
+     441px account card, 410px tile pairs, ~418px Rollers Club panel and Roll'd Dollars cards */
+  html.is-desktop .screen-landing .landing-logo-row{padding:0 20px 42px;}
+  html.is-desktop .screen-landing .landing-logo-color{width:284px;}
+  html.is-desktop .screen-landing .landing-body,
+  html.is-desktop .screen-landing .landing-club{width:100%;max-width:480px;margin-left:auto;margin-right:auto;box-sizing:border-box;flex:0 0 auto;}
+  html.is-desktop .screen-landing .landing-body{padding-left:20px;padding-right:20px;}
+  html.is-desktop .screen-landing .landing-account-card{margin-bottom:60px;padding:18px 22px;}
+  html.is-desktop .screen-landing .landing-tiles-row,
+  html.is-desktop .screen-landing .landing-tiles-grid{padding:0 15px;column-gap:22px;}
+  html.is-desktop .screen-landing .landing-tiles-grid{row-gap:22px;}
+  html.is-desktop .screen-landing .landing-rewards-note{width:170px;margin:14px 56px 6px auto;}
+  html.is-desktop .screen-landing .landing-club{padding:22px 31px 28px;}
+  html.is-desktop .screen-landing .landing-bonus-heading img{max-width:330px;}
+  html.is-desktop .screen-landing .bonus-col b{font-size:30px;}
+  html.is-desktop .screen-landing .bonus-icon{width:34px;height:34px;}
+  html.is-desktop .screen-landing .landing-more{padding-top:34px;padding-bottom:56px;}
+  html.is-desktop .screen-landing .landing-links{margin:34px 10px 0;}
+  html.is-desktop .screen-landing .landing-art-tile{transition:transform .2s ease,box-shadow .2s ease;}
+  html.is-desktop .screen-landing .landing-art-tile:not([aria-disabled="true"]):hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(0,0,0,.16);}
+  /* bottom navigation, sticky, same width as the column */
+  html.is-desktop .screen-landing .landing-tabbar{
+    width:100%;max-width:480px;margin:auto auto 0;box-sizing:border-box;padding:14px 0 18px;
+  }
+  html.is-desktop .screen-landing .landing-tab:hover{color:var(--green-dark);}
   /* ---- HQ store selection ---- */
   html.is-desktop .outlet-search-topbar{max-width:880px;margin:0 auto;padding:28px 32px;}
   html.is-desktop .outlet-search-scroll{padding:32px 32px 130px;}
@@ -3628,11 +3725,43 @@
       grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;align-items:start;
     }
   html.is-desktop #outlet-group-view .outlet-group-heading{grid-column:1/-1;margin-top:8px;}
+  /* Flat list (nearby / "N stores deliver to you"): same 2-column grid; whichever view is hidden stays hidden
+     (the ID rules above would otherwise override .hidden-step) */
+  html.is-desktop #outlet-flat-view{
+      max-width:1100px;margin:0 auto;display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px;align-items:start;
+    }
+  html.is-desktop #outlet-flat-view .outlet-group-heading{grid-column:1/-1;margin-top:8px;}
+  html.is-desktop #outlet-group-view.hidden-step,
+  html.is-desktop #outlet-flat-view.hidden-step{display:none;}
   html.is-desktop .outlet-card{margin-bottom:20px;}
   html.is-desktop .outlet-next-footer{padding:16px max(32px,calc((100% - 1100px)/2)) 20px;}
   html.is-desktop .outlet-next-footer .btn-add{width:300px;margin-left:auto;justify-content:center;}
   /* ---- pick-up date & time (centred card) ---- */
   html.is-desktop .picktime-sheet-backdrop{top:0;align-items:center;justify-content:center;padding:32px;}
+  /* Order steps at the start (time sheet, room / table number, delivery address): a dimmed modal over the
+     page the order started from (landing, or the HQ store list), like the store sheet */
+  html.is-desktop .screen-picktime:not(.over-menu){top:0;z-index:35;background:rgba(0,0,0,.45);}
+  /* Sheets over the menu / checkout cover the header too, like the order-type pop-up */
+  html.is-desktop .screen-picktime.over-menu{top:0;}
+  /* Address search grows as suggestions appear: pin it near the top so the field doesn't move while typing */
+  html.is-desktop #screen-address .picktime-sheet-backdrop{align-items:flex-start;padding-top:14vh;}
+  /* "Sorry, we don't deliver here": a centred dialog over the address step, not a full-width bottom sheet */
+  html.is-desktop .addr-oor{align-items:center;justify-content:center;padding:32px;}
+  html.is-desktop .addr-oor-sheet{max-width:440px;border-radius:20px;padding:20px 32px 28px;
+      transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .2s ease;box-shadow:0 30px 80px rgba(0,0,0,.3);}
+  html.is-desktop .addr-oor.open .addr-oor-sheet{transform:none;opacity:1;}
+  /* Clear-cart confirmation (order type / store change) and "Add this order again?": centred dialogs, not bottom sheets */
+  html.is-desktop .reorder-modal-overlay{align-items:center;padding:32px;}
+  html.is-desktop .reorder-modal-card{max-width:460px;border-radius:20px;padding:24px 28px 26px;
+      transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .2s ease;box-shadow:0 30px 80px rgba(0,0,0,.3);}
+  html.is-desktop .reorder-modal-overlay.open .reorder-modal-card{transform:none;opacity:1;}
+  /* Menu loading / payment processing: the store card sits under the message, centred, not stretched along the bottom */
+  html.is-desktop .screen-payment .payment-loading-wrap{flex:0 0 auto;margin-top:auto;}
+  html.is-desktop .screen-payment .processing-order-card{width:100%;max-width:420px;box-sizing:border-box;margin:32px auto auto;}
+  /* Location permission: a compact centred dialog, not a full-width phone alert */
+  html.is-desktop .location-permission-dialog{max-width:340px;}
+  html.is-desktop #screen-picktime .picktime-sheet.is-expanded{height:auto;}
   html.is-desktop .picktime-sheet,html.is-desktop .screen-picktime.open .picktime-sheet{
       width:640px;max-width:100%;height:auto;max-height:100%;border-radius:20px;transform:none;
       border:1px solid #ece7dc;box-shadow:0 20px 50px rgba(0,0,0,.08);
@@ -3643,42 +3772,58 @@
   html.is-desktop .next-wrap .btn-primary{width:260px;margin-left:auto;display:block;}
   /* ---- menu: category sidebar | products | cart panel ---- */
   html.is-desktop .screen-menu{
-      display:grid;grid-template-columns:208px minmax(0,1fr) 340px;
-      grid-template-rows:auto auto minmax(0,1fr);
+      display:grid;grid-template-columns:minmax(0,1fr) 400px;
+      grid-template-rows:auto minmax(0,1fr);
     }
-  html.is-desktop .screen-menu .menu-filters-v2-row{grid-column:2;grid-row:1;padding:24px 32px 4px;max-height:none;}
-  html.is-desktop .screen-menu .combined-filter-pill{padding:12px 18px;}
-  html.is-desktop .screen-menu .search-bar-row{grid-column:2;grid-row:1;padding:24px 32px 4px;}
+  /* order type / time pill: changed from the header order control on desktop */
+  html.is-desktop .screen-menu .menu-filters-v2-row{display:none;}
+  /* Side margin for the menu column (column = window − 400px cart panel): 7% of it, at least 32px,
+     and never wider than a 1200px content column. Shared by the category row, search and menu so they line up. */
+  html.is-desktop .screen-menu{--menu-gutter:max(32px, calc((100vw - 400px) * .07), calc((100vw - 400px - 1200px) / 2));}
+  html.is-desktop .screen-menu .search-bar-row{grid-column:1;grid-row:1;padding:20px var(--menu-gutter) 12px;}
+  /* Categories: one row above the menu (search, then the category tabs); stays put while the menu scrolls */
   html.is-desktop .screen-menu .menu-toolbar{
-      grid-column:1;grid-row:1 / span 3;flex-direction:column;align-items:stretch;
-      padding:24px 16px 24px 24px;border-right:1px solid #ece7dc;overflow-y:auto;
+      grid-column:1;grid-row:1;padding:20px var(--menu-gutter) 12px;gap:12px;border-bottom:1px solid #ece7dc;
     }
-  html.is-desktop .screen-menu .menu-toolbar::before{
-      content:"Menu";font-size:var(--fs-overline);font-weight:var(--fw-overline);letter-spacing:var(--ls-overline);text-transform:uppercase;
-      color:#8a8a8a;padding:0 16px 10px;
-    }
-  html.is-desktop .screen-menu .cat-tab-scroll{flex-direction:column;align-items:stretch;gap:2px;overflow:visible;flex:0 0 auto;}
-  html.is-desktop .screen-menu .cat-tab{text-align:left;border:none;border-radius:10px;padding:11px 16px;}
+  html.is-desktop .screen-menu .menu-toolbar .icon-round-btn{display:flex;width:40px;height:40px;border-radius:999px;margin-left:-8px;}
+  html.is-desktop .screen-menu .menu-toolbar .icon-round-btn:hover{background:#f3efe4;}
+  html.is-desktop .screen-menu .menu-toolbar .toolbar-divider{display:block;}
+  html.is-desktop .screen-menu .cat-tab-scroll{gap:4px;flex-wrap:nowrap;overflow-x:auto;scroll-behavior:smooth;}   /* one row, scrolls sideways */
+  html.is-desktop .screen-menu .cat-arrow{display:flex;}
+  html.is-desktop .screen-menu .cat-tab{border:none;border-radius:999px;padding:9px 12px;font-size:var(--fs-headline);}
   html.is-desktop .screen-menu .cat-tab:hover{background:#f3efe4;}
   html.is-desktop .screen-menu .cat-tab.selected{background:#eaf2ea;color:var(--green-dark);}
-  html.is-desktop .screen-menu .menu-body{grid-column:2;grid-row:2 / span 2;padding:8px 32px 48px;border-top:none;min-height:0;}
-  html.is-desktop .screen-menu .recommend-scroll{margin:0 -32px;padding:0 32px 4px;scroll-padding-left:32px;}
-  /* desktop: multi-column card grid (image on top), as many columns as fit;
-     overrides the mobile list view, whose toggle is hidden on desktop */
+  html.is-desktop .screen-menu .menu-body{grid-column:1;grid-row:2;padding:28px var(--menu-gutter) 48px;border-top:none;min-height:0;}
+  html.is-desktop .screen-menu .recommend-scroll{margin:0 calc(-1 * var(--menu-gutter));padding:0 var(--menu-gutter) 4px;scroll-padding-left:var(--menu-gutter);}
+  /* desktop: horizontal cards (thumbnail left, details right) in 3 columns; 2 on narrower windows where 3 would squeeze the text.
+     The mobile list / grid toggle is hidden on desktop. */
   html.is-desktop #menu-body-scroll .meal-grid,
-  html.is-desktop #menu-body-scroll.list-view .meal-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px;}
-  html.is-desktop #menu-body-scroll.list-view .meal-card{display:block;}
-  html.is-desktop #menu-body-scroll.list-view .meal-card:hover{transform:translateY(-4px);}
-  html.is-desktop #menu-body-scroll.list-view .meal-thumb{width:100%;height:auto;aspect-ratio:1/1;}
-  html.is-desktop #menu-body-scroll.list-view .meal-card-info{padding:12px 12px 16px;}
+  html.is-desktop #menu-body-scroll.list-view .meal-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  html.is-desktop #menu-body-scroll .meal-card{display:flex;flex-direction:row;align-items:stretch;transition:box-shadow .15s ease,border-color .15s ease;}
+  html.is-desktop #menu-body-scroll .meal-card:hover{transform:none;box-shadow:0 8px 20px rgba(0,0,0,.08);}
+  /* thumbnail: 90×90 square, inset 8px from the card edge and centred vertically */
+  html.is-desktop #menu-body-scroll .meal-card{align-items:center;min-height:106px;}   /* 90px picture + 8px all round */
+  html.is-desktop #menu-body-scroll .meal-thumb{position:relative;width:90px;height:90px;aspect-ratio:1/1;flex:0 0 auto;margin-left:8px;border-radius:10px;overflow:hidden;}
+  html.is-desktop #menu-body-scroll .meal-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  html.is-desktop #menu-body-scroll .meal-card-info{flex:1;min-width:0;padding:12px 14px;}
+  @media (max-width:1359px){   /* below ~1360px, 3 columns would leave too little room for the text */
+    html.is-desktop #menu-body-scroll .meal-grid,
+    html.is-desktop #menu-body-scroll.list-view .meal-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
   html.is-desktop .screen-menu .menu-cart-bar-wrap{display:none !important;}
   html.is-desktop .desk-cart{
-      display:flex;flex-direction:column;grid-column:3;grid-row:1 / span 3;min-height:0;
+      display:flex;flex-direction:column;grid-column:2;grid-row:1 / span 2;min-height:0;
       background:#fff;border-left:1px solid #ece7dc;
     }
   html.is-desktop .desk-cart-head{padding:24px 24px 8px;}
   html.is-desktop .desk-cart-head h2{margin:0;font-size:var(--fs-title-2);font-weight:var(--fw-title-2);color:var(--green-dark);}
-  html.is-desktop .desk-cart-method{margin-top:4px;font-size:var(--fs-footnote);color:#8a8a8a;font-weight:var(--fw-regular);}
+  html.is-desktop .desk-cart-method{
+      display:flex;margin:14px 0 8px;padding:14px 16px;border:1px solid #e2e2e2;border-radius:14px;
+    }
+  html.is-desktop .desk-cart-method-text{flex:1;min-width:0;display:flex;flex-direction:column;}
+  html.is-desktop .desk-cart-method-type{font-size:var(--fs-overline);font-weight:var(--fw-overline);letter-spacing:var(--ls-overline);text-transform:uppercase;color:#8a8a8a;}
+  html.is-desktop .desk-cart-method-time{margin-top:2px;font-size:var(--fs-callout);font-weight:var(--fw-callout);color:var(--green-dark);}
+  html.is-desktop .desk-cart-method-where{margin-top:2px;font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#666;font-weight:var(--fw-regular);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   html.is-desktop .desk-cart-list{flex:1;overflow-y:auto;padding:0 24px;}
   html.is-desktop .desk-cart-list .cart-order-card{margin-bottom:0;}
   html.is-desktop .desk-cart-empty{padding:40px 12px;text-align:center;color:#8a8a8a;font-size:var(--fs-callout);line-height:var(--lh-callout);font-weight:var(--fw-regular);}
@@ -3698,6 +3843,19 @@
   html.is-desktop .screen-cart .cart-header .back-btn{left:max(20px,calc((100% - var(--desk-col))/2 - 52px));top:50%;transform:translateY(-50%);}
   html.is-desktop .screen-cart .cart-scroll{padding:28px max(32px,calc((100% - var(--desk-col))/2)) 150px;}
   html.is-desktop .screen-cart .cart-footer{padding:16px max(32px,calc((100% - var(--desk-col))/2)) 24px;}
+  /* Checkout: two columns — details left, order summary + Pay right (sticky). Nodes are arranged by layoutCheckouts(). */
+  .checkout-ph{display:none;}
+  html.is-desktop .screen-cart .cart-scroll.checkout-cols{
+      display:grid;grid-template-columns:minmax(0,1fr) 400px;column-gap:48px;align-items:start;
+      padding:28px max(32px,calc((100% - 1100px)/2)) 48px;
+    }
+  html.is-desktop .checkout-main{min-width:0;}
+  html.is-desktop .checkout-main .cart-group-divider{margin-left:0;margin-right:0;}
+  html.is-desktop .checkout-side{position:sticky;top:0;background:#fff;border:1px solid #ece7dc;border-radius:16px;padding:20px 20px 18px;}
+  html.is-desktop .checkout-side .checkout-summary-box{margin-bottom:16px !important;}
+  html.is-desktop .checkout-side .cart-group-divider{display:none;}
+  html.is-desktop .checkout-side [id$="coupons-section"]{margin:0 0 18px;padding-top:16px;border-top:1px solid #f0ece3;}
+  html.is-desktop .screen-cart .checkout-side .cart-footer{position:static;padding:0;box-shadow:none;background:none;}
 </style>
 </head>
 <body id="app-body">
@@ -3709,13 +3867,24 @@
        on desktop. Hidden on mobile via .desk-header{display:none}. -->
   <header class="desk-header" id="desk-header">
     <div class="desk-header-inner">
-      <button class="desk-logo" onclick="deskNav('home')" aria-label="Roll’d home"><img src="Rolld Logo Color.png" alt="Roll’d Vietnamese"></button>
-      <nav class="desk-nav">
-        <button data-desk-nav="home" onclick="deskNav('home')">Home</button>
-        <button data-desk-nav="order" onclick="deskNav('order')">Order</button>
-        <button data-desk-nav="catering" onclick="deskNav('catering')">Catering</button>
-        <button data-desk-nav="rewards" onclick="deskNav('account')">Rewards</button>
-      </nav>
+      <!-- Side menu, same as mobile (store, Home, Rewards, Order Now, account); the logo lives inside it -->
+      <button class="hamburger-btn desk-menu-btn" onclick="openSidebar()" aria-label="Open menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <!-- Current order (type · store or address · time): the desktop entry point for changing it.
+           Opens the same order-type sheet as the mobile menu pill; shown once an order is set up. -->
+      <button type="button" class="desk-order-ctl hidden" id="desk-order-ctl" onclick="openOrderFromHeader()" aria-label="Change order type and time">
+        <span class="desk-order-type" id="desk-order-type">Pick up</span>
+        <span class="desk-order-sep" aria-hidden="true">&middot;</span>
+        <span class="desk-order-where" id="desk-order-where">Roll&rsquo;d Geelong</span>
+        <img class="pill-chevron" src="Icon Back.svg" width="20" height="20" alt="" aria-hidden="true">
+      </button>
+      <!-- Date & time: its own control (team review 6 Oct) -->
+      <button type="button" class="desk-order-ctl desk-time-ctl hidden" id="desk-time-ctl" onclick="openTimeFromHeader()" aria-label="Change date and time">
+        <svg class="pill-clock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span class="desk-order-time" id="desk-order-time">ASAP</span>
+        <img class="pill-chevron" src="Icon Back.svg" width="20" height="20" alt="" aria-hidden="true">
+      </button>
       <div class="desk-actions">
         <button class="desk-account-btn" id="desk-account-btn" onclick="deskNav('account')">Log in / Join</button>
         <button class="desk-cart-btn" onclick="deskNav('cart')" aria-label="View cart">
@@ -3747,21 +3916,42 @@
 
       <div class="landing-logo-row"><img class="landing-logo-color" src="Rolld Logo Color.png" alt="Roll’d Vietnamese"></div>
 
+      <!-- Landing per the live Roll'd home page (OO New Design Desktop/loyalty-nomnie-rolld-landing page, 6 Oct).
+           Artwork cropped from that design into assets-landing/; text, account card and Roll'd Dollars cards are HTML. -->
       <div class="landing-body">
+        <!-- Order in progress (cart has items): back to the menu with everything kept -->
+        <button type="button" class="landing-resume hidden" id="landing-resume" onclick="resumeOrder()">
+          <span class="landing-resume-text">
+            <span class="landing-resume-title">Continue your order</span>
+            <span class="landing-resume-sub" id="landing-resume-sub">Pick up · 1 item · $0.00</span>
+          </span>
+          <span class="landing-resume-cta">Continue
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+          </span>
+        </button>
         <div class="landing-account-card" onclick="onLandingAccountClick()">
           <div id="landing-account-loggedout">
             <div class="landing-account-row">
+              <img class="landing-leaf" src="assets-landing/leaf.png" alt="" aria-hidden="true">
               <div>
-                <div class="landing-account-title">Join Roll’d Rollers</div>
-                <div class="landing-account-sub">Log in or sign up to start earning rewards</div>
+                <div class="landing-account-title">Xin chào (Hello)</div>
+                <div class="landing-account-sub">Sign in to view membership</div>
               </div>
+            </div>
+            <div class="landing-join-row">
+              <span>
+                <span class="landing-join-title">Join Rollers Club Now!</span>
+                <span class="landing-join-sub">Earn instantly, with every purchase</span>
+              </span>
+              <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             </div>
           </div>
           <div id="landing-account-loggedin" class="hidden">
             <div class="landing-account-row">
+              <img class="landing-leaf" src="assets-landing/leaf.png" alt="" aria-hidden="true">
               <div>
-                <div class="landing-account-title">Hi, <span id="landing-account-name">Adeline</span></div>
-                <div class="landing-account-sub">Roll’d Rollers Member</div>
+                <div class="landing-account-title">Xin chào, <span id="landing-account-name">Adeline</span></div>
+                <div class="landing-account-sub">Rollers Club member</div>
               </div>
             </div>
             <div class="landing-dollars-row">
@@ -3772,17 +3962,82 @@
         </div>
 
         <div class="landing-tiles-row">
-          <button class="landing-tile" onclick="startOrder()">
-            <img src="assets-pho/seafood.jpg" alt="Order now">
-            <span class="landing-tile-label">Order</span>
-          </button>
-          <button class="landing-tile" onclick="startOrder()">
-            <img src="Bao.png" alt="Catering" style="object-fit:contain;background:#fff;">
-            <span class="landing-tile-label">Catering</span>
-          </button>
+          <button class="landing-art-tile" onclick="startOrder()"><img src="assets-landing/order.jpg" alt="Order now"></button>
+          <button class="landing-art-tile" onclick="startOrder()"><img src="assets-landing/catering.jpg" alt="Catering"></button>
         </div>
+        <img class="landing-rewards-note" src="assets-landing/rewards-note.png" alt="Seen our NEW Rewards Club? Check it out!">
+      </div>
 
-        <div class="landing-rewards-note">Seen our NEW Rewards Club? Check it out! ↘</div>
+      <section class="landing-club" aria-label="Rollers Club">
+        <button class="landing-club-card" onclick="onLandingAccountClick()">
+          <img src="assets-landing/rollers-club.png" alt="Rollers Club: earn rewards, access exclusive offers, access bonus Roll’d Dollars, skip the queue. Find out more">
+        </button>
+        <h2 class="landing-bonus-heading"><img src="assets-landing/bonus-heading.png" alt="Get more value with bonus Roll’d Dollars"></h2>
+        <p class="landing-bonus-intro">Buy now, eat more later!<br>Earn bonus when you buy food upfront.<br>Tap now to purchase.</p>
+        <div class="bonus-list">
+          <div class="bonus-card">
+            <span class="bonus-limit">Max 1 per customer.</span>
+            <div class="bonus-main">
+              <span class="bonus-col"><small>Buy</small><b>$1000</b></span>
+              <img class="bonus-icon" src="assets-landing/rolld-dollar.png" alt="" aria-hidden="true">
+              <span class="bonus-col bonus-get"><small>Bonus</small><b>$250</b></span>
+            </div>
+            <div class="bonus-foot">For use between 2:00pm to 11:59pm daily</div>
+          </div>
+          <div class="bonus-card">
+            <span class="bonus-limit">Max 1 per customer.</span>
+            <div class="bonus-main">
+              <span class="bonus-col"><small>Buy</small><b>$20</b></span>
+              <img class="bonus-icon" src="assets-landing/rolld-dollar.png" alt="" aria-hidden="true">
+              <span class="bonus-col bonus-get"><small>Bonus</small><b>$10</b></span>
+            </div>
+          </div>
+          <div class="bonus-card">
+            <span class="bonus-limit">Max 1 per customer.</span>
+            <div class="bonus-main">
+              <span class="bonus-col"><small>Buy</small><b>$50</b></span>
+              <img class="bonus-icon" src="assets-landing/rolld-dollar.png" alt="" aria-hidden="true">
+              <span class="bonus-col bonus-get"><small>Bonus</small><b>$10</b></span>
+            </div>
+          </div>
+          <div class="bonus-card">
+            <span class="bonus-limit">Max 1 per customer.</span>
+            <div class="bonus-main">
+              <span class="bonus-col"><small>Buy</small><b>$100</b></span>
+              <img class="bonus-icon" src="assets-landing/rolld-dollar.png" alt="" aria-hidden="true">
+              <span class="bonus-col bonus-get"><small>Bonus</small><b>$20</b></span>
+            </div>
+          </div>
+          <div class="bonus-card">
+            <span class="bonus-limit">Max 1 per customer.</span>
+            <div class="bonus-main">
+              <span class="bonus-col"><small>Buy</small><b>$500</b></span>
+              <img class="bonus-icon" src="assets-landing/rolld-dollar.png" alt="" aria-hidden="true">
+              <span class="bonus-col bonus-get"><small>Bonus</small><b>$100</b></span>
+            </div>
+          </div>
+        </div>
+        <p class="landing-bonus-note">These <b>Roll’d Dollars</b> are available to spend at all participating <b>Roll’d AU Vietnamese</b> locations with <b>no expiry.</b></p>
+      </section>
+
+      <div class="landing-body landing-more">
+        <div class="landing-tiles-grid">
+          <button class="landing-art-tile" aria-disabled="true"><img src="assets-landing/gift-shop.jpg" alt="Gift shop, coming soon"></button>
+          <button class="landing-art-tile" aria-disabled="true"><img src="assets-landing/schools.jpg" alt="Roll’d Schools, coming soon"></button>
+          <button class="landing-art-tile"><img src="assets-landing/careers.jpg" alt="Careers"></button>
+          <button class="landing-art-tile"><img src="assets-landing/franchise.jpg" alt="Franchise"></button>
+        </div>
+        <div class="landing-links">
+          <button><img src="assets-landing/promotions.png" alt="Promotions"></button>
+          <button><img src="assets-landing/nutrition.png" alt="Nutritional information"></button>
+          <button><img src="assets-landing/need-help.png" alt="Need help?"></button>
+        </div>
+        <div class="landing-social">
+          <a href="#" aria-label="Facebook" onclick="return false"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8z"/></svg></a>
+          <a href="#" aria-label="Instagram" onclick="return false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="TikTok" onclick="return false"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.4 2.3 1.9 3.8 4 4v3.2c-1.5 0-2.9-.5-4-1.2v6.6c0 3.4-2.7 6-6 6s-6-2.6-6-6 2.7-6 6-6c.3 0 .6 0 .9.1v3.3a2.8 2.8 0 1 0 1.9 2.6V3h3.2z"/></svg></a>
+          <a href="#" aria-label="YouTube" onclick="return false"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M22 8.2c-.2-1.6-1-2.6-2.6-2.8C17.2 5 12 5 12 5s-5.2 0-7.4.4C3 5.6 2.2 6.6 2 8.2 1.8 9.4 1.8 12 1.8 12s0 2.6.2 3.8c.2 1.6 1 2.6 2.6 2.8 2.2.4 7.4.4 7.4.4s5.2 0 7.4-.4c1.6-.2 2.4-1.2 2.6-2.8.2-1.2.2-3.8.2-3.8s0-2.6-.2-3.8zM10 15V9l5.2 3L10 15z"/></svg></a>
+        </div>
       </div>
 
       <div class="landing-tabbar">
@@ -3790,13 +4045,13 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
           Home
         </button>
-        <button class="landing-tab" onclick="startOrder()">
-          <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M28.5 4.5c-.55 0-1 .45-1 1v11c0 1.65 1.35 3 3 3h2v24c0 .55.45 1 1 1s1-.45 1-1v-24h2c1.65 0 3-1.35 3-3v-11c0-.55-.45-1-1-1s-1 .45-1 1v11c0 .55-.45 1-1 1h-2v-12c0-.55-.45-1-1-1s-1 .45-1 1v12h-2c-.55 0-1-.45-1-1v-11C29.5 4.95 29.05 4.5 28.5 4.5zM22.5 14c0-5.89-3.07-10.5-7-10.5s-7 4.61-7 10.5c0 4.65 1.92 8.49 4.66 9.91L12.5 41.5c0 .81.32 1.57.87 2.11.56.58 1.32.89 2.13.89 1.65 0 3-1.35 3-3.04l-.66-17.56C20.58 22.49 22.5 18.65 22.5 14zM15.5 42.5c-.27 0-.51-.1-.71-.31-.19-.18-.29-.43-.29-.66l.64-17.06c.12.01.24.03.36.03s.24-.02.36-.03L16.5 41.5C16.5 42.05 16.05 42.5 15.5 42.5zM15.5 22.5c-2.71 0-5-3.89-5-8.5s2.29-8.5 5-8.5 5 3.89 5 8.5S18.21 22.5 15.5 22.5z" fill="currentColor"></path></svg>
-          Order
-        </button>
         <button class="landing-tab" onclick="onLandingAccountClick()">
-          <svg width="20" height="20" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4.8" xmlns="http://www.w3.org/2000/svg"><path d="M44.14 17.16a9.4 9.4 0 0 0 1.13-.68c2.92-2.05 3.82-5.82 2-8.4s-5.66-3-8.58-.93-4.42 5.73-6.05 10zM8.7 30.46H55.31a0 0 0 0 1 0 0v23.7a4 4 0 0 1-4 4H12.7a4 4 0 0 1-4-4V30.46A0 0 0 0 1 8.7 30.46z"></path><rect width="11.7" height="27.7" x="26.15" y="30.46"></rect><path d="M19.86,17.16a8.57,8.57,0,0,1-1.12-.68c-2.92-2.05-3.83-5.82-2-8.4s5.66-3,8.59-.93,4.41,5.73,6.05,10Z"></path><rect width="51" height="13.3" x="6.5" y="17.16" rx="3"></rect><rect width="13.83" height="13.3" x="25.09" y="17.16"></rect></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg>
           Rewards
+        </button>
+        <button class="landing-tab">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+          Instagram
         </button>
       </div>
     </div>
@@ -3830,25 +4085,26 @@
       <div class="landing-body">
         <div class="landing-account-card">
           <div class="landing-account-row">
+            <img class="landing-leaf" src="assets-landing/leaf.png" alt="" aria-hidden="true">
             <div>
-              <div class="landing-account-title">Join Roll’d Rollers</div>
-              <div class="landing-account-sub">Log in or sign up to start earning rewards</div>
+              <div class="landing-account-title">Xin chào (Hello)</div>
+              <div class="landing-account-sub">Sign in to view membership</div>
             </div>
+          </div>
+          <div class="landing-join-row">
+            <span>
+              <span class="landing-join-title">Join Rollers Club Now!</span>
+              <span class="landing-join-sub">Earn instantly, with every purchase</span>
+            </span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
           </div>
         </div>
 
         <div class="landing-tiles-row">
-          <div class="landing-tile">
-            <img src="assets-pho/seafood.jpg" alt="Order now">
-            <span class="landing-tile-label">Order</span>
-          </div>
-          <div class="landing-tile">
-            <img src="Bao.png" alt="Catering" style="object-fit:contain;background:#fff;">
-            <span class="landing-tile-label">Catering</span>
-          </div>
+          <div class="landing-art-tile"><img src="assets-landing/order.jpg" alt=""></div>
+          <div class="landing-art-tile"><img src="assets-landing/catering.jpg" alt=""></div>
         </div>
-
-        <div class="landing-rewards-note">Seen our NEW Rewards Club? Check it out! ↘</div>
+        <img class="landing-rewards-note" src="assets-landing/rewards-note.png" alt="">
       </div>
 
       <div class="landing-tabbar">
@@ -4083,25 +4339,26 @@
       <div class="landing-body">
         <div class="landing-account-card">
           <div class="landing-account-row">
+            <img class="landing-leaf" src="assets-landing/leaf.png" alt="" aria-hidden="true">
             <div>
-              <div class="landing-account-title">Join Roll’d Rollers</div>
-              <div class="landing-account-sub">Log in or sign up to start earning rewards</div>
+              <div class="landing-account-title">Xin chào (Hello)</div>
+              <div class="landing-account-sub">Sign in to view membership</div>
             </div>
+          </div>
+          <div class="landing-join-row">
+            <span>
+              <span class="landing-join-title">Join Rollers Club Now!</span>
+              <span class="landing-join-sub">Earn instantly, with every purchase</span>
+            </span>
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
           </div>
         </div>
 
         <div class="landing-tiles-row">
-          <div class="landing-tile">
-            <img src="assets-pho/seafood.jpg" alt="Order now">
-            <span class="landing-tile-label">Order</span>
-          </div>
-          <div class="landing-tile">
-            <img src="Bao.png" alt="Catering" style="object-fit:contain;background:#fff;">
-            <span class="landing-tile-label">Catering</span>
-          </div>
+          <div class="landing-art-tile"><img src="assets-landing/order.jpg" alt=""></div>
+          <div class="landing-art-tile"><img src="assets-landing/catering.jpg" alt=""></div>
         </div>
-
-        <div class="landing-rewards-note">Seen our NEW Rewards Club? Check it out! ↙</div>
+        <img class="landing-rewards-note" src="assets-landing/rewards-note.png" alt="">
       </div>
 
       <div class="landing-tabbar">
@@ -4180,9 +4437,6 @@
               <span class="outlet-tag">Delivery</span>
             </div>
           </div>
-          <button class="bookmark-btn" onclick="event.stopPropagation()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
-          </button>
         </div>
         <div class="outlet-card-bottom">
           <span class="outlet-status">
@@ -4194,10 +4448,6 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             4.34 km
           </span>
-        </div>
-        <div class="outlet-preferred-row">
-          <span>Set as preferred store</span>
-          <span class="toggle-switch" onclick="event.stopPropagation(); this.classList.toggle('on')"><span class="toggle-knob"></span></span>
         </div>
       </div>
       <div class="outlet-card" data-outlet="parkville" onclick="selectOutlet(this)">
@@ -4213,9 +4463,6 @@
               <span class="outlet-tag">Delivery</span>
             </div>
           </div>
-          <button class="bookmark-btn" onclick="event.stopPropagation()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
-          </button>
         </div>
         <div class="outlet-card-bottom">
           <span class="outlet-status">
@@ -4227,10 +4474,6 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             7.30 km
           </span>
-        </div>
-        <div class="outlet-preferred-row">
-          <span>Set as preferred store</span>
-          <span class="toggle-switch" onclick="event.stopPropagation(); this.classList.toggle('on')"><span class="toggle-knob"></span></span>
         </div>
       </div>
         <div class="outlet-group-heading">Victoria <span class="count">3 outlets</span></div>
@@ -4247,9 +4490,6 @@
               <span class="outlet-tag">Delivery</span>
             </div>
           </div>
-          <button class="bookmark-btn" onclick="event.stopPropagation()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
-          </button>
         </div>
         <div class="outlet-card-bottom">
           <span class="outlet-status">
@@ -4261,10 +4501,6 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             7.30 km
           </span>
-        </div>
-        <div class="outlet-preferred-row">
-          <span>Set as preferred store</span>
-          <span class="toggle-switch" onclick="event.stopPropagation(); this.classList.toggle('on')"><span class="toggle-knob"></span></span>
         </div>
       </div>
       <div class="outlet-card" data-outlet="goldsborough" onclick="selectOutlet(this)">
@@ -4280,9 +4516,6 @@
               <span class="outlet-tag">Delivery</span>
             </div>
           </div>
-          <button class="bookmark-btn" onclick="event.stopPropagation()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
-          </button>
         </div>
         <div class="outlet-card-bottom">
           <span class="outlet-status">
@@ -4294,10 +4527,6 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             7.30 km
           </span>
-        </div>
-        <div class="outlet-preferred-row">
-          <span>Set as preferred store</span>
-          <span class="toggle-switch" onclick="event.stopPropagation(); this.classList.toggle('on')"><span class="toggle-knob"></span></span>
         </div>
       </div>
       </div>
@@ -4317,9 +4546,6 @@
               <span class="outlet-tag">Delivery</span>
             </div>
           </div>
-          <button class="bookmark-btn" onclick="event.stopPropagation()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
-          </button>
         </div>
         <div class="outlet-card-bottom">
           <span class="outlet-status">
@@ -4331,10 +4557,6 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             4.34 km
           </span>
-        </div>
-        <div class="outlet-preferred-row">
-          <span>Set as preferred store</span>
-          <span class="toggle-switch" onclick="event.stopPropagation(); this.classList.toggle('on')"><span class="toggle-knob"></span></span>
         </div>
       </div>
       <div class="outlet-card" data-outlet="lonsdale" onclick="selectOutlet(this)">
@@ -4350,9 +4572,6 @@
               <span class="outlet-tag">Delivery</span>
             </div>
           </div>
-          <button class="bookmark-btn" onclick="event.stopPropagation()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
-          </button>
         </div>
         <div class="outlet-card-bottom">
           <span class="outlet-status">
@@ -4364,10 +4583,6 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             4.34 km
           </span>
-        </div>
-        <div class="outlet-preferred-row">
-          <span>Set as preferred store</span>
-          <span class="toggle-switch" onclick="event.stopPropagation(); this.classList.toggle('on')"><span class="toggle-knob"></span></span>
         </div>
       </div>
       <div class="outlet-card" data-outlet="parkville-flat" onclick="selectOutlet(this)">
@@ -4383,9 +4598,6 @@
               <span class="outlet-tag">Delivery</span>
             </div>
           </div>
-          <button class="bookmark-btn" onclick="event.stopPropagation()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
-          </button>
         </div>
         <div class="outlet-card-bottom">
           <span class="outlet-status">
@@ -4397,10 +4609,6 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             7.30 km
           </span>
-        </div>
-        <div class="outlet-preferred-row">
-          <span>Set as preferred store</span>
-          <span class="toggle-switch" onclick="event.stopPropagation(); this.classList.toggle('on')"><span class="toggle-knob"></span></span>
         </div>
       </div>
       <div class="outlet-card" data-outlet="spencer" data-closed-for="pickup" data-next-open="Opens Thu 17 Jun, 10:00 AM" onclick="selectOutlet(this)">
@@ -4416,9 +4624,6 @@
               <span class="outlet-tag">Delivery</span>
             </div>
           </div>
-          <button class="bookmark-btn" onclick="event.stopPropagation()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v16l-6-4-6 4V4z"/></svg>
-          </button>
         </div>
         <div class="outlet-card-bottom">
           <span class="outlet-status">
@@ -4430,10 +4635,6 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
             8.10 km
           </span>
-        </div>
-        <div class="outlet-preferred-row">
-          <span>Set as preferred store</span>
-          <span class="toggle-switch" onclick="event.stopPropagation(); this.classList.toggle('on')"><span class="toggle-knob"></span></span>
         </div>
       </div>
       </div>
@@ -4484,7 +4685,7 @@
                slots only). "Select" confirms and closes. -->
           <h2 class="pickup-sheet-title t-title-2">Pickup time</h2>
           <div class="pickup-store-hours">
-            <span>Roll&rsquo;d Geelong &middot; Open today until 9:00 PM</span>
+            <span><span id="picktime-store">Roll&rsquo;d Geelong</span> &middot; Open today until 9:00 PM</span>
           </div>
 
           <!-- Step 1: ASAP or Schedule -->
@@ -4509,8 +4710,6 @@
               <button class="date-pill" data-date="Sat 19 Jun" onclick="selectPickupDate(this)"><span>SAT</span><span class="day-num">19</span><span>JUN</span></button>
             </div>
             <h3 class="section-title">Pick a time</h3>
-            <!-- Today only, when ASAP is offered: anything sooner than the first slot is ASAP's job -->
-            <p class="pt-sooner hidden" id="pt-sooner">Need it sooner? <button type="button" class="pt-sooner-link" onclick="selectPickupMode('asap')">Choose ASAP</button></p>
           </div>
 
           <div class="time-grid" id="time-grid">
@@ -4619,6 +4818,23 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
             <span>Use current location</span>
           </button>
+          <!-- Saved addresses (logged in, field empty): one tap runs the same delivery check -->
+          <div class="addr-saved hidden" id="addr-saved">
+            <div class="addr-saved-title">Saved addresses</div>
+            <ul class="addr-saved-list" id="addr-saved-list"></ul>
+          </div>
+          <!-- Logged in, typing a new address: save it with a label when it's picked -->
+          <div class="addr-save hidden" id="addr-save">
+            <div class="addr-save-row">
+              <span>Save this address</span>
+              <span class="toggle-switch on" id="addr-save-toggle" role="switch" aria-checked="true" tabindex="0" onclick="toggleAddrSave()" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleAddrSave();}"><span class="toggle-knob"></span></span>
+            </div>
+            <div class="addr-save-labels" id="addr-save-labels" role="radiogroup" aria-label="Save as">
+              <button type="button" class="addr-label-chip selected" role="radio" aria-checked="true" onclick="pickAddrLabel(this)">Home</button>
+              <button type="button" class="addr-label-chip" role="radio" aria-checked="false" onclick="pickAddrLabel(this)">Work</button>
+              <button type="button" class="addr-label-chip" role="radio" aria-checked="false" onclick="pickAddrLabel(this)">Other</button>
+            </div>
+          </div>
           <ul class="addr-results" id="addr-results" role="listbox" aria-label="Matching addresses"></ul>
           <div class="addr-status hidden" id="addr-status" role="status" aria-live="polite"></div>
         </div>
@@ -4731,11 +4947,15 @@
       <button class="icon-round-btn" onclick="openSearchPage()" aria-label="Search menu">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       </button>
-      <button class="filter-pill combined-filter-pill" onclick="openPickupTimeFromMenu()">
-        <span class="method-filter-label">Pick up</span>
-        <span class="combined-filter-sep">&middot;</span>
-        <span class="pickup-time-label">ASAP · ~8:30 AM</span>
+      <!-- Order type and date & time are separate selectors (team review 6 Oct). Changing the type clears the time and the cart. -->
+      <button class="filter-pill combined-filter-pill type-filter-pill" onclick="openPickupTimeFromMenu()" aria-label="Change order type">
+        <span class="method-filter-label">Pick up</span><span class="menu-type-extra" id="menu-type-extra"></span>
         <!-- Icon Back.svg turned -90deg so the left chevron points down -->
+        <img class="pill-chevron" src="Icon Back.svg" width="20" height="20" alt="" aria-hidden="true">
+      </button>
+      <button class="filter-pill combined-filter-pill time-filter-pill" id="menu-time-pill" onclick="openTimeFromMenu()" aria-label="Change date and time">
+        <svg class="pill-clock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span class="pickup-time-label">ASAP · ~8:30 AM</span>
         <img class="pill-chevron" src="Icon Back.svg" width="20" height="20" alt="" aria-hidden="true">
       </button>
     </div>
@@ -4745,7 +4965,9 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       </button>
       <span class="toolbar-divider"></span>
-      <div class="cat-tab-scroll">
+      <!-- Desktop: one row that scrolls sideways; the arrows show only when there is more that way -->
+      <button type="button" class="cat-arrow cat-arrow-prev is-off" id="cat-arrow-prev" onclick="scrollCatRow(-1)" aria-label="Previous categories"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="cat-tab-scroll" id="menu-cat-row">
         <button class="cat-tab selected" onclick="selectCatTab(this)">Meal deals</button>
         <button class="cat-tab" onclick="selectCatTab(this)">Pho</button>
         <button class="cat-tab" onclick="selectCatTab(this)">Bao</button>
@@ -4755,6 +4977,7 @@
         <button class="cat-tab" onclick="selectCatTab(this)">Sides</button>
         <button class="cat-tab" onclick="selectCatTab(this)">Drinks</button>
       </div>
+      <button type="button" class="cat-arrow cat-arrow-next is-off" id="cat-arrow-next" onclick="scrollCatRow(1)" aria-label="More categories"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
       <button type="button" class="view-toggle-btn" id="menu-view-toggle" onclick="toggleMenuView()" aria-label="Switch to grid view" aria-pressed="true">
         <svg id="menu-view-toggle-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
       </button>
@@ -4918,7 +5141,7 @@
       </div>
     </div>
 
-    <div id="menu-section-pho" class="hidden-step">
+    <div id="menu-section-pho">
       <h2 class="menu-section-title">Pho</h2>
       <div class="meal-grid">
         <div class="meal-card" data-allergens="crustacean,fish,mollusc,soy" onclick="openMealDetail(this)">
@@ -4953,7 +5176,7 @@
         </div>
       </div>
     </div>
-    <div id="menu-section-bao" class="hidden-step">
+    <div id="menu-section-bao">
       <h2 class="menu-section-title">Bao</h2>
       <div class="meal-grid">
         <div class="meal-card" data-allergens="gluten,soy,sesame" onclick="openMealDetail(this)">
@@ -5000,7 +5223,7 @@
         </div>
       </div>
     </div>
-    <div id="menu-section-noodlesoups" class="hidden-step">
+    <div id="menu-section-noodlesoups">
       <h2 class="menu-section-title">Noodle Soups</h2>
       <div class="meal-grid">
         <div class="meal-card" onclick="openMealDetail(this)">
@@ -5017,7 +5240,7 @@
         </div>
       </div>
     </div>
-    <div id="menu-section-banhmi" class="hidden-step">
+    <div id="menu-section-banhmi">
       <h2 class="menu-section-title">Banh Mi</h2>
       <div class="meal-grid">
         <div class="meal-card" onclick="openMealDetail(this)">
@@ -5058,7 +5281,7 @@
         </div>
       </div>
     </div>
-    <div id="menu-section-ricepaperrolls" class="hidden-step">
+    <div id="menu-section-ricepaperrolls">
       <h2 class="menu-section-title">Rice Paper Rolls</h2>
       <div class="meal-grid">
         <div class="meal-card" onclick="openMealDetail(this)">
@@ -5111,7 +5334,7 @@
         </div>
       </div>
     </div>
-    <div id="menu-section-sides" class="hidden-step">
+    <div id="menu-section-sides">
       <h2 class="menu-section-title">Sides</h2>
       <div class="meal-grid">
         <div class="meal-card" onclick="openMealDetail(this)">
@@ -5134,7 +5357,7 @@
         </div>
       </div>
     </div>
-    <div id="menu-section-drinks" class="hidden-step">
+    <div id="menu-section-drinks">
       <h2 class="menu-section-title">Drinks</h2>
       <div class="meal-grid">
         <div class="meal-card" onclick="openMealDetail(this)">
@@ -5181,7 +5404,14 @@
     <aside class="desk-cart" id="desk-cart">
       <div class="desk-cart-head">
         <h2>Your order</h2>
-        <div class="desk-cart-method" id="desk-cart-method">Pick up &middot; Roll&rsquo;d Geelong</div>
+        <!-- Read-only review, like the mobile cart; changed from the header order control -->
+        <div class="desk-cart-method">
+          <span class="desk-cart-method-text">
+            <span class="desk-cart-method-type" id="desk-cart-method">Pick up</span>
+            <span class="desk-cart-method-time" id="desk-cart-time">ASAP</span>
+            <span class="desk-cart-method-where" id="desk-cart-where">Pick up from Roll&rsquo;d Geelong</span>
+          </span>
+        </div>
       </div>
       <div class="desk-cart-list" id="desk-cart-list"></div>
       <div class="desk-cart-foot" id="desk-cart-foot">
@@ -5223,7 +5453,7 @@
           <span>Delivery</span><svg class="option-check" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12l6 6L20 6"/></svg>
         </button>
       </div>
-      <button class="btn-primary method-next" onclick="confirmMethod()">Next</button>
+      <button class="btn-primary method-next" onclick="confirmMethod()">Select</button>
     </div>
   </div>
 
@@ -7329,7 +7559,7 @@
   function updateMethodNext(){
     var picked = document.querySelector('#method-overlay .option.selected');
     var m = picked ? methodFromLabel(picked.textContent.trim()) : null;
-    document.querySelector('#method-overlay .method-next').textContent = (m && m === selectedOrderMethod && nothingToChange(m)) ? 'Done' : 'Next';
+    document.querySelector('#method-overlay .method-next').textContent = (m && m === selectedOrderMethod && nothingToChange(m)) ? 'Done' : 'Select';
   }
 
   function closeMethodSelector(){
@@ -7349,6 +7579,7 @@
     /* A different order type with items in the cart: confirm first (the cart will be cleared). */
     var method = methodFromLabel(label);
     if (method !== selectedOrderMethod && cartItems.length) { openTypeChange(method); return; }
+    if (method !== selectedOrderMethod) pickupChoice = {type:'asap'};   // a new order type starts with no chosen time
     if (isInputType(method)) {
       /* Room Service / Dine-in: room or table number first (only when switching to it), then the time sheet. */
       inputFor = method; timeSheetFor = method;
@@ -7401,7 +7632,19 @@
     document.getElementById('type-change-overlay').classList.add('open');
   }
 
+  /* Starting an order again (landing → store sheet) with items in the cart: a different order type asks first,
+     same as a change from the menu (S6). Confirm clears the cart and runs the new type's steps; "Keep my order" changes nothing. */
+  var typeChangeEntryBtn = null;
+  function entryTypeChange(method, btn){
+    if (!cartItems.length || method === selectedOrderMethod) return false;
+    selectOrderType(btn);
+    typeChangeEntryBtn = btn;
+    openTypeChange(method);
+    return true;
+  }
+
   function closeTypeChange(){
+    if (typeChangeEntryBtn) { typeChangeEntryBtn.classList.remove('selected'); typeChangeEntryBtn = null; }
     var wasStore = typeChangeTarget === 'store';
     document.getElementById('type-change-overlay').classList.remove('open');
     typeChangeTarget = null;
@@ -7423,6 +7666,7 @@
     }
     closeTypeChange();
     cartItems = [];
+    pickupChoice = {type:'asap'};          // the date & time clears with the cart
     renderCartOrder();
     /* Continue over the menu (also when the change started on checkout): the new type's steps, then the menu. */
     setTimeout(function(){
@@ -7470,6 +7714,7 @@
   function inputValue(){ return inputFor === 'dinein' ? tableNumber : roomNumber; }
 
   function chooseRoomService(btn){
+    if (entryTypeChange('room', btn)) return;
     pickupFlow = 'nonhq';
     setUrlMode('branch');
     selectOrderType(btn);
@@ -7600,6 +7845,7 @@
   }
 
   function chooseDeliveryNonHQ(btn){
+    if (entryTypeChange('delivery', btn)) return;
     pickupFlow = 'nonhq';
     setUrlMode('branch');
     selectOrderType(btn);
@@ -7611,13 +7857,18 @@
     addrPending = null;
     var scr = document.getElementById('screen-address');
     /* From checkout this edits the current address: prefilled, and dismissed with ✕ (nothing changes) */
+    /* "Save this address" starts on, labelled Home, each time the step opens */
+    addrSaveOn = false; toggleAddrSave();
+    pickAddrLabel(document.querySelector('#addr-save-labels .addr-label-chip'));
     var editing = origin === 'checkout' && !!deliveryAddress;
-    document.getElementById('addr-input').value = editing ? deliveryAddress : '';
+    /* Starting Delivery again with a Delivery order in the cart: keep its address, ready to confirm or change */
+    var keepAddr = editing || (cartItems.length > 0 && selectedOrderMethod === 'delivery' && !!deliveryAddress);
+    document.getElementById('addr-input').value = keepAddr ? deliveryAddress : '';
     document.getElementById('addr-title').textContent = editing ? 'Change address' : 'Enter address';
     setSheetDismiss('addr-dismiss', origin === 'checkout');
     closeOutOfRange(true);
-    renderAddrResults('');
-    document.getElementById('addr-clear').classList.toggle('hidden', !editing);
+    renderAddrResults(keepAddr ? deliveryAddress : '');     // the current address as the top suggestion: one tap to confirm it
+    document.getElementById('addr-clear').classList.toggle('hidden', !keepAddr);
     setAddrStatus(null);
     scr.classList.toggle('over-menu', origin !== 'entry');
     scr.classList.remove('hidden');
@@ -7647,7 +7898,44 @@
   }
   function clearAddr(){ var i = document.getElementById('addr-input'); i.value = ''; onAddrInput(); i.focus(); }
 
+  /* ---- Saved addresses (team review 6 Oct): logged-in customers, per entry (Non-HQ Geelong / HQ Melbourne) ---- */
+  var SAVED_ADDRESSES = {
+    nonhq: [{label:'Home', a:'88 Malop St, Geelong VIC 3220'}],
+    hq:    [{label:'Work', a:'Level 12/520 Collins St, Melbourne VIC 3000'}]
+  };
+  function savedAddresses(){ return SAVED_ADDRESSES[pickupFlow === 'hq' ? 'hq' : 'nonhq']; }
+  function isSavedAddress(a){ return savedAddresses().some(function(x){ return x.a === a; }); }
+  var addrSaveOn = true, addrSaveLabel = 'Home';
+  function toggleAddrSave(){
+    addrSaveOn = !addrSaveOn;
+    var t = document.getElementById('addr-save-toggle');
+    t.classList.toggle('on', addrSaveOn); t.setAttribute('aria-checked', String(addrSaveOn));
+    document.getElementById('addr-save').classList.toggle('is-off', !addrSaveOn);
+  }
+  function pickAddrLabel(btn){
+    addrSaveLabel = btn.textContent.trim();
+    [].forEach.call(btn.parentElement.children, function(b){ b.classList.toggle('selected', b === btn); b.setAttribute('aria-checked', String(b === btn)); });
+  }
+  function pickSavedAddress(a){
+    var i = addrBook().findIndex(function(x){ return x.a === a; });
+    if (i !== -1) pickAddress(i);
+  }
+  /* Saved list while the field is empty; the save option while typing an address that isn't saved yet */
+  function renderAddrSaved(q){
+    var logged = typeof isLoggedIn !== 'undefined' && isLoggedIn;
+    var typing = q.trim().length >= 2;
+    var saved = savedAddresses();
+    var box = document.getElementById('addr-saved');
+    box.classList.toggle('hidden', !logged || typing || !saved.length);
+    document.getElementById('addr-saved-list').innerHTML = saved.map(function(x){
+      return '<li><button type="button" onclick="pickSavedAddress(\'' + x.a.replace(/'/g, "\\'") + '\')">' + '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>' +
+        '<span><span class="addr-saved-label">' + escapeHtml(x.label) + '</span><span class="addr-saved-addr">' + escapeHtml(x.a) + '</span></span></button></li>';
+    }).join('');
+    document.getElementById('addr-save').classList.toggle('hidden', !logged || !typing || isSavedAddress(q.trim()));
+  }
+
   function renderAddrResults(q){
+    renderAddrSaved(q);
     var list = document.getElementById('addr-results');
     var input = document.getElementById('addr-input');
     document.getElementById('addr-clear').classList.toggle('hidden', !q);
@@ -7678,6 +7966,8 @@
     setTimeout(function(){
       if (input.value !== x.a) return;                        // changed while checking
       setAddrStatus(null);
+      /* Logged in with "Save this address" on: keep it under the chosen label for next time */
+      if (ok && isLoggedIn && addrSaveOn && !isSavedAddress(x.a)) savedAddresses().push({label:addrSaveLabel, a:x.a});
       if (ok) { addrPending = x.a; confirmAddress(); }
       else { addrPending = null; openOutOfRange(); }
     }, 900);
@@ -7799,6 +8089,7 @@
   window.addEventListener('hashchange', function(){ setTimeout(refreshOrderTypeTiles, 0); });
 
   function choosePickup(btn){
+    if (entryTypeChange('pickup', btn)) return;
     timeSheetFor = 'pickup';
     selectedOrderMethod = 'pickup';
     pickupFlow = 'nonhq';
@@ -7809,6 +8100,7 @@
 
   /* Dine-in (Non-HQ): Table number (required) → Dine-in time → menu. */
   function chooseDineIn(btn){
+    if (entryTypeChange('dinein', btn)) return;
     pickupFlow = 'nonhq';
     setUrlMode('branch');
     selectOrderType(btn);
@@ -7825,6 +8117,7 @@
      choosePickupHQ), not screen-nonhq. */
   /* HQ Delivery: Enter address → stores that deliver to it → Delivery time → menu */
   function chooseDelivery(btn){
+    if (entryTypeChange('delivery', btn)) return;
     setUrlMode('hq');
     pickupFlow = 'hq';
     selectOrderType(btn);
@@ -7837,6 +8130,7 @@
   }
 
   function choosePickupHQ(btn){
+    if (entryTypeChange('pickup', btn)) return;
     setUrlMode('hq');
     selectOrderType(btn);
     setTimeout(goToOutletSearch, 350);
@@ -7932,6 +8226,7 @@
       applyStoreChange(card);
       return;
     }
+    if (cartItems.length && storeNameOf(card) !== PICKUP_STORE) { pendingStoreCard = card; openStoreChange(storeNameOf(card)); return; }
     setStoreFrom(card);
     pickupFlow = 'hq';
     timeSheetFor = outletMode === 'delivery' ? 'delivery' : 'pickup';
@@ -8040,9 +8335,11 @@
       timeSheetFor === 'room' ? 'Room Service time' : timeSheetFor === 'dinein' ? 'Dine-in time'
       : timeSheetFor === 'delivery' ? 'Delivery time' : 'Pickup time';
     document.querySelector('#pt-mode-asap .pt-mode-sub').textContent = timeSheetFor === 'delivery' ? 'Delivered in ' + DELIVERY_EST : 'Ready in ~30 mins';
+    document.getElementById('picktime-store').textContent = PICKUP_STORE;     // the chosen store (HQ: from the store list)
   }
 
   function openPickupTimeSlotPicker(){
+    if (timeSheetFor !== selectedOrderMethod) pickupChoice = {type:'asap'};   // new order type: no time carried over
     if (timingModeFor(timeSheetFor) === 'asap') { finishWithoutTime(timeSheetFor, 'entry'); return; }
     setTimeSheetTitle();
     var picktime = document.getElementById('screen-picktime');
@@ -8075,7 +8372,7 @@
                : (timeSheetFor === 'delivery' && addrCameThisPass) ? function(){ openAddressStep(o); } : openMethodSelector, 320);
       return;
     }
-    if (pickupSheetOrigin === 'checkout') { closePickupTimeSheet(); return; }
+    if (pickupSheetOrigin === 'checkout' || pickupSheetOrigin === 'menu-time') { closePickupTimeSheet(); return; }
     var picktime = document.getElementById('screen-picktime');
     picktime.classList.remove('open');
     setTimeout(function(){
@@ -8192,7 +8489,8 @@
       var card = document.getElementById(m[0]);
       card.classList.toggle('selected', m[1]); card.setAttribute('aria-checked', String(m[1]));
     });
-    /* Step 2 (day + time) only under Schedule */
+    /* Step 2 (day + time) only under Schedule; the sheet expands to fit it */
+    document.querySelector('#screen-picktime .picktime-sheet').classList.toggle('is-expanded', !asap);
     document.getElementById('pt-schedule').classList.toggle('hidden', asap);
     grid.classList.toggle('hidden', asap);
     document.getElementById('time-empty').classList.toggle('hidden', asap || anyVisible);
@@ -8200,7 +8498,6 @@
     document.getElementById('time-empty').textContent = asapOffered && todayOpen
       ? 'No more times to schedule today. Choose ASAP, or pick another day.'
       : 'No more times today. Pick another day.';
-    document.getElementById('pt-sooner').classList.toggle('hidden', asap || pickupDay !== 'Today' || !asapOffered || !todayOpen || !anyVisible);
     [].forEach.call(document.querySelectorAll('#pt-dates .date-pill'), function(p){ p.classList.toggle('selected', p.dataset.date === pickupDay); });
     /* Select: ASAP is ready to go; Schedule needs a slot on the day being viewed. */
     var ready = asap || (pickupPending.type === 'slot' && pickupPending.dayLabel === pickupDay);
@@ -8210,9 +8507,20 @@
 
   function selectPickupMode(mode){
     if (mode === 'asap' && !asapAvailable(timeSheetFor)) return;   // too late for ASAP today
+    var sheet = document.querySelector('#screen-picktime .picktime-sheet');
+    var from = sheet.offsetHeight;
     if (mode === 'asap') pickupPending = {type:'asap'};
     else if (pickupPending.type === 'asap') pickupPending = {type:'schedule'};
     renderPickupSlots();
+    /* Grow / shrink smoothly: from the old height to the new one, then hand back to CSS */
+    var to = sheet.offsetHeight;
+    if (from === to || !from) return;
+    sheet.style.height = from + 'px';                     // start height first, without a transition
+    sheet.offsetHeight;                                   // commit it
+    sheet.classList.add('is-resizing');
+    sheet.style.height = to + 'px';
+    clearTimeout(selectPickupMode._t);
+    selectPickupMode._t = setTimeout(function(){ sheet.style.height = ''; sheet.classList.remove('is-resizing'); }, 320);
   }
 
   function selectPickupDate(btn){
@@ -8247,7 +8555,7 @@
     var cur = selectedOrderMethod === 'delivery' ? dl : pk;
     var dineIn = selectedOrderMethod === 'dinein';
     [].forEach.call(document.querySelectorAll('.filter-pill .pickup-time-label'), function(el){
-      el.textContent = dineIn ? (tableNumber ? 'Table ' + tableNumber : 'ASAP') : cur.day + (cur.time ? ' · ' + cur.time : '');   // Dine-in: ASAP only, show the table
+      el.textContent = cur.day + (cur.time ? ' · ' + cur.time : '');   // Dine-in hides the time selector (ASAP only); the table shows on the type selector
     });
     /* Order success / status rows are pickup-only */
     [].forEach.call(document.querySelectorAll('.order-success-row .pickup-time-label'), function(el){ el.textContent = pk.day + ' · ' + pk.time; });
@@ -8276,7 +8584,27 @@
     var sn = document.getElementById('sidebar-outlet-name'); if (sn) sn.textContent = PICKUP_STORE;
     var sr = document.getElementById('sidebar-outlet-row'); if (sr) sr.classList.toggle('is-hq', pickupFlow === 'hq');
     var orow = document.getElementById('checkout-outlet-row'); if (orow) orow.classList.toggle('is-hq', pickupFlow === 'hq');
-    var dm = document.getElementById('desk-cart-method'); if (dm) dm.textContent = methodName(selectedOrderMethod) + ' · ' + PICKUP_STORE;
+    /* Desktop cart panel: same three lines as the cart Review, but tappable */
+    var dm = document.getElementById('desk-cart-method'); if (dm) dm.textContent = methodName(selectedOrderMethod);
+    var dt = document.getElementById('desk-cart-time'); if (dt) dt.textContent = reviewTime;
+    var dw = document.getElementById('desk-cart-where'); if (dw) dw.textContent = document.getElementById('cart-review-where').textContent;
+    /* Desktop header order control: type · store (or address / room) · time */
+    var ht = document.getElementById('desk-order-type'); if (ht) ht.textContent = methodName(selectedOrderMethod);
+    var hw = document.getElementById('desk-order-where'); if (hw) hw.textContent = delivery ? deliveryAddress
+      : room && roomNumber ? PICKUP_STORE + ' · Room ' + roomNumber
+      : dine && tableNumber ? PICKUP_STORE + ' · Table ' + tableNumber : PICKUP_STORE;
+    var hm = document.getElementById('desk-order-time'); if (hm) hm.textContent = cur.day + (cur.time ? ' · ' + cur.time : '');
+    /* Date & time selectors: none for Dine-in (ASAP only), not tappable for an ASAP-only store */
+    var timeTiming = timingModeFor(delivery ? 'delivery' : room ? 'room' : 'pickup');
+    var timeStatic = !dine && timeTiming === 'asap';
+    ['menu-time-pill','desk-time-ctl'].forEach(function(id){
+      var el = document.getElementById(id); if (!el) return;
+      if (id === 'menu-time-pill') el.classList.toggle('hidden', dine);
+      el.classList.toggle('is-static', timeStatic);
+      el.dataset.dine = dine ? '1' : '';
+    });
+    var te = document.getElementById('menu-type-extra'); if (te) te.textContent = dine && tableNumber ? ' · Table ' + tableNumber : '';
+    updateResumeCard();
     var ct = document.getElementById('checkout-method-title'); if (ct) ct.textContent = room ? 'Room Service' : 'Pick up';
     var rr = document.getElementById('checkout-room-row'); if (rr) rr.classList.toggle('hidden', !room);
     var rv = document.getElementById('checkout-room-value'); if (rv) rv.textContent = roomNumber;
@@ -8323,6 +8651,14 @@
 
   /* Menu header pill: order-type sheet first (current type ticked); Pick up then
      continues to the Pickup time sheet with the confirmed time pre-selected. */
+  /* Menu date & time pill: the time sheet for the current order type, nothing else */
+  function openTimeFromMenu(){
+    if (selectedOrderMethod === 'dinein') return;                       // ASAP only
+    var pill = document.getElementById('menu-time-pill');
+    if (pill && pill.classList.contains('is-static')) return;           // ASAP-only store
+    openPickupTimeSheet('menu-time');
+  }
+
   function openPickupTimeFromMenu(){
     methodOrigin = 'menu';
     openMethodSelector();
@@ -8339,11 +8675,11 @@
 
   /* Opens the Pickup time sheet over the current screen; origin 'menu' | 'checkout'. */
   function openPickupTimeSheet(origin){
-    if (origin === 'checkout') timeSheetFor = (isInputType(selectedOrderMethod) || selectedOrderMethod === 'delivery') ? selectedOrderMethod : 'pickup';
+    if (origin === 'checkout' || origin === 'menu-time') timeSheetFor = (isInputType(selectedOrderMethod) || selectedOrderMethod === 'delivery') ? selectedOrderMethod : 'pickup';
     if (timingModeFor(timeSheetFor) === 'asap') { finishWithoutTime(timeSheetFor, origin); return; }
     setTimeSheetTitle();
     pickupSheetOrigin = origin;
-    setSheetDismiss('picktime-dismiss', origin === 'checkout');
+    setSheetDismiss('picktime-dismiss', origin === 'checkout' || origin === 'menu-time');
     var picktime = document.getElementById('screen-picktime');
     picktime.classList.add('over-menu');
     resetPickupTiming();
@@ -8373,7 +8709,7 @@
      store and choice while the menu loads (prices / availability depend on them). */
   var MENU_LOADING_MS = 1200;
   function showMenuLoading(then){
-    var pill = document.querySelector('#screen-menu .combined-filter-pill .pickup-time-label');
+    var pill = document.querySelector('#menu-time-pill .pickup-time-label');
     document.getElementById('menu-loading-store').textContent = PICKUP_STORE;
     document.getElementById('menu-loading-meta').textContent = methodName(selectedOrderMethod) + (pill && pill.textContent ? ' · ' + pill.textContent : '');
     var scr = document.getElementById('screen-menu-loading');
@@ -8383,23 +8719,71 @@
     showMenuLoading._t = setTimeout(function(){ scr.classList.add('hidden'); then(); }, MENU_LOADING_MS);
   }
 
-  function selectCatTab(btn){
-    var tabs = document.querySelectorAll('.cat-tab');
-    tabs.forEach(function(t){ t.classList.remove('selected'); });
-    btn.classList.add('selected');
-
-    var sectionMap = {
-      'Meal deals': 'menu-section-mealdeals', 'Pho': 'menu-section-pho', 'Bao': 'menu-section-bao',
-      'Noodle Soups': 'menu-section-noodlesoups', 'Banh Mi': 'menu-section-banhmi',
-      'Rice Paper Rolls': 'menu-section-ricepaperrolls', 'Sides': 'menu-section-sides', 'Drinks': 'menu-section-drinks'
-    };
-    var targetId = sectionMap[btn.textContent.trim()];
-    if(!targetId) return;
-    document.querySelectorAll('[id^="menu-section-"]').forEach(function(sec){
-      sec.classList.add('hidden-step');
-    });
-    document.getElementById(targetId).classList.remove('hidden-step');
+  /* One long menu (team review 6 Oct): a tab scrolls to its section; scrolling highlights the section being read. */
+  var CAT_SECTIONS = {
+    'Meal deals': 'menu-section-mealdeals', 'Pho': 'menu-section-pho', 'Bao': 'menu-section-bao',
+    'Noodle Soups': 'menu-section-noodlesoups', 'Banh Mi': 'menu-section-banhmi',
+    'Rice Paper Rolls': 'menu-section-ricepaperrolls', 'Sides': 'menu-section-sides', 'Drinks': 'menu-section-drinks'
+  };
+  var catSpyPausedUntil = 0, catSpyTarget = null;
+  function markCatTab(btn){
+    var row = btn.closest('.cat-tab-scroll');
+    [].forEach.call(row.querySelectorAll('.cat-tab'), function(t){ t.classList.toggle('selected', t === btn); });
+    /* keep the active tab in view in its row */
+    var l = btn.offsetLeft - row.offsetLeft, r = l + btn.offsetWidth;
+    if (l < row.scrollLeft + 8) row.scrollTo({left:Math.max(0, l - 24), behavior:'smooth'});
+    else if (r > row.scrollLeft + row.clientWidth - 8) row.scrollTo({left:r - row.clientWidth + 24, behavior:'smooth'});
   }
+  function selectCatTab(btn){
+    markCatTab(btn);
+    var sec = document.getElementById(CAT_SECTIONS[btn.textContent.trim()] || '');
+    var body = document.getElementById('menu-body-scroll');
+    if (!sec || !body.contains(sec)) return;
+    /* keep the tapped tab highlighted until the smooth scroll arrives (or gives up after 1.5s) */
+    catSpyTarget = sec; catSpyPausedUntil = Date.now() + 1500;
+    var top = sec.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop - 12;
+    body.scrollTo({top:top, behavior:'smooth'});
+  }
+  function syncCatTabToScroll(){
+    var body = document.getElementById('menu-body-scroll'), row = document.getElementById('menu-cat-row');
+    if (!body || !row) return;
+    if (catSpyTarget) {
+      var off = catSpyTarget.getBoundingClientRect().top - body.getBoundingClientRect().top;
+      var atEnd = body.scrollTop + body.clientHeight >= body.scrollHeight - 4;
+      if (Math.abs(off - 12) > 4 && !atEnd && Date.now() < catSpyPausedUntil) return;
+      catSpyTarget = null;
+      return;
+    }
+    var edge = body.getBoundingClientRect().top + 60, current = 'Meal deals';
+    Object.keys(CAT_SECTIONS).forEach(function(name){
+      var sec = document.getElementById(CAT_SECTIONS[name]);
+      if (sec && sec.offsetParent && sec.getBoundingClientRect().top <= edge) current = name;
+    });
+    /* scrolled to the very bottom: the last section counts as read */
+    if (body.scrollTop + body.clientHeight >= body.scrollHeight - 4) current = 'Drinks';
+    var tab = [].filter.call(row.querySelectorAll('.cat-tab'), function(t){ return t.textContent.trim() === current; })[0];
+    if (tab && !tab.classList.contains('selected')) markCatTab(tab);
+  }
+  /* Desktop arrows: scroll the row by most of its width; each shows only when there is more that way */
+  function scrollCatRow(dir){
+    var row = document.getElementById('menu-cat-row');
+    row.scrollBy({left: dir * Math.max(160, row.clientWidth * 0.7), behavior:'smooth'});
+  }
+  function updateCatArrows(){
+    var row = document.getElementById('menu-cat-row'); if (!row) return;
+    document.getElementById('cat-arrow-prev').classList.toggle('is-off', row.scrollLeft <= 2);
+    document.getElementById('cat-arrow-next').classList.toggle('is-off', row.scrollLeft + row.clientWidth >= row.scrollWidth - 2);
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    var body = document.getElementById('menu-body-scroll'), row = document.getElementById('menu-cat-row');
+    if (body) body.addEventListener('scroll', syncCatTabToScroll, {passive:true});
+    if (row) row.addEventListener('scroll', updateCatArrows, {passive:true});
+    window.addEventListener('resize', updateCatArrows);
+    window.addEventListener('viewmodechange', updateCatArrows);
+    new MutationObserver(function(){ setTimeout(updateCatArrows, 50); })
+      .observe(document.getElementById('screen-menu'), {attributes:true, attributeFilter:['class']});
+    setTimeout(updateCatArrows, 0);
+  });
 
   var GRID_VIEW_ICON = '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>';
   var LIST_VIEW_ICON = '<path d="M22 3L2 3"/><path d="M22 21L2 21"/><path d="M20 12C20 10.1144 20 9.17157 19.4142 8.58579C18.8284 8 17.8856 8 16 8L8 8C6.11438 8 5.17157 8 4.58579 8.58579C4 9.17157 4 10.1144 4 12C4 13.8856 4 14.8284 4.58579 15.4142C5.17157 16 6.11438 16 8 16H16C17.8856 16 18.8284 16 19.4142 15.4142C20 14.8284 20 13.8856 20 12Z"/>';
@@ -8412,6 +8796,21 @@
     icon.innerHTML = isList ? GRID_VIEW_ICON : LIST_VIEW_ICON;
     btn.setAttribute('aria-pressed', String(isList));
     btn.setAttribute('aria-label', isList ? 'Switch to grid view' : 'Switch to list view');
+  }
+
+  /* Order in progress: the landing "Continue your order" card */
+  function updateResumeCard(){
+    var card = document.getElementById('landing-resume'); if (!card) return;
+    var count = cartItems.reduce(function(n, it){ return n + it.qty; }, 0);
+    card.classList.toggle('hidden', !count);
+    if (count) document.getElementById('landing-resume-sub').textContent =
+      methodName(selectedOrderMethod) + ' · ' + (count === 1 ? '1 item' : count + ' items') + ' · ' + formatMoney(cartSubtotal());
+  }
+  /* Back to the menu with the order as it was (type, time, store, cart) */
+  function resumeOrder(){
+    closeSidebar();
+    hideAllScreens();
+    document.getElementById('screen-menu').classList.remove('hidden');
   }
 
   function hideAllScreens(){
@@ -10347,6 +10746,22 @@
   function isShown(id){ var el = $(id); return el && !el.classList.contains('hidden'); }
 
   /* ---- header navigation ---- */
+  /* Header order control: from checkout the next steps open over checkout (same as its "Change"); elsewhere over the menu */
+  window.openOrderFromHeader = function(){
+    if(['screen-checkout','screen-checkout-delivery','screen-checkout-dinein'].some(isShown)) { openOrderTypeFromCheckout(); return; }
+    /* Away from the order (landing, side-menu pages): back to the menu first, then change it there */
+    if(!['screen-menu','screen-mealdetail','screen-cart'].some(isShown)) resumeOrder();
+    openPickupTimeFromMenu();
+  };
+
+  /* Header date & time control: same sheet as the menu time pill; from checkout, same as its time row */
+  window.openTimeFromHeader = function(){
+    if($('desk-time-ctl').classList.contains('is-static')) return;
+    if(['screen-checkout','screen-checkout-delivery','screen-checkout-dinein'].some(isShown)) { openPickupTimeFromCheckout(); return; }
+    if(!['screen-menu','screen-mealdetail','screen-cart'].some(isShown)) resumeOrder();
+    openTimeFromMenu();
+  };
+
   window.deskNav = function(target){
     if(target === 'cart'){ goToCart(); return; }
     hideAllScreens();
@@ -10364,9 +10779,16 @@
     var list = $('desk-cart-list');
     if(!list) return;
     var count = cartItems.reduce(function(s, it){ return s + it.qty; }, 0);
+    /* Same rule as the cart page: an item not available at the chosen time blocks checkout until it's removed */
+    var unavailableCount = cartItems.filter(function(it){ return it.unavailable; }).length;
+    var banner = unavailableCount
+      ? '<div class="cart-unavailable-banner">' + (unavailableCount === 1 ? '1 item isn’t' : unavailableCount + ' items aren’t') +
+        ' available at your pickup time. Remove ' + (unavailableCount === 1 ? 'it' : 'them') + ' to continue to checkout.</div>'
+      : '';
     list.innerHTML = cartItems.length
-      ? cartItems.map(renderOrderCardHTML).join('')
+      ? banner + cartItems.map(renderOrderCardHTML).join('')
       : '<div class="desk-cart-empty"><strong>Your cart is empty</strong>Add something from the menu to get started.</div>';
+    $('desk-cart-checkout').disabled = unavailableCount > 0;
     $('desk-cart-subtotal').textContent = formatMoney(cartSubtotal());
     $('desk-cart-foot').style.display = cartItems.length ? '' : 'none';
     $('desk-cart-count').textContent = count;
@@ -10375,6 +10797,8 @@
   window.renderCartOrder = function(){
     origRender.apply(this, arguments);
     renderDeskCart();
+    updateResumeCard();
+    updateHeaderState();
   };
   renderDeskCart();
 
@@ -10390,7 +10814,14 @@
     if(syncing) return;
     syncing = true;
     var want = null;
-    if(isDesktop()){
+    var entryStep = ['screen-picktime','screen-room','screen-address'].filter(function(id){
+      return isShown(id) && !$(id).classList.contains('over-menu');
+    })[0];
+    /* Order steps at the start (time, room / table, address) sit over a dimmed copy of where the order
+       started, on mobile and desktop: HQ Pick up / Delivery time after the store list, everything else the landing page */
+    if(entryStep && !(isDesktop() && (isShown('screen-nonhq') || isShown('screen-hq-order'))))
+      want = (entryStep === 'screen-picktime' && pickupFlow === 'hq') ? 'screen-outlet-search' : 'screen-landing';
+    else if(isDesktop()){
       if(isShown('screen-nonhq') || isShown('screen-hq-order')) want = 'screen-landing';
       else if(isShown('screen-mealdetail')) want = window.mealDetailOrigin || 'screen-menu';
     }
@@ -10415,12 +10846,18 @@
 
   /* ---- header active tab + account label ---- */
   function updateHeaderState(){
-    var onLanding = isShown('screen-landing') && !isShown('screen-nonhq') && !isShown('screen-hq-order');
-    var onCatering = isShown('screen-catering') || isShown('screen-catering-detail');
-    var active = onCatering ? 'catering' : (onLanding ? 'home' : 'order');
-    document.querySelectorAll('[data-desk-nav]').forEach(function(b){
-      b.classList.toggle('active', b.getAttribute('data-desk-nav') === active);
+    /* The landing page is the Nomni loyalty page, separate from Online Ordering: no OO header there
+       (also while its store sheet is open over it). The header comes back once ordering starts. */
+    var others = Array.prototype.filter.call(document.querySelectorAll('.screen'), function(o){
+      if(o.classList.contains('hidden')) return false;
+      if(['screen-landing','screen-nonhq','screen-hq-order'].indexOf(o.id) !== -1) return false;
+      return !(o.classList.contains('screen-picktime') && !o.classList.contains('over-menu'));   // start-of-order steps over the landing page
     });
+    document.documentElement.classList.toggle('on-loyalty', isShown('screen-landing') && !others.length);
+    /* Order control only once an order is set up: menu, item, cart and checkout pages */
+    var ordering = cartItems.length > 0 || ['screen-menu-loading','screen-menu','screen-mealdetail','screen-cart','screen-checkout','screen-checkout-delivery','screen-checkout-dinein','screen-payment'].some(isShown);
+    var ctl = $('desk-order-ctl'); if(ctl) ctl.classList.toggle('hidden', !ordering);
+    var tctl = $('desk-time-ctl'); if(tctl) tctl.classList.toggle('hidden', !ordering || tctl.dataset.dine === '1');
     var btn = $('desk-account-btn');
     if(btn) btn.textContent = (typeof isLoggedIn !== 'undefined' && isLoggedIn)
       ? 'Hi, ' + ($('landing-account-name') ? $('landing-account-name').textContent : 'there')
@@ -10432,6 +10869,50 @@
     mo.observe(s, {attributes:true, attributeFilter:['class']});
   });
   window.addEventListener('viewmodechange', syncUnderlays);
+
+  /* ---- checkout: two columns on desktop ----
+     Left: order type, contact, extras, payment method. Right (sticky): order summary, coupons (members) + Pay.
+     Mobile keeps the single column, so the nodes are moved on desktop and put back when the view switches. */
+  var CHECKOUTS = ['screen-checkout','screen-checkout-delivery','screen-checkout-dinein'];
+  function marker(cls){ var m = document.createElement('span'); m.className = 'checkout-ph ' + cls; return m; }
+  function layoutCheckouts(){
+    CHECKOUTS.forEach(function(id){
+      var scr = $(id); if(!scr) return;
+      var scroll = scr.querySelector('.cart-scroll'), footer = scr.querySelector('.cart-footer');
+      var main = scroll.querySelector(':scope > .checkout-main'), side = scroll.querySelector(':scope > .checkout-side');
+      if(isDesktop()){
+        if(main) return;
+        var title = [].filter.call(scroll.querySelectorAll(':scope > .cart-section-title'), function(t){ return t.textContent.trim() === 'Order summary'; })[0];
+        if(!title) return;
+        var box = title.nextElementSibling, after = box.nextElementSibling;
+        var coupons = scr.querySelector('[id$="coupons-section"]');
+        title.before(marker('ph-summary'));
+        footer.before(marker('ph-footer'));
+        if(coupons) coupons.before(marker('ph-coupons'));
+        side = document.createElement('aside'); side.className = 'checkout-side';
+        side.append(title, box);
+        if(after && after.classList.contains('cart-group-divider')) side.append(after);
+        if(coupons) side.append(coupons);          // promo / coupons next to the totals they change
+        side.append(footer);
+        main = document.createElement('div'); main.className = 'checkout-main';
+        while(scroll.firstChild) main.append(scroll.firstChild);
+        scroll.append(main, side);
+        scroll.classList.add('checkout-cols');
+      } else if(main){
+        while(main.firstChild) scroll.insertBefore(main.firstChild, main);
+        var phc = scr.querySelector('.ph-coupons'), coupons = side.querySelector('[id$="coupons-section"]');
+        if(phc && coupons) phc.replaceWith(coupons);
+        var ph = scroll.querySelector('.ph-summary');
+        [].slice.call(side.children).forEach(function(n){ if(n !== footer) ph.before(n); });
+        ph.remove();
+        scr.querySelector('.ph-footer').replaceWith(footer);
+        main.remove(); side.remove();
+        scroll.classList.remove('checkout-cols');
+      }
+    });
+  }
+  layoutCheckouts();
+  window.addEventListener('viewmodechange', layoutCheckouts);
   syncUnderlays();
 
   /* click outside the meal detail card closes it (desktop modal) */

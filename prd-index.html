@@ -186,7 +186,7 @@
   </details>
 
   <footer>
-    <span>Use cases from the OO-1863 ticket and Slack (22–29 Sep). Status as of 1 Oct 2026.</span>
+    <span>Use cases from the OO-1863 ticket and Slack (22–29 Sep). Status as of 6 Oct 2026.</span>
     <span>Links open <code>prototype.html</code> in the selected view</span>
   </footer>
 </div>
@@ -232,9 +232,10 @@ var R = [
    n:'Confirmation first. On “Change and clear cart”, the cart is cleared and the new type’s steps run, from the menu or from checkout:' +
      '<table class="note-table"><caption>After “Change and clear cart”</caption>' +
      '<thead><tr><th scope="col">New type</th><th scope="col">What happens next</th></tr></thead><tbody>' +
-     '<tr><td>Delivery</td><td>Straight to the menu (no extra steps yet)</td></tr>' +
+     '<tr><td>Delivery</td><td>Address → Delivery time → menu</td></tr>' +
      '<tr><td>Pick up</td><td>Pickup time sheet → menu</td></tr>' +
      '<tr><td>Room Service</td><td>Room number → Room Service time sheet → menu</td></tr>' +
+     '<tr><td>Dine-in</td><td>Table number → menu</td></tr>' +
      '<tr><td>HQ store change</td><td>New store’s time sheet → menu (S9, S10)</td></tr>' +
      '</tbody></table>' +
      '“Keep my order” changes nothing.',
@@ -249,11 +250,11 @@ var R = [
    n:'Checkout Outlet row opens the store list with the current store selected. A different store with items: confirmation, cart cleared, then the new store’s time sheet and menu. Cart has no entry point, by design (read-only).'},
   {id:'S11', f:'all', e:'hq', g:'Mid-journey change', kind:'edge', t:'HQ Flow — Cancel a store change', uc:'UC30', s:'built', h:'call:demoStoreChange',
    n:'“Keep my order”, back, or choosing the same store returns to checkout with store and cart unchanged.'},
-  {id:'S12', f:'all', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Each editable field has its own entry point on each page', uc:'AC', s:'partial', h:'screen-menu',
-   n:'Cart is read-only by design, so the entry points belong on the menu and checkout. <b>Done:</b> order type and time on the menu bar and on checkout. Store on checkout and in the menu side menu (HQ). <b>Missing:</b> delivery time and address.',
+  {id:'S12', f:'all', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Each editable field has its own entry point on each page', uc:'AC', s:'built', h:'screen-menu',
+   n:'Cart is read-only by design, so the entry points belong on the menu and checkout. <b>Done:</b> order type and time on the menu bar and on checkout. Store on checkout and in the menu side menu (HQ). Delivery address and delivery time on checkout (the menu never edits the address, UC22).',
    d:'The cart is the only read-only page: a review of the order. Every field is editable on checkout, and on the menu bar.'},
-  {id:'S13', f:'all', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Cart as read-only review, editing on checkout (Bopple approach)', uc:'Comments', s:'partial', h:'screen-cart',
-   n:'<b>Done:</b> cart Review is read-only; checkout edits order type, time and store (HQ). <b>Missing on checkout:</b> delivery details. The ticket as written still allows edits on the cart.',
+  {id:'S13', f:'all', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Cart as read-only review, editing on checkout (Bopple approach)', uc:'Comments', s:'differs', h:'screen-cart',
+   n:'<b>Done:</b> cart Review is read-only; checkout edits order type, time, store (HQ) and delivery details (address and time). The ticket as written still allows edits on the cart.',
    d:'The cart is the only read-only page: a review of the order. Every field is editable on checkout, and on the menu bar.'},
 
   // ---- Pick up ----
@@ -265,7 +266,7 @@ var R = [
    n:'Today follows the real clock and date. <b>ASAP</b> shows its own estimate: now + the order type’s prep time (Pick up / Room Service 30 mins, Delivery 45 mins), rounded up to 5 mins, e.g. “Ready in ~30 mins · around 1:05 PM”. <b>Schedule → Today</b> starts at least 15 mins after that estimate (1:30 PM), with “Need it sooner? Choose ASAP” above the times. Pre-order-only stores (no ASAP) start Today at now + prep time. Past the last possible ASAP, ASAP is off (“Not available now”) and the sheet moves to Tomorrow.',
    d:'ASAP and Schedule never overlap: ASAP means “as soon as you can”, Schedule means “a later time I choose”, so no time tile does the same job as ASAP.'},
   {id:'P5', f:'pickup', e:'nonhq', g:'Timing', kind:'main', t:'Non-HQ pickup time sheet', uc:'Slack', s:'differs', h:'call:demoPickupSheet',
-   n:'Now ASAP / Schedule → Pick a day → Pick a time → Select. The 29 Sep spec describes Today / Tomorrow / Later tabs. Needs Keith’s approval.'},
+   n:'Now ASAP / Schedule → Pick a day → Pick a time → Select. The 29 Sep spec describes Today / Tomorrow / Later tabs. Needs the team’s approval.'},
   {id:'P6', f:'pickup', e:'hq', g:'Timing', kind:'main', t:'HQ pickup time picker', uc:'Slack', s:'differs', h:'call:demoPickupSheetHQ',
    n:'HQ now uses the same two-step sheet. The spec says HQ keeps the classic picker.'},
   {id:'P7', f:'pickup', e:'both', g:'Menu / cart / checkout', kind:'main', t:'Edit pickup time from menu, cart or checkout', uc:'UC15', s:'differs', h:'call:demoMenuOrderType',
