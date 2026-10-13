@@ -19,7 +19,7 @@
   })();
 </script>
 <!-- Type tokens (font size / weight / line-height). See design-system.html. -->
-<link rel="stylesheet" href="design-system.css?v=2026-09-29b">
+<link rel="stylesheet" href="design-system.css?v=2026-10-13">
 <style>
   :root{
     --green-dark:#173d31;
@@ -323,6 +323,13 @@
     margin-bottom:4px;
   }
   .store-address{color:#333;font-size:var(--fs-callout);font-weight:var(--fw-regular);}
+  /* Open status under the address: green dot "Open · Until 9:00 PM" (grey "Closed" after closing) */
+  .store-status{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:var(--fs-footnote);font-weight:var(--fw-semibold);color:var(--green-bright);}
+  /* "Open" in green semibold; "· Until 9:00 PM" regular in the body grey (store cards + store list) */
+  .open-until{font-weight:var(--fw-regular);color:#333;}
+  .store-status-dot{width:8px;height:8px;border-radius:50%;background:var(--green-bright);flex:none;}
+  .store-status.is-closed{color:#8a8a8a;}
+  .store-status.is-closed .store-status-dot{background:#b9b9b9;}
 
   h3.order-heading{font-size:var(--fs-title-2);font-weight:var(--fw-title-2);margin:0 0 14px;color:#111;}
 
@@ -354,6 +361,19 @@
     color:#9a9a9a;
     cursor:not-allowed;
   }
+  /* Order type sheet (menu, header, checkout): choose then "Select", so radio cards like the time sheet */
+  #method-overlay .option{position:relative;justify-content:flex-start;padding:16px 16px 16px 50px;border-radius:12px;
+    border:1.5px solid #ddd;background:#fff;color:#111;}
+  #method-overlay .option::before{content:"";position:absolute;left:16px;top:50%;width:20px;height:20px;margin-top:-10px;box-sizing:border-box;
+    border-radius:50%;border:2px solid #b9b9b9;background:#fff;transition:border-color .15s ease,border-width .15s ease;}
+  #method-overlay .option.selected{background:#eaf2ea;border-color:var(--green-dark);color:var(--green-dark);}
+  #method-overlay .option.selected::before{border-color:var(--green-dark);border-width:6px;}
+  #method-overlay .option-check{display:none !important;}
+  /* Store sheet (HQ + Non-HQ): a tap picks the type and moves on, so a chevron instead of a tick */
+  .screen-nonhq .option:not(.disabled)::after,.screen-hq-order .option:not(.disabled)::after{
+    content:"";flex:none;width:8px;height:8px;margin-left:12px;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg);}
+  .screen-nonhq .option .option-check,.screen-hq-order .option .option-check{display:none !important;}
+  .screen-nonhq .option > :first-child,.screen-hq-order .option > :first-child{margin-right:auto;}   /* label left; time + chevron right */
 
   /* ---- language overlay ---- */
   .lang-overlay{
@@ -534,6 +554,8 @@
   .pt-mode-card.is-disabled::before{border-color:#d6d3cb;}
   /* The sheet is only as tall as the two cards; choosing Schedule expands it for the days and times */
   #screen-picktime .picktime-sheet{height:auto;max-height:96%;min-height:0;}
+  /* Table / room number step: only as tall as its content (title, field, Continue) */
+  #screen-room .picktime-sheet{height:auto;max-height:96%;min-height:0;}
   #screen-picktime .picktime-sheet.is-expanded{height:96%;}
   #screen-picktime .picktime-sheet.is-resizing{transition:transform .35s ease,height .3s ease;}
   .pt-mode-name{font-size:var(--fs-headline);font-weight:var(--fw-headline);}
@@ -556,7 +578,7 @@
   #app-body.delivery-opens-later #screen-nonhq [data-type="delivery"]{display:none;}
   /* Delivery address step (OOR_0002E1 / E2 / E12) */
   .addr-search{position:relative;display:flex;align-items:center;margin-top:var(--space-intro);}
-  .addr-search-icon{position:absolute;left:16px;color:#1f9d55;pointer-events:none;}
+  .addr-search-icon{position:absolute;left:16px;color:var(--green-bright);pointer-events:none;}
   .addr-search input{width:100%;height:52px;padding:0 48px 0 50px;border:1px solid #ddd;border-radius:16px;background:#fff;
     font-family:inherit;font-size:var(--fs-input);color:#111;box-sizing:border-box;outline:none;transition:border-color .15s ease,box-shadow .15s ease;}
   .addr-search input::placeholder{color:#9a9a9a;}
@@ -565,7 +587,7 @@
   .addr-clear.hidden{display:none;}
   .addr-locate{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 16px;border:1px solid #e2e2e2;border-radius:999px;background:#fff;
     font:inherit;font-size:var(--fs-callout);font-weight:var(--fw-regular);color:var(--green-mid);cursor:pointer;}
-  .addr-locate svg{color:#1f9d55;}
+  .addr-locate svg{color:var(--green-bright);}
   .addr-locate:hover{border-color:var(--green-mid);}
   .addr-results{list-style:none;margin:14px -20px 0;padding:0;}
   .addr-results li button{display:block;width:100%;padding:16px 20px;border:none;border-bottom:1px solid #e5e5e5;background:#fff;
@@ -612,13 +634,19 @@
   .cart-info-row.is-static{cursor:default !important;pointer-events:none;}
   .cart-info-row.is-static .chev{display:none;}
   #checkout-outlet-row:not(.is-hq) .chev{display:none;}
-  .room-field input.invalid{border-color:#c0392b;}
+  /* Table / room number field: same look and active state as the Delivery address field */
+  .visually-hidden{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+  .signup-field.room-field input{height:52px;padding:0 16px;border:1px solid #ddd;border-radius:16px;outline:none;
+    transition:border-color .15s ease,box-shadow .15s ease;}
+  .signup-field.room-field input::placeholder{color:#9a9a9a;}
+  .signup-field.room-field input:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(30,84,67,.25);}
+  .signup-field.room-field input.invalid{border-color:#c0392b;}
+  .signup-field.room-field input.invalid:focus{border-color:#c0392b;box-shadow:0 0 0 3px rgba(192,57,43,.2);}
   .qr-outlet{margin:var(--space-intro) 0 0;}
+  #input-step-sub + .qr-outlet{margin-top:8px;}   /* "You are ordering from" sits right above the outlet card it introduces */
+  #input-step-sub:has(+ .qr-outlet:not(.hidden)){margin-top:16px;}   /* …and a little further from the title, so it groups with the card */
   .qr-outlet.hidden{display:none;}
   .qr-outlet + .room-field{margin-top:16px;}
-  .input-step-hint{display:flex;align-items:flex-start;gap:6px;margin-top:8px;font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:var(--green-mid);font-weight:var(--fw-regular);}
-  .input-step-hint.hidden{display:none;}
-  .input-step-hint svg{flex:none;margin-top:2px;}
   .room-error{margin-top:6px;font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#c0392b;font-weight:var(--fw-regular);}
   .pickup-store-hours{margin-top:var(--space-title-desc);
     font-size:var(--fs-footnote);line-height:var(--lh-footnote);color:#666;font-weight:var(--fw-regular);}
@@ -1054,6 +1082,13 @@
   .reorder-modal-price{font-size:var(--fs-body);font-weight:var(--fw-semibold);color:#111;white-space:nowrap;}
   .type-change-body{margin:0 0 20px;font-size:var(--fs-body);line-height:1.45;color:#444;font-weight:var(--fw-regular);}
   .type-change-keep{margin-top:10px;}
+  /* Outlet operational hours sheet */
+  .hours-card{padding:22px 20px 26px;background:#fff;}   /* same padding as the other sheets */
+  .hours-card .store-card{margin-bottom:22px;}
+  .hours-list{display:grid;grid-template-columns:1fr auto;row-gap:16px;margin:0 4px 28px;color:#111;}   /* type: .t-body */
+  .hours-list dt,.hours-list dd{margin:0;}
+  .hours-list dd{min-width:110px;}
+  .hours-close{width:100%;}
   .reorder-modal-total-row{
     display:flex;justify-content:space-between;font-size:var(--fs-headline);font-weight:var(--fw-headline);color:#111;
     border-top:1px solid #eee;padding-top:12px;margin-bottom:18px;
@@ -3419,7 +3454,7 @@
     display:flex;
     align-items:center;
     gap:10px;
-    padding:0 16px 16px;
+    padding:0 16px 24px;   /* 24px under the search field */
   }
   .outlet-search-topbar .back-btn{color:#fff;}
   .outlet-search-pill{
@@ -3443,22 +3478,22 @@
     font-family:inherit;
     color:#111;font-weight:var(--fw-regular);
   }
-  .outlet-search-scroll{flex:1;overflow-y:auto;padding:18px 20px 40px;}
+  .outlet-search-scroll{flex:1;overflow-y:auto;padding:24px 20px 40px;}
   .outlet-group-heading{
     display:flex;
     align-items:baseline;
     gap:8px;
     font-size:var(--fs-headline);
-    font-weight:var(--fw-headline);
+    font-weight:var(--fw-regular);
     color:#111;
-    margin:0 0 14px;
+    margin:0 0 20px;
   }
   .outlet-group-heading .count{font-size:var(--fs-footnote);font-weight:var(--fw-regular);color:#9a9a9a;}
   .outlet-card{
     background:#fff;
     border:1px solid #eee;
     border-radius:14px;
-    padding:16px;
+    padding:20px 16px 16px;   /* 20px inner top */
     margin-bottom:16px;
     cursor:pointer;
   }
@@ -3469,7 +3504,7 @@
   .outlet-card.is-closed .outlet-address{color:#9a9a9a;}
   .outlet-card.is-closed .outlet-radio{border-color:#e0ddd5;background:#efece5;}
   .outlet-card.is-closed .outlet-tag{color:#9a9a9a;border-color:#e6e3db;}
-  .outlet-status-closed{display:flex;align-items:center;gap:6px;color:#8a8a8a;font-weight:var(--fw-regular);}
+  .outlet-status-closed{display:flex;align-items:center;gap:6px;color:#8a8a8a;}   /* type: .t-footnote; "Closed" in semibold */
   .outlet-status-closed b{color:#b3261e;font-weight:var(--fw-semibold);}
   .outlet-card-top{display:flex;gap:12px;}
   .outlet-radio{
@@ -3491,15 +3526,11 @@
     display:flex;
     align-items:center;
     gap:6px;
-    font-size:var(--fs-headline);
-    font-weight:var(--fw-headline);
-    color:var(--green-mid);
+    color:var(--green-mid);              /* type: .t-headline */
   }
-  .outlet-address{font-size:var(--fs-footnote);color:#333;margin-top:4px;line-height:var(--lh-footnote);font-weight:var(--fw-regular);}
+  .outlet-address{color:#333;margin-top:4px;font-weight:var(--fw-regular);}   /* type: .t-callout size (14px), regular weight */
   .outlet-tags{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
-  .outlet-tag{
-    font-size:var(--fs-caption);
-    font-weight:var(--fw-semibold);
+  .outlet-tag{                         /* type: .t-caption */
     color:#111;
     border:1px solid #ddd;
     border-radius:999px;
@@ -3512,11 +3543,13 @@
     margin-top:12px;
     padding-top:12px;
     border-top:1px solid #f2f2f2;
-    font-size:var(--fs-footnote);
-    font-weight:var(--fw-semibold);
   }
-  .outlet-status{display:flex;align-items:center;gap:4px;color:var(--green-mid);}
-  .outlet-distance{display:flex;align-items:center;gap:4px;color:#9a9a9a;font-weight:var(--fw-regular);}
+  .outlet-status{display:flex;align-items:center;gap:4px;color:var(--green-bright);cursor:pointer;}   /* token: --green-bright (design-system.css) */
+  .outlet-status.outlet-status-closed{cursor:default;color:#8a8a8a;}
+  /* ⓘ opens the opening hours: 32px tap area without changing the row height */
+  .outlet-info-ico{order:-1;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;margin:-8px -6px -8px -8px;flex:none;border-radius:50%;}   /* before "Open"; icon lines up with the card text */
+  .outlet-status:hover .outlet-info-ico{background:color-mix(in srgb, var(--green-bright) 12%, transparent);}   /* closed stays grey ("Closed" itself is red) */
+  .outlet-distance{display:flex;align-items:center;gap:4px;color:#9a9a9a;}   /* type: .t-footnote */
   .outlet-next-footer{
     position:absolute;
     left:0;right:0;bottom:0;
@@ -4135,6 +4168,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/></svg>
           </div>
           <div class="store-address">Shop 1193-1194/95 Malop St, Geelong VIC 3220</div>
+          <div class="store-status"><span class="store-status-dot" aria-hidden="true"></span><span class="store-status-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span></div>
         </div>
 
         <h3 class="order-heading">Select your order type</h3>
@@ -4428,24 +4462,19 @@
         <div class="outlet-card-top">
           <span class="outlet-radio"></span>
           <div class="outlet-info">
-            <div class="outlet-name">Roll&rsquo;d Collins
+            <div class="outlet-name t-headline">Roll&rsquo;d Collins
               <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 10.501V14.1257C13.5001 14.2407 13.4775 14.3546 13.4336 14.4608C13.3896 14.567 13.3252 14.6635 13.2439 14.7448C13.1626 14.8261 13.066 14.8906 12.9598 14.9346C12.8536 14.9785 12.7397 15.0011 12.6248 15.001H3.87525C3.76031 15.001 3.6465 14.9783 3.54031 14.9344C3.43412 14.8904 3.33763 14.8259 3.25636 14.7446C3.17508 14.6633 3.11061 14.5669 3.06662 14.4607C3.02264 14.3545 3 14.2407 3 14.1257V5.37623C2.9999 5.26126 3.02247 5.1474 3.06642 5.04117C3.11037 4.93493 3.17484 4.83841 3.25614 4.75711C3.33743 4.67582 3.43396 4.61135 3.54019 4.5674C3.64642 4.52345 3.76028 4.50088 3.87525 4.50098H7.33875M10.674 3.00098H15V7.32698M9.08325 8.91773L14.9168 3.08423"/></svg>
             </div>
-            <div class="outlet-address">Unit 50/45 Collins St, Melbourne VIC 3000</div>
+            <div class="outlet-address t-callout">Unit 50/45 Collins St, Melbourne VIC 3000</div>
             <div class="outlet-tags">
-              <span class="outlet-tag">Pick up</span>
-              <span class="outlet-tag">Delivery</span>
+              <span class="outlet-tag t-caption">Pick up</span>
+              <span class="outlet-tag t-caption">Delivery</span>
             </div>
           </div>
         </div>
         <div class="outlet-card-bottom">
-          <span class="outlet-status">
-            <img src="Storefront.svg" width="14" height="14" alt="">
-            Open
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </span>
-          <span class="outlet-distance">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <span class="outlet-status t-callout" role="button" tabindex="0" onclick="openOutletHours(event, this)" aria-haspopup="dialog" onkeydown="if(event.key==='Enter'||event.key===' ')openOutletHours(event, this)"><span class="outlet-open-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span><span class="outlet-info-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></span></span>
+          <span class="outlet-distance t-footnote">
             4.34 km
           </span>
         </div>
@@ -4454,24 +4483,19 @@
         <div class="outlet-card-top">
           <span class="outlet-radio"></span>
           <div class="outlet-info">
-            <div class="outlet-name">Roll&rsquo;d Parkville
+            <div class="outlet-name t-headline">Roll&rsquo;d Parkville
               <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 10.501V14.1257C13.5001 14.2407 13.4775 14.3546 13.4336 14.4608C13.3896 14.567 13.3252 14.6635 13.2439 14.7448C13.1626 14.8261 13.066 14.8906 12.9598 14.9346C12.8536 14.9785 12.7397 15.0011 12.6248 15.001H3.87525C3.76031 15.001 3.6465 14.9783 3.54031 14.9344C3.43412 14.8904 3.33763 14.8259 3.25636 14.7446C3.17508 14.6633 3.11061 14.5669 3.06662 14.4607C3.02264 14.3545 3 14.2407 3 14.1257V5.37623C2.9999 5.26126 3.02247 5.1474 3.06642 5.04117C3.11037 4.93493 3.17484 4.83841 3.25614 4.75711C3.33743 4.67582 3.43396 4.61135 3.54019 4.5674C3.64642 4.52345 3.76028 4.50088 3.87525 4.50098H7.33875M10.674 3.00098H15V7.32698M9.08325 8.91773L14.9168 3.08423"/></svg>
             </div>
-            <div class="outlet-address">The University of Melbourne, Building 162 Monash Rd, Cnr, Tenancy SP4/761 Swanston St, Parkville Melbourne 3010</div>
+            <div class="outlet-address t-callout">The University of Melbourne, Building 162 Monash Rd, Cnr, Tenancy SP4/761 Swanston St, Parkville Melbourne 3010</div>
             <div class="outlet-tags">
-              <span class="outlet-tag">Pick up</span>
-              <span class="outlet-tag">Delivery</span>
+              <span class="outlet-tag t-caption">Pick up</span>
+              <span class="outlet-tag t-caption">Delivery</span>
             </div>
           </div>
         </div>
         <div class="outlet-card-bottom">
-          <span class="outlet-status">
-            <img src="Storefront.svg" width="14" height="14" alt="">
-            Open
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </span>
-          <span class="outlet-distance">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <span class="outlet-status t-callout" role="button" tabindex="0" onclick="openOutletHours(event, this)" aria-haspopup="dialog" onkeydown="if(event.key==='Enter'||event.key===' ')openOutletHours(event, this)"><span class="outlet-open-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span><span class="outlet-info-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></span></span>
+          <span class="outlet-distance t-footnote">
             7.30 km
           </span>
         </div>
@@ -4481,24 +4505,19 @@
         <div class="outlet-card-top">
           <span class="outlet-radio"></span>
           <div class="outlet-info">
-            <div class="outlet-name">Roll&rsquo;d Spencer Outlet
+            <div class="outlet-name t-headline">Roll&rsquo;d Spencer Outlet
               <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 10.501V14.1257C13.5001 14.2407 13.4775 14.3546 13.4336 14.4608C13.3896 14.567 13.3252 14.6635 13.2439 14.7448C13.1626 14.8261 13.066 14.8906 12.9598 14.9346C12.8536 14.9785 12.7397 15.0011 12.6248 15.001H3.87525C3.76031 15.001 3.6465 14.9783 3.54031 14.9344C3.43412 14.8904 3.33763 14.8259 3.25636 14.7446C3.17508 14.6633 3.11061 14.5669 3.06662 14.4607C3.02264 14.3545 3 14.2407 3 14.1257V5.37623C2.9999 5.26126 3.02247 5.1474 3.06642 5.04117C3.11037 4.93493 3.17484 4.83841 3.25614 4.75711C3.33743 4.67582 3.43396 4.61135 3.54019 4.5674C3.64642 4.52345 3.76028 4.50088 3.87525 4.50098H7.33875M10.674 3.00098H15V7.32698M9.08325 8.91773L14.9168 3.08423"/></svg>
             </div>
-            <div class="outlet-address">Tenancy 209/201 Spencer St, Docklands VIC 3008</div>
+            <div class="outlet-address t-callout">Tenancy 209/201 Spencer St, Docklands VIC 3008</div>
             <div class="outlet-tags">
-              <span class="outlet-tag">Pick up</span>
-              <span class="outlet-tag">Delivery</span>
+              <span class="outlet-tag t-caption">Pick up</span>
+              <span class="outlet-tag t-caption">Delivery</span>
             </div>
           </div>
         </div>
         <div class="outlet-card-bottom">
-          <span class="outlet-status">
-            <img src="Storefront.svg" width="14" height="14" alt="">
-            Open
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </span>
-          <span class="outlet-distance">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <span class="outlet-status t-callout" role="button" tabindex="0" onclick="openOutletHours(event, this)" aria-haspopup="dialog" onkeydown="if(event.key==='Enter'||event.key===' ')openOutletHours(event, this)"><span class="outlet-open-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span><span class="outlet-info-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></span></span>
+          <span class="outlet-distance t-footnote">
             7.30 km
           </span>
         </div>
@@ -4507,24 +4526,19 @@
         <div class="outlet-card-top">
           <span class="outlet-radio"></span>
           <div class="outlet-info">
-            <div class="outlet-name">Roll&rsquo;d CBW Goldsborough Lane
+            <div class="outlet-name t-headline">Roll&rsquo;d CBW Goldsborough Lane
               <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 10.501V14.1257C13.5001 14.2407 13.4775 14.3546 13.4336 14.4608C13.3896 14.567 13.3252 14.6635 13.2439 14.7448C13.1626 14.8261 13.066 14.8906 12.9598 14.9346C12.8536 14.9785 12.7397 15.0011 12.6248 15.001H3.87525C3.76031 15.001 3.6465 14.9783 3.54031 14.9344C3.43412 14.8904 3.33763 14.8259 3.25636 14.7446C3.17508 14.6633 3.11061 14.5669 3.06662 14.4607C3.02264 14.3545 3 14.2407 3 14.1257V5.37623C2.9999 5.26126 3.02247 5.1474 3.06642 5.04117C3.11037 4.93493 3.17484 4.83841 3.25614 4.75711C3.33743 4.67582 3.43396 4.61135 3.54019 4.5674C3.64642 4.52345 3.76028 4.50088 3.87525 4.50098H7.33875M10.674 3.00098H15V7.32698M9.08325 8.91773L14.9168 3.08423"/></svg>
             </div>
-            <div class="outlet-address">181 William St, Shop TG10 Goldsbrough La, Melbourne VIC 3000</div>
+            <div class="outlet-address t-callout">181 William St, Shop TG10 Goldsbrough La, Melbourne VIC 3000</div>
             <div class="outlet-tags">
-              <span class="outlet-tag">Pick up</span>
-              <span class="outlet-tag">Delivery</span>
+              <span class="outlet-tag t-caption">Pick up</span>
+              <span class="outlet-tag t-caption">Delivery</span>
             </div>
           </div>
         </div>
         <div class="outlet-card-bottom">
-          <span class="outlet-status">
-            <img src="Storefront.svg" width="14" height="14" alt="">
-            Open
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </span>
-          <span class="outlet-distance">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <span class="outlet-status t-callout" role="button" tabindex="0" onclick="openOutletHours(event, this)" aria-haspopup="dialog" onkeydown="if(event.key==='Enter'||event.key===' ')openOutletHours(event, this)"><span class="outlet-open-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span><span class="outlet-info-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></span></span>
+          <span class="outlet-distance t-footnote">
             7.30 km
           </span>
         </div>
@@ -4537,24 +4551,19 @@
         <div class="outlet-card-top">
           <span class="outlet-radio"></span>
           <div class="outlet-info">
-            <div class="outlet-name">Roll&rsquo;d Collins
+            <div class="outlet-name t-headline">Roll&rsquo;d Collins
               <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 10.501V14.1257C13.5001 14.2407 13.4775 14.3546 13.4336 14.4608C13.3896 14.567 13.3252 14.6635 13.2439 14.7448C13.1626 14.8261 13.066 14.8906 12.9598 14.9346C12.8536 14.9785 12.7397 15.0011 12.6248 15.001H3.87525C3.76031 15.001 3.6465 14.9783 3.54031 14.9344C3.43412 14.8904 3.33763 14.8259 3.25636 14.7446C3.17508 14.6633 3.11061 14.5669 3.06662 14.4607C3.02264 14.3545 3 14.2407 3 14.1257V5.37623C2.9999 5.26126 3.02247 5.1474 3.06642 5.04117C3.11037 4.93493 3.17484 4.83841 3.25614 4.75711C3.33743 4.67582 3.43396 4.61135 3.54019 4.5674C3.64642 4.52345 3.76028 4.50088 3.87525 4.50098H7.33875M10.674 3.00098H15V7.32698M9.08325 8.91773L14.9168 3.08423"/></svg>
             </div>
-            <div class="outlet-address">Unit 50/45 Collins St, Melbourne VIC 3000</div>
+            <div class="outlet-address t-callout">Unit 50/45 Collins St, Melbourne VIC 3000</div>
             <div class="outlet-tags">
-              <span class="outlet-tag">Pick up</span>
-              <span class="outlet-tag">Delivery</span>
+              <span class="outlet-tag t-caption">Pick up</span>
+              <span class="outlet-tag t-caption">Delivery</span>
             </div>
           </div>
         </div>
         <div class="outlet-card-bottom">
-          <span class="outlet-status">
-            <img src="Storefront.svg" width="14" height="14" alt="">
-            Open
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </span>
-          <span class="outlet-distance">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <span class="outlet-status t-callout" role="button" tabindex="0" onclick="openOutletHours(event, this)" aria-haspopup="dialog" onkeydown="if(event.key==='Enter'||event.key===' ')openOutletHours(event, this)"><span class="outlet-open-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span><span class="outlet-info-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></span></span>
+          <span class="outlet-distance t-footnote">
             4.34 km
           </span>
         </div>
@@ -4563,24 +4572,19 @@
         <div class="outlet-card-top">
           <span class="outlet-radio"></span>
           <div class="outlet-info">
-            <div class="outlet-name">Roll&rsquo;d Melbourne Lonsdale
+            <div class="outlet-name t-headline">Roll&rsquo;d Melbourne Lonsdale
               <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 10.501V14.1257C13.5001 14.2407 13.4775 14.3546 13.4336 14.4608C13.3896 14.567 13.3252 14.6635 13.2439 14.7448C13.1626 14.8261 13.066 14.8906 12.9598 14.9346C12.8536 14.9785 12.7397 15.0011 12.6248 15.001H3.87525C3.76031 15.001 3.6465 14.9783 3.54031 14.9344C3.43412 14.8904 3.33763 14.8259 3.25636 14.7446C3.17508 14.6633 3.11061 14.5669 3.06662 14.4607C3.02264 14.3545 3 14.2407 3 14.1257V5.37623C2.9999 5.26126 3.02247 5.1474 3.06642 5.04117C3.11037 4.93493 3.17484 4.83841 3.25614 4.75711C3.33743 4.67582 3.43396 4.61135 3.54019 4.5674C3.64642 4.52345 3.76028 4.50088 3.87525 4.50098H7.33875M10.674 3.00098H15V7.32698M9.08325 8.91773L14.9168 3.08423"/></svg>
             </div>
-            <div class="outlet-address">9/50 Lonsdale St, Melbourne VIC 3000</div>
+            <div class="outlet-address t-callout">9/50 Lonsdale St, Melbourne VIC 3000</div>
             <div class="outlet-tags">
-              <span class="outlet-tag">Pick up</span>
-              <span class="outlet-tag">Delivery</span>
+              <span class="outlet-tag t-caption">Pick up</span>
+              <span class="outlet-tag t-caption">Delivery</span>
             </div>
           </div>
         </div>
         <div class="outlet-card-bottom">
-          <span class="outlet-status">
-            <img src="Storefront.svg" width="14" height="14" alt="">
-            Open
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </span>
-          <span class="outlet-distance">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <span class="outlet-status t-callout" role="button" tabindex="0" onclick="openOutletHours(event, this)" aria-haspopup="dialog" onkeydown="if(event.key==='Enter'||event.key===' ')openOutletHours(event, this)"><span class="outlet-open-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span><span class="outlet-info-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></span></span>
+          <span class="outlet-distance t-footnote">
             4.34 km
           </span>
         </div>
@@ -4589,24 +4593,19 @@
         <div class="outlet-card-top">
           <span class="outlet-radio"></span>
           <div class="outlet-info">
-            <div class="outlet-name">Roll&rsquo;d Parkville
+            <div class="outlet-name t-headline">Roll&rsquo;d Parkville
               <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 10.501V14.1257C13.5001 14.2407 13.4775 14.3546 13.4336 14.4608C13.3896 14.567 13.3252 14.6635 13.2439 14.7448C13.1626 14.8261 13.066 14.8906 12.9598 14.9346C12.8536 14.9785 12.7397 15.0011 12.6248 15.001H3.87525C3.76031 15.001 3.6465 14.9783 3.54031 14.9344C3.43412 14.8904 3.33763 14.8259 3.25636 14.7446C3.17508 14.6633 3.11061 14.5669 3.06662 14.4607C3.02264 14.3545 3 14.2407 3 14.1257V5.37623C2.9999 5.26126 3.02247 5.1474 3.06642 5.04117C3.11037 4.93493 3.17484 4.83841 3.25614 4.75711C3.33743 4.67582 3.43396 4.61135 3.54019 4.5674C3.64642 4.52345 3.76028 4.50088 3.87525 4.50098H7.33875M10.674 3.00098H15V7.32698M9.08325 8.91773L14.9168 3.08423"/></svg>
             </div>
-            <div class="outlet-address">The University of Melbourne, Building 162 Monash Rd, Cnr, Tenancy SP4/761 Swanston St, Parkville VIC 3010</div>
+            <div class="outlet-address t-callout">The University of Melbourne, Building 162 Monash Rd, Cnr, Tenancy SP4/761 Swanston St, Parkville VIC 3010</div>
             <div class="outlet-tags">
-              <span class="outlet-tag">Pick up</span>
-              <span class="outlet-tag">Delivery</span>
+              <span class="outlet-tag t-caption">Pick up</span>
+              <span class="outlet-tag t-caption">Delivery</span>
             </div>
           </div>
         </div>
         <div class="outlet-card-bottom">
-          <span class="outlet-status">
-            <img src="Storefront.svg" width="14" height="14" alt="">
-            Open
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </span>
-          <span class="outlet-distance">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <span class="outlet-status t-callout" role="button" tabindex="0" onclick="openOutletHours(event, this)" aria-haspopup="dialog" onkeydown="if(event.key==='Enter'||event.key===' ')openOutletHours(event, this)"><span class="outlet-open-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span><span class="outlet-info-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></span></span>
+          <span class="outlet-distance t-footnote">
             7.30 km
           </span>
         </div>
@@ -4615,24 +4614,19 @@
         <div class="outlet-card-top">
           <span class="outlet-radio"></span>
           <div class="outlet-info">
-            <div class="outlet-name">Roll&rsquo;d Spencer Outlet
+            <div class="outlet-name t-headline">Roll&rsquo;d Spencer Outlet
               <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 10.501V14.1257C13.5001 14.2407 13.4775 14.3546 13.4336 14.4608C13.3896 14.567 13.3252 14.6635 13.2439 14.7448C13.1626 14.8261 13.066 14.8906 12.9598 14.9346C12.8536 14.9785 12.7397 15.0011 12.6248 15.001H3.87525C3.76031 15.001 3.6465 14.9783 3.54031 14.9344C3.43412 14.8904 3.33763 14.8259 3.25636 14.7446C3.17508 14.6633 3.11061 14.5669 3.06662 14.4607C3.02264 14.3545 3 14.2407 3 14.1257V5.37623C2.9999 5.26126 3.02247 5.1474 3.06642 5.04117C3.11037 4.93493 3.17484 4.83841 3.25614 4.75711C3.33743 4.67582 3.43396 4.61135 3.54019 4.5674C3.64642 4.52345 3.76028 4.50088 3.87525 4.50098H7.33875M10.674 3.00098H15V7.32698M9.08325 8.91773L14.9168 3.08423"/></svg>
             </div>
-            <div class="outlet-address">Tenancy 209/201 Spencer St, Docklands VIC 3008</div>
+            <div class="outlet-address t-callout">Tenancy 209/201 Spencer St, Docklands VIC 3008</div>
             <div class="outlet-tags">
-              <span class="outlet-tag">Pick up</span>
-              <span class="outlet-tag">Delivery</span>
+              <span class="outlet-tag t-caption">Pick up</span>
+              <span class="outlet-tag t-caption">Delivery</span>
             </div>
           </div>
         </div>
         <div class="outlet-card-bottom">
-          <span class="outlet-status">
-            <img src="Storefront.svg" width="14" height="14" alt="">
-            Open
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </span>
-          <span class="outlet-distance">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          <span class="outlet-status t-callout" role="button" tabindex="0" onclick="openOutletHours(event, this)" aria-haspopup="dialog" onkeydown="if(event.key==='Enter'||event.key===' ')openOutletHours(event, this)"><span class="outlet-open-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span><span class="outlet-info-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></span></span>
+          <span class="outlet-distance t-footnote">
             8.10 km
           </span>
         </div>
@@ -4876,7 +4870,7 @@
         </div>
         <div class="picktime-scroll">
           <h2 class="pickup-sheet-title t-title-2" id="input-step-title">Room number</h2>
-          <div class="pickup-store-hours" id="input-step-sub">We&rsquo;ll bring your order to your room.</div>
+          <div class="pickup-store-hours hidden" id="input-step-sub">We&rsquo;ll bring your order to your room.</div>
           <!-- Arrived from the table's QR code: confirm which outlet they're ordering from -->
           <!-- Same store card as the Non-HQ store sheet -->
           <div class="store-card qr-outlet hidden" id="qr-outlet-card">
@@ -4884,17 +4878,14 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/></svg>
           </div>
           <div class="store-address">Shop 1193-1194/95 Malop St, Geelong VIC 3220</div>
+          <div class="store-status"><span class="store-status-dot" aria-hidden="true"></span><span class="store-status-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span></div>
         </div>
           <div class="signup-field room-field">
-            <label for="room-number-input" id="input-step-label">Room number</label>
-            <input id="room-number-input" type="text" inputmode="numeric" placeholder="e.g. 1204" autocomplete="off" maxlength="8"
+            <!-- Visually hidden: the placeholder says what to enter; screen readers still get the label -->
+            <label for="room-number-input" id="input-step-label" class="visually-hidden">Room number</label>
+            <input id="room-number-input" type="text" inputmode="numeric" placeholder="Enter room number e.g 1204" autocomplete="off" maxlength="8"
                    aria-describedby="room-error" oninput="onRoomInput()" onkeydown="if(event.key==='Enter')confirmRoomNumber()">
             <div class="room-error hidden" id="room-error" role="alert">Enter your room number to continue.</div>
-            <!-- Dine-in opened from the table's QR code: number pre-filled, still editable -->
-            <div class="input-step-hint hidden" id="input-step-hint">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg>
-              <span>Filled in from the QR code on your table. Change it if it&rsquo;s not right.</span>
-            </div>
           </div>
         </div>
         <div class="next-wrap">
@@ -7119,6 +7110,26 @@
 
   <!-- ===================== ORDER TYPE CHANGE CONFIRMATION ===================== -->
   <!-- Menu pill → order-type sheet → Next with a different type while the cart has items -->
+  <!-- Outlet operational hours (OOR_0002E11B): from "Open · Until …" on a store card -->
+  <div class="reorder-modal-overlay" id="hours-overlay">
+    <div class="reorder-modal-backdrop" onclick="closeOutletHours()"></div>
+    <div class="reorder-modal-card hours-card" role="dialog" aria-modal="true" aria-labelledby="hours-title">
+      <div class="sheet-header">
+        <h2 class="t-title-2" id="hours-title">Opening hours</h2>
+      </div>
+      <!-- Same store card as the Non-HQ store sheet and the Dine-in (QR) step -->
+      <div class="store-card">
+        <div class="store-name" id="hours-store-name">Roll&rsquo;d Collins
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/></svg>
+        </div>
+        <div class="store-address" id="hours-store-address">Unit 50/45 Collins St, Melbourne VIC 3000</div>
+        <div class="store-status"><span class="store-status-dot" aria-hidden="true"></span><span class="store-status-text"><span class="open-word">Open</span><span class="open-until"> &middot; Until 9:00 PM</span></span></div>
+      </div>
+      <dl class="hours-list t-body" id="hours-list"></dl>
+      <button class="btn-outline hours-close" onclick="closeOutletHours()">Close</button>
+    </div>
+  </div>
+
   <div class="reorder-modal-overlay" id="type-change-overlay">
     <div class="reorder-modal-backdrop" onclick="closeTypeChange()"></div>
     <div class="reorder-modal-card" role="alertdialog" aria-modal="true" aria-labelledby="type-change-title" aria-describedby="type-change-body">
@@ -7705,9 +7716,9 @@
   var timeSheetFor = 'pickup';      // which order type the time sheet is confirming: 'pickup' | 'room' | 'dinein'
 
   var INPUT_COPY = {
-    room:   {title:'Room Service', label:'Room number', sub:'We’ll bring your order to your room.',  placeholder:'e.g. 1204', error:'Enter your room number to continue.',
+    room:   {title:'Room Service', label:'Room number', sub:'We’ll bring your order to your room.',  placeholder:'Enter room number e.g 1204', error:'Enter your room number to continue.',
              invalid:'Enter a valid room number.', digitsOnly:true, maxLength:4},
-    dinein: {title:'Dine in', label:'Table number', sub:'We’ll bring your order to your table.', placeholder:'e.g. 12',   error:'Enter your table number to continue.',
+    dinein: {title:'Dine in', label:'Table number', sub:'We’ll bring your order to your table.', placeholder:'Enter table number e.g 12',   error:'Enter your table number to continue.',
              invalid:'Enter a valid table number.', digitsOnly:true, maxLength:3}
   };
   function isInputType(t){ return t === 'room' || t === 'dinein'; }
@@ -7729,7 +7740,9 @@
     var input = document.getElementById('room-number-input');
     var copy = INPUT_COPY[inputFor];
     document.getElementById('input-step-title').textContent = copy.title;
-    document.getElementById('input-step-sub').textContent = copy.sub;
+    /* No subtitle under the title any more; it only appears for the QR case ("You are ordering from" + outlet) */
+    var stepSub = document.getElementById('input-step-sub');
+    stepSub.textContent = copy.sub; stepSub.classList.add('hidden');
     document.getElementById('input-step-label').textContent = copy.label || copy.title;
     document.getElementById('room-error').textContent = copy.error;
     input.placeholder = copy.placeholder;
@@ -7738,12 +7751,13 @@
     input.value = inputValue();
     showRoomError(false);
     /* QR prefill hint: only while the number still matches what the QR code gave */
-    document.getElementById('input-step-hint').classList.toggle('hidden', !(inputFor === 'dinein' && qrTableNumber && input.value === qrTableNumber));
     /* From the table's QR code: confirm the outlet above the field */
     document.getElementById('qr-outlet-name').firstChild.nodeValue = PICKUP_STORE + '\n            ';
     var fromQr = inputFor === 'dinein' && qrTableNumber;
     document.getElementById('qr-outlet-card').classList.toggle('hidden', !fromQr);
-    if (fromQr) document.getElementById('input-step-sub').textContent = 'You are ordering from';   // leads into the outlet card
+    if (fromQr) { stepSub.textContent = 'You are ordering from'; stepSub.classList.remove('hidden'); }   // leads into the outlet card
+    /* QR: the number is pre-filled (no placeholder shows), so the "Table number" label is visible above the field */
+    document.getElementById('input-step-label').classList.toggle('visually-hidden', !fromQr);
     room.classList.toggle('over-menu', origin !== 'entry');
     room.classList.remove('hidden');
     requestAnimationFrame(function(){ requestAnimationFrame(function(){ room.classList.add('open'); }); });
@@ -7768,7 +7782,6 @@
       if (digits !== input.value) input.value = digits;
     }
     if (input.value.trim()) showRoomError(false);
-    if (qrTableNumber && input.value !== qrTableNumber) document.getElementById('input-step-hint').classList.add('hidden');
   }
 
   /* Room / table number is required (UC11, UC12 / AC): empty → error, can't continue. */
@@ -8269,6 +8282,33 @@
     }
   }
 
+  /* ---- Outlet hours (OOR_0002E11B). Prototype: every store keeps the same weekly hours. ---- */
+  var OUTLET_HOURS = [            // index = Date.getDay(): 0 Sunday … 6 Saturday; [open, close] in minutes
+    [9*60, 21*60], [9*60, 21*60], [9*60, 21*60], [9*60, 21*60], [9*60, 21*60], [9*60, 23*60], [9*60, 23*60]
+  ];
+  var DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  function shortTime(m){ var h = Math.floor(m / 60), mm = m % 60; return ((h % 12) || 12) + (mm ? ':' + (mm < 10 ? '0' : '') + mm : '') + (h < 12 ? 'am' : 'pm'); }
+  /* Store cards: "Open · Until <today's closing>" */
+  function updateOutletOpenText(){
+    var close = OUTLET_HOURS[new Date().getDay()][1];
+    [].forEach.call(document.querySelectorAll('.outlet-open-text .open-until'), function(el){ el.textContent = ' · Until ' + fmtMins(close); });
+  }
+  function openOutletHours(e, el){
+    e.stopPropagation();                                   // opening the hours doesn't select the store
+    if (e.type === 'keydown') e.preventDefault();
+    if (el.classList.contains('outlet-status-closed')) return;
+    var card = el.closest('.outlet-card');
+    document.getElementById('hours-store-name').firstChild.nodeValue = card.querySelector('.outlet-name').textContent.trim() + ' ';
+    document.getElementById('hours-store-address').textContent = card.querySelector('.outlet-address').textContent.trim();
+    var order = [1, 2, 3, 4, 5, 6, 0];                     // Monday first
+    document.getElementById('hours-list').innerHTML = order.map(function(d){
+      return '<dt>' + DAY_NAMES[d] + '</dt><dd>' + shortTime(OUTLET_HOURS[d][0]) + ' - ' + shortTime(OUTLET_HOURS[d][1]) + '</dd>';
+    }).join('');
+    updateStoreStatus();
+    document.getElementById('hours-overlay').classList.add('open');
+  }
+  function closeOutletHours(){ document.getElementById('hours-overlay').classList.remove('open'); }
+
   /* Stores closed for the chosen order type show Closed + next opening and can't be selected. */
   function applyOutletClosures(method){
     [].forEach.call(document.querySelectorAll('.outlet-card[data-closed-for]'), function(card){
@@ -8277,10 +8317,11 @@
       if (!card._openStatus) card._openStatus = status.innerHTML;
       card.classList.toggle('is-closed', closed);
       card.setAttribute('aria-disabled', String(closed));
-      status.className = closed ? 'outlet-status outlet-status-closed' : 'outlet-status';
+      status.className = closed ? 'outlet-status t-footnote outlet-status-closed' : 'outlet-status t-callout';   // closed: plain footnote (not a link)
       status.innerHTML = closed ? '<b>Closed</b>&middot; ' + card.dataset.nextOpen : card._openStatus;
       if (closed) card.classList.remove('selected');
     });
+    updateOutletOpenText();
   }
   document.addEventListener('DOMContentLoaded', function(){ applyOutletClosures('pickup'); });
 
@@ -8444,6 +8485,18 @@
   }
   function nowMins(){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
   function isGoneToday(btn, type){ return slotStartMins(btn) < todayThreshold(type || timeSheetFor); }
+  /* Store cards: "Open · Until 9:00 PM" from the store's closing time; "Closed" once it has passed */
+  function updateStoreStatus(){
+    var close = OUTLET_HOURS[new Date().getDay()][1];       // today's closing (11 PM Fri / Sat)
+    var open = nowMins() < close;
+    [].forEach.call(document.querySelectorAll('.store-status'), function(el){
+      el.classList.toggle('is-closed', !open);
+      el.querySelector('.open-word').textContent = open ? 'Open' : 'Closed';
+      el.querySelector('.open-until').textContent = open ? ' · Until ' + fmtMins(close) : ' · Opens tomorrow';
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){ updateStoreStatus(); setInterval(updateStoreStatus, 60000); });
+
   function fmtMins(t){ var h = Math.floor(t / 60), m = t % 60; return ((h % 12) || 12) + ':' + (m < 10 ? '0' : '') + m + ' ' + (h < 12 ? 'AM' : 'PM'); }
   /* ASAP estimate as a clock time; '' when the store can't make it before closing */
   function asapTimeText(type){ type = type || 'pickup'; return asapAvailable(type) ? '~' + fmtMins(asapReadyMins(type)) : ''; }

@@ -11,7 +11,7 @@
     if (v === 'desktop') document.documentElement.classList.add('is-desktop');
   })();
 </script>
-<link rel="stylesheet" href="design-system.css?v=2026-09-29b">
+<link rel="stylesheet" href="design-system.css?v=2026-10-13">
 <style>
   :root{
     --ink:#12211b;
@@ -242,6 +242,7 @@
       <li><a href="#audit">Why this exists &middot; audit</a></li>
       <li><a href="#type-scale">Type scale</a></li>
       <li><a href="#weights">Weights</a></li>
+      <li><a href="#colour">Colour</a></li>
       <li><a href="#rules">Rules for new screens</a></li>
       <li><a href="#migration">Migration map</a></li>
       <li><a href="#spacing">Spacing &middot; detail pages</a></li>
@@ -285,6 +286,19 @@
       <div class="panel weight retired"><div class="sample fw-bold">Bánh mì 700</div><div class="label">--fw-bold · 700 · reserved</div><div class="for">Not used by any role. All emphasis (overlines, badges, prices, links, bold meta) is 600, so no small text outweighs a heading. Keep the token for a future need; don't use it on screens.</div></div>
     </div>
     <div class="panel retired-row"><b>Per-role tokens:</b> each role reads its weight from its own token (<code>--fw-display</code>, <code>--fw-title-1</code> … <code>--fw-callout</code>, <code>--fw-overline</code>, all 600 today), so a role can change weight in one place without touching any screen.<br><b>Retired:</b> <code>500</code> (used on <code>.mealdetail-desc</code>, <code>.signin-benefit-row</code>): use 400. <code>900</code> (<code>.visa-icon</code>): this is a logo mark, so swap it for the real card-brand SVG. Also retired: the stray <code>'Inter'</code> font-family on <code>.mealdetail-desc</code>. Inter is never loaded, so that element falls back to the system font anyway.</div>
+  </div>
+
+  <!-- Colour -->
+  <div class="section" id="colour">
+    <div class="section-head"><h2>Colour</h2><span class="section-count">1 token</span></div>
+    <p class="lede">Colour tokens live in <code>design-system.css</code> next to the type tokens. Use the token, never the hex value.</p>
+    <div class="panel" style="display:flex;align-items:center;gap:16px;max-width:560px;">
+      <span style="flex:none;width:48px;height:48px;border-radius:12px;background:var(--green-bright);"></span>
+      <div>
+        <div class="label"><code>--green-bright</code> &middot; #1f9d55</div>
+        <div class="for">&ldquo;Open&rdquo; store status (dot + label, e.g. <span style="color:var(--green-bright);font-weight:600">Open &middot; Until 9:00 PM</span>) and location pin icons.</div>
+      </div>
+    </div>
   </div>
 
   <!-- Rules -->

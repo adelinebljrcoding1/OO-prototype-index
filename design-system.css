@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Roll'd Order Online — Typography tokens (v1)
+   Roll'd Order Online — Typography + colour tokens (v1)
    Single source of truth for font size, weight, line-height and tracking.
    Reference page: design-system.html
 
@@ -17,6 +17,9 @@
 
 :root{
   --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+
+  /* Colour */
+  --green-bright:#1f9d55;   /* "Open" status (dot + label), location pin icons */
 
   /* Weights */
   --fw-regular:400;
