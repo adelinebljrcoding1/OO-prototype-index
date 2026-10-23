@@ -105,119 +105,62 @@
   .cover-cta:hover{transform:translateY(-1px);box-shadow:0 10px 22px -8px rgba(0,0,0,.4);}
   .cover-cta svg{flex:none;}
 
-  /* ---------- Section ---------- */
-  .section{margin-top:38px;}
-  .section-head{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:12px;
-    background:var(--green);
-    color:#fdfbf6;
-    border-radius:10px;
-    padding:13px 18px;
-    margin-bottom:14px;
+  /* ---------- Toolbar: platform switch + coverage ---------- */
+  .toolbar{
+    position:sticky;top:0;z-index:5;
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    margin:28px -28px 0;padding:14px 28px;
+    background:rgba(250,249,246,.94);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
   }
-  .section-head h2{
-    margin:0;
-    font-size:15.5px;
-    font-weight:700;
-    letter-spacing:.01em;
+  .seg{display:inline-flex;background:var(--disabled-bg);border:1px solid var(--line);border-radius:999px;padding:3px;}
+  .seg button{
+    border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--muted);
+    padding:7px 16px;border-radius:999px;cursor:pointer;
   }
-  .section-count{
-    font-size:12px;
-    color:#c9e2d4;
-    font-weight:600;
-    white-space:nowrap;
-  }
+  .seg button[aria-pressed="true"]{background:var(--green);color:#fdfbf6;}
+  .coverage{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;}
+  .coverage b{color:var(--ink);}
+  .legend{display:inline-flex;align-items:center;gap:6px;}
 
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
+  /* ---------- Journey ---------- */
+  .journey{
+    margin-top:18px;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:18px 20px 20px;
   }
+  .journey-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:4px;}
+  .journey-head h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.005em;}
+  .journey-head h2 .num{color:var(--muted);font-weight:600;margin-right:6px;}
+  .journey-count{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;}
+  .journey-desc{margin:0 0 14px;font-size:13px;color:var(--muted);line-height:1.45;}
+  .group{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--line);}
+  .group:first-of-type{border-top:0;}
+  .group-label{
+    flex:none;width:96px;padding-top:7px;
+    font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:7px 12px;border:1px solid var(--line);border-radius:999px;
+    background:var(--paper);color:var(--ink);text-decoration:none;
+    font-size:13px;font-weight:500;line-height:1.3;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  a.chip:hover{border-color:var(--green);background:var(--green-soft);}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--green);}
+  .dot.pending{background:var(--accent);}
+  .dot.none{background:transparent;border:1.5px solid var(--disabled);}
+  .chip-note{font-size:11px;font-weight:600;color:var(--accent);}
+  .chip.is-none{background:var(--disabled-bg);color:var(--disabled);cursor:default;}
+  .chip.is-none .chip-note{color:var(--disabled);}
   @media (max-width:640px){
-    .grid{grid-template-columns:1fr;}
     .wrap{padding:36px 16px 72px;}
     .cover{padding:32px 22px 28px;}
-  }
-
-  .item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:13px 15px;
-    text-decoration:none;
-    color:var(--ink);
-    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
-  }
-  a.item:hover{
-    border-color:var(--green);
-    transform:translateY(-1px);
-    box-shadow:var(--shadow);
-  }
-  .item-label{
-    display:flex;
-    align-items:flex-start;
-    gap:10px;
-    font-size:13.5px;
-    font-weight:600;
-    line-height:1.35;
-  }
-  .item-label .status-dot{
-    width:9px;height:9px;border-radius:50%;
-    margin-top:4px;
-    flex:none;
-    background:var(--green);
-  }
-  .item.is-disabled{
-    background:var(--disabled-bg);
-    color:var(--disabled);
-    cursor:default;
-  }
-  .item.is-disabled .status-dot{background:var(--disabled);}
-  .item-note{
-    font-size:11px;
-    color:var(--muted);
-    font-weight:500;
-    white-space:nowrap;
-  }
-  .item.is-disabled .item-note{color:var(--disabled);}
-  .item-arrow{
-    flex:none;
-    opacity:.45;
-  }
-  a.item:hover .item-arrow{opacity:.9;}
-
-  /* ---------- Mobile / Desktop columns ---------- */
-  .flow-cols{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:16px;
-    align-items:start;
-  }
-  .flow-col{display:flex;flex-direction:column;gap:8px;}
-  .col-label{
-    display:flex;align-items:center;gap:8px;
-    font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--muted);padding:2px 4px 4px;
-  }
-  .col-icon{font-size:13px;}
-  .item.is-pending .status-dot{background:var(--accent);}
-  .edge-divider{display:flex;align-items:center;gap:10px;margin:10px 4px 2px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
-  .edge-divider::after{content:"";flex:1;height:1px;background:var(--line);}
-  .item.is-pending .item-note{color:var(--accent);}
-  .item-note{margin-left:auto;}
-  .cover-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
-  .cover-ctas .cover-cta{margin-top:0;}
-  .cover-cta-ghost{background:transparent;color:#fbf8f2;border:1px solid rgba(255,255,255,.35);box-shadow:none;}
-  .cover-cta-ghost:hover{background:rgba(255,255,255,.08);}
-  @media (max-width:720px){
-    .flow-cols{grid-template-columns:1fr;}
+    .toolbar{margin:24px -16px 0;padding:12px 16px;}
+    .group{flex-direction:column;gap:6px;}
+    .group-label{width:auto;padding-top:0;}
+    .journey{padding:16px;}
   }
 
   footer{
@@ -259,207 +202,157 @@
     </div>
   </div>
 
-  <!-- 0. Foundations -->
-  <div class="section">
-    <div class="section-head">
-      <h2>0 &middot; Foundations</h2>
-      <span class="section-count">1 item &middot; Mobile + Desktop</span>
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="Platform">
+      <button type="button" data-view="mobile" aria-pressed="true">Mobile</button>
+      <button type="button" data-view="desktop" aria-pressed="false">Desktop</button>
     </div>
-    <div class="flow-cols">
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
-        <a class="item" href="design-system.html?view=mobile"><span class="item-label"><span class="status-dot"></span>Design System &mdash; Typography, spacing &amp; components</span><span class="item-arrow">→</span></a>
-      </div>
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
-        <a class="item" href="design-system.html?view=desktop"><span class="item-label"><span class="status-dot"></span>Design System &mdash; Typography, spacing &amp; components</span><span class="item-arrow">→</span></a>
-      </div>
-    </div>
+    <div class="coverage" id="coverage"></div>
   </div>
 
-  <!-- 1. HQ and Non-HQ -->
-  <div class="section">
-    <div class="section-head">
-      <h2>1 &middot; HQ and Non-HQ</h2>
-      <span class="section-count">2 items &middot; Mobile + Desktop</span>
-    </div>
-    <div class="flow-cols">
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
-        <a class="item" href="prototype.html?view=mobile#screen-hq-order"><span class="item-label"><span class="status-dot"></span>HQ Flow &mdash; Select Order Type</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Non-HQ Flow &mdash; Select Order Type</span><span class="item-arrow">→</span></a>
-      </div>
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
-        <a class="item" href="prototype.html?view=desktop#screen-hq-order"><span class="item-label"><span class="status-dot"></span>HQ Flow &mdash; Select Order Type</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Non-HQ Flow &mdash; Select Order Type</span><span class="item-arrow">→</span></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. Fulfilment Flows -->
-  <div class="section">
-    <div class="section-head">
-      <h2>2 &middot; Fulfilment Flows</h2>
-      <span class="section-count">8 items &middot; Mobile + Desktop</span>
-    </div>
-    <div class="flow-cols">
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
-        <a class="item" href="prototype.html?view=mobile#screen-nonhq,app-body!add:pickup-timing-asap"><span class="item-label"><span class="status-dot"></span>Pick up &mdash; ASAP only store (skips time step)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoDeliveryStep"><span class="item-label"><span class="status-dot"></span>Delivery Flow incl. Address Entry (Non-HQ)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoHqDeliveryStep"><span class="item-label"><span class="status-dot"></span>HQ Flow &mdash; Delivery: address, then stores that deliver to you</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoPickupPreorderOnly"><span class="item-label"><span class="status-dot"></span>Pick up &mdash; pre-order only store</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoDeliveryAsapOnly"><span class="item-label"><span class="status-dot"></span>Delivery &mdash; ASAP only store (skips time step)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoDeliveryPreorderOnly"><span class="item-label"><span class="status-dot"></span>Delivery &mdash; pre-order only store</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoDineInStep"><span class="item-label"><span class="status-dot"></span>Dine-in Flow incl. Table Number (Non-HQ)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoRoomStep"><span class="item-label"><span class="status-dot"></span>Room Service Flow incl. Room Number (Non-HQ)</span><span class="item-arrow">→</span></a>
-      </div>
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
-        <a class="item" href="prototype.html?view=desktop#screen-nonhq,app-body!add:pickup-timing-asap"><span class="item-label"><span class="status-dot"></span>Pick up &mdash; ASAP only store (skips time step)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoDeliveryStep"><span class="item-label"><span class="status-dot"></span>Delivery Flow incl. Address Entry (Non-HQ)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoHqDeliveryStep"><span class="item-label"><span class="status-dot"></span>HQ Flow &mdash; Delivery: address, then stores that deliver to you</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoPickupPreorderOnly"><span class="item-label"><span class="status-dot"></span>Pick up &mdash; pre-order only store</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoDeliveryAsapOnly"><span class="item-label"><span class="status-dot"></span>Delivery &mdash; ASAP only store (skips time step)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoDeliveryPreorderOnly"><span class="item-label"><span class="status-dot"></span>Delivery &mdash; pre-order only store</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoDineInStep"><span class="item-label"><span class="status-dot"></span>Dine-in Flow incl. Table Number (Non-HQ)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoRoomStep"><span class="item-label"><span class="status-dot"></span>Room Service Flow incl. Room Number (Non-HQ)</span><span class="item-arrow">→</span></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. Sign In / Registration -->
-  <div class="section">
-    <div class="section-head">
-      <h2>3 &middot; Sign In / Registration</h2>
-      <span class="section-count">3 items &middot; Mobile + Desktop</span>
-    </div>
-    <div class="flow-cols">
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
-        <a class="item" href="prototype.html?view=mobile#screen-signin"><span class="item-label"><span class="status-dot"></span>Login / Join Member</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-checkout,otp-overlay,otp-step-phone!add:hidden-step,otp-step-signup!remove:hidden-step"><span class="item-label"><span class="status-dot"></span>Sign Up Form</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-profile-settings"><span class="item-label"><span class="status-dot"></span>Account</span><span class="item-arrow">→</span></a>
-      </div>
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
-        <a class="item is-pending" href="prototype.html?view=desktop#screen-signin"><span class="item-label"><span class="status-dot"></span>Login / Join Member</span><span class="item-note">Mobile layout for now</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-checkout,otp-overlay,otp-step-phone!add:hidden-step,otp-step-signup!remove:hidden-step"><span class="item-label"><span class="status-dot"></span>Sign Up Form</span><span class="item-arrow">→</span></a>
-        <a class="item is-pending" href="prototype.html?view=desktop#screen-profile-settings"><span class="item-label"><span class="status-dot"></span>Account</span><span class="item-note">Mobile layout for now</span><span class="item-arrow">→</span></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. Ordering (Menu to Cart) -->
-  <div class="section">
-    <div class="section-head">
-      <h2>4 &middot; Ordering (Menu to Cart)</h2>
-      <span class="section-count">11 items + 8 edge cases &middot; Mobile + Desktop</span>
-    </div>
-    <div class="flow-cols">
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
-        <a class="item" href="prototype.html?view=mobile#screen-landing"><span class="item-label"><span class="status-dot"></span>Homescreen</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-menu"><span class="item-label"><span class="status-dot"></span>Menu Page</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Fulfilment Switcher (Pickup/Delivery/Dine-in)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-menu,screen-menu!add:search-active"><span class="item-label"><span class="status-dot"></span>Menu Search</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-menu-filters"><span class="item-label"><span class="status-dot"></span>Dietary Filter (menu-wide)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Menu Detail Page</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Item Dietary Modifiers (paid add-ons)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Special Instructions (item-level)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-menu,menu-recommend-section!remove:hidden"><span class="item-label"><span class="status-dot"></span>Cross-sell / Frequently Ordered Together</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-cart"><span class="item-label"><span class="status-dot"></span>Cart / Review Page</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-menu,suggestion-overlay"><span class="item-label"><span class="status-dot"></span>Upsell Carousel (cart)</span><span class="item-arrow">→</span></a>
-        <div class="edge-divider">Edge case</div>
-        <a class="item" href="prototype.html?view=mobile#screen-cart,call:demoUnavailableCart"><span class="item-label"><span class="status-dot"></span>Some items in the cart may not be available at that time</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-menu,call:demoTypeChangePopup"><span class="item-label"><span class="status-dot"></span>Changing order type with items in the cart (clears cart)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoSidebarStore"><span class="item-label"><span class="status-dot"></span>Changing store from the menu side menu (HQ, clears cart)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoStoreChange"><span class="item-label"><span class="status-dot"></span>Changing store from checkout (HQ, clears cart)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile&amp;table=12#call:demoQrTable"><span class="item-label"><span class="status-dot"></span>Dine-in: table number pre-filled from the table&rsquo;s QR code (Non-HQ)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#call:demoDeliveryUnserviceable"><span class="item-label"><span class="status-dot"></span>Delivery: address we can&rsquo;t deliver to (Non-HQ)</span><span class="item-arrow">→</span></a>
-        <a class="item is-pending" href="prototype.html?view=mobile#screen-nonhq,app-body!add:delivery-opens-later"><span class="item-label"><span class="status-dot"></span>Closed order type &mdash; reopens later today (&ldquo;Opens 5:00 PM&rdquo;)</span><span class="item-note">Proposal</span><span class="item-arrow">→</span></a>
-        <a class="item is-pending" href="prototype.html?view=mobile#screen-nonhq,app-body!add:delivery-closed"><span class="item-label"><span class="status-dot"></span>Closed order type &mdash; closed today, no next date (&ldquo;Closed&rdquo;)</span><span class="item-note">Proposal</span><span class="item-arrow">→</span></a>
-      </div>
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
-        <a class="item" href="prototype.html?view=desktop#screen-landing"><span class="item-label"><span class="status-dot"></span>Homescreen</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-menu"><span class="item-label"><span class="status-dot"></span>Menu Page</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-nonhq"><span class="item-label"><span class="status-dot"></span>Fulfilment Switcher (Pickup/Delivery/Dine-in)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-menu,screen-menu!add:search-active"><span class="item-label"><span class="status-dot"></span>Menu Search</span><span class="item-arrow">→</span></a>
-        <a class="item is-pending" href="prototype.html?view=desktop#screen-menu-filters"><span class="item-label"><span class="status-dot"></span>Dietary Filter (menu-wide)</span><span class="item-note">Mobile layout for now</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Menu Detail Page</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Item Dietary Modifiers (paid add-ons)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-mealdetail"><span class="item-label"><span class="status-dot"></span>Special Instructions (item-level)</span><span class="item-arrow">→</span></a>
-        <div class="item is-disabled"><span class="item-label"><span class="status-dot"></span>Cross-sell / Frequently Ordered Together</span><span class="item-note">Not yet</span></div>
-        <a class="item" href="prototype.html?view=desktop#screen-cart"><span class="item-label"><span class="status-dot"></span>Cart / Review Page</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-menu,suggestion-overlay"><span class="item-label"><span class="status-dot"></span>Upsell Carousel (cart)</span><span class="item-arrow">→</span></a>
-        <div class="edge-divider">Edge case</div>
-        <a class="item" href="prototype.html?view=desktop#screen-cart,call:demoUnavailableCart"><span class="item-label"><span class="status-dot"></span>Some items in the cart may not be available at that time</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-menu,call:demoTypeChangePopup"><span class="item-label"><span class="status-dot"></span>Changing order type with items in the cart (clears cart)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoSidebarStore"><span class="item-label"><span class="status-dot"></span>Changing store from the menu side menu (HQ, clears cart)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoStoreChange"><span class="item-label"><span class="status-dot"></span>Changing store from checkout (HQ, clears cart)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop&amp;table=12#call:demoQrTable"><span class="item-label"><span class="status-dot"></span>Dine-in: table number pre-filled from the table&rsquo;s QR code (Non-HQ)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#call:demoDeliveryUnserviceable"><span class="item-label"><span class="status-dot"></span>Delivery: address we can&rsquo;t deliver to (Non-HQ)</span><span class="item-arrow">→</span></a>
-        <a class="item is-pending" href="prototype.html?view=desktop#screen-nonhq,app-body!add:delivery-opens-later"><span class="item-label"><span class="status-dot"></span>Closed order type &mdash; reopens later today (&ldquo;Opens 5:00 PM&rdquo;)</span><span class="item-note">Proposal</span><span class="item-arrow">→</span></a>
-        <a class="item is-pending" href="prototype.html?view=desktop#screen-nonhq,app-body!add:delivery-closed"><span class="item-label"><span class="status-dot"></span>Closed order type &mdash; closed today, no next date (&ldquo;Closed&rdquo;)</span><span class="item-note">Proposal</span><span class="item-arrow">→</span></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5. Check Out -->
-  <div class="section">
-    <div class="section-head">
-      <h2>5 &middot; Check Out</h2>
-      <span class="section-count">6 items &middot; Mobile + Desktop</span>
-    </div>
-    <div class="flow-cols">
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
-        <a class="item" href="prototype.html?view=mobile#screen-checkout"><span class="item-label"><span class="status-dot"></span>Promo Code / Gift Card Entry</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-checkout,screen-checkout!add:no-loyalty"><span class="item-label"><span class="status-dot"></span>Checkout Guest only (No Loyalty, No Login)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-checkout,screen-checkout!add:trigger-mode,otp-overlay!add:open"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + Login Loyalty</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-checkout,cart-account-card!remove:hidden,cart-guest-block!add:hidden,cart-name-section!add:hidden,cart-loyalty-triggers!add:hidden,cart-footer-note!add:hidden,cart-footer-earn-note!remove:hidden"><span class="item-label"><span class="status-dot"></span>Logged-in Checkout (loyalty program enabled)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-checkout,screen-checkout!add:trigger-mode"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + New Login</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-payment"><span class="item-label"><span class="status-dot"></span>Payment Method</span><span class="item-arrow">→</span></a>
-      </div>
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
-        <a class="item" href="prototype.html?view=desktop#screen-checkout"><span class="item-label"><span class="status-dot"></span>Promo Code / Gift Card Entry</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-checkout,screen-checkout!add:no-loyalty"><span class="item-label"><span class="status-dot"></span>Checkout Guest only (No Loyalty, No Login)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-checkout,screen-checkout!add:trigger-mode,otp-overlay!add:open"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + Login Loyalty</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-checkout,cart-account-card!remove:hidden,cart-guest-block!add:hidden,cart-name-section!add:hidden,cart-loyalty-triggers!add:hidden,cart-footer-note!add:hidden,cart-footer-earn-note!remove:hidden"><span class="item-label"><span class="status-dot"></span>Logged-in Checkout (loyalty program enabled)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-checkout,screen-checkout!add:trigger-mode"><span class="item-label"><span class="status-dot"></span>Checkout Guest Loyalty + New Login</span><span class="item-arrow">→</span></a>
-        <a class="item is-pending" href="prototype.html?view=desktop#screen-payment"><span class="item-label"><span class="status-dot"></span>Payment Method</span><span class="item-note">Mobile layout for now</span><span class="item-arrow">→</span></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 6. Store & Support -->
-  <div class="section">
-    <div class="section-head">
-      <h2>6 &middot; Store &amp; Support</h2>
-      <span class="section-count">2 items &middot; Mobile + Desktop</span>
-    </div>
-    <div class="flow-cols">
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">📱</span> Mobile</div>
-        <a class="item" href="prototype.html?view=mobile#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Store Info (map, hours, contact)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=mobile#screen-landing"><span class="item-label"><span class="status-dot"></span>Social Links</span><span class="item-arrow">→</span></a>
-      </div>
-      <div class="flow-col">
-        <div class="col-label"><span class="col-icon">🖥</span> Desktop</div>
-        <a class="item" href="prototype.html?view=desktop#screen-outlet-search"><span class="item-label"><span class="status-dot"></span>Store Info (map, hours, contact)</span><span class="item-arrow">→</span></a>
-        <a class="item" href="prototype.html?view=desktop#screen-landing"><span class="item-label"><span class="status-dot"></span>Social Links</span><span class="item-arrow">→</span></a>
-      </div>
-    </div>
-  </div>
+  <div id="journeys"></div>
 
   <footer>
     <span>Roll'd Order Online Reimagining &middot; Design Handoff</span>
-    <span>Links open <code>prototype.html</code> at the matching screen/state &middot; <code>?view=mobile</code> / <code>?view=desktop</code> forces the layout</span>
+    <span>Each chip opens <code>prototype.html</code> at that state, in the platform chosen above</span>
   </footer>
 
 </div>
+
+<script>
+/* Use cases per journey.
+   href: hash for prototype.html (q: extra query string).
+   m / d: status on mobile / desktop: built (default) · proposal · mobile (mobile layout for now) · none (not yet) */
+const JOURNEYS = [
+  { title:'Start an order', desc:'Landing page, choosing HQ / Non-HQ, order type, store and time.', groups:[
+    { label:'Entry', items:[
+      { name:'Landing page', href:'screen-landing' },
+      { name:'HQ: select order type', href:'screen-hq-order' },
+      { name:'Non-HQ: select order type', href:'screen-nonhq' },
+    ]},
+    { label:'Pick up', items:[
+      { name:'ASAP-only store (skips time)', href:'screen-nonhq,app-body!add:pickup-timing-asap' },
+      { name:'Pre-order-only store', href:'call:demoPickupPreorderOnly' },
+    ]},
+    { label:'Delivery', items:[
+      { name:'Address entry (Non-HQ)', href:'call:demoDeliveryStep' },
+      { name:'Address, then stores that deliver (HQ)', href:'call:demoHqDeliveryStep' },
+      { name:'ASAP-only store (skips time)', href:'call:demoDeliveryAsapOnly' },
+      { name:'Pre-order-only store', href:'call:demoDeliveryPreorderOnly' },
+      { name:'Address we can’t deliver to', href:'call:demoDeliveryUnserviceable' },
+    ]},
+    { label:'Dine-in', items:[
+      { name:'Table number', href:'call:demoDineInStep' },
+      { name:'Table pre-filled from QR code', href:'call:demoQrTable', q:'&table=12' },
+      { name:'Room service: room number', href:'call:demoRoomStep' },
+    ]},
+    { label:'Closed', items:[
+      { name:'Reopens later today (“Opens 5:00 PM”)', href:'screen-nonhq,app-body!add:delivery-opens-later', m:'proposal', d:'proposal' },
+      { name:'Closed today, no next date', href:'screen-nonhq,app-body!add:delivery-closed', m:'proposal', d:'proposal' },
+    ]},
+  ]},
+  { title:'Menu', desc:'Browsing, finding items and changing the order mid-way.', groups:[
+    { label:'Browse', items:[
+      { name:'Menu page', href:'screen-menu' },
+      { name:'Search', href:'screen-menu,screen-menu!add:search-active' },
+      { name:'Dietary filter', href:'screen-menu-filters' },
+      { name:'You might also like (cross-sell)', href:'screen-menu,menu-recommend-section!remove:hidden', d:'none' },
+    ]},
+    { label:'Change', items:[
+      { name:'Order type switcher', href:'screen-nonhq' },
+      { name:'Change order type with items in cart', href:'screen-menu,call:demoTypeChangePopup' },
+      { name:'Change store from side menu (HQ)', href:'call:demoSidebarStore' },
+    ]},
+  ]},
+  { title:'Item', desc:'Item detail and customising it.', groups:[
+    { items:[
+      { name:'Item detail', href:'call:demoItemDetail' },
+      { name:'Paid add-ons (modifiers)', href:'call:demoItemDetail' },
+      { name:'Special instructions', href:'call:demoItemDetail' },
+      { name:'Build Your Own Pho (level 2 & 3 modifiers)', href:'call:demoByoPho' },
+    ]},
+  ]},
+  { title:'Cart', desc:'Reviewing the order before checkout.', groups:[
+    { items:[
+      { name:'Cart review', href:'screen-cart' },
+      { name:'Upsell carousel', href:'screen-menu,suggestion-overlay' },
+      { name:'Items unavailable at that time', href:'screen-cart,call:demoUnavailableCart' },
+    ]},
+  ]},
+  { title:'Checkout', desc:'Guest and member checkout, offers and payment.', groups:[
+    { label:'Customer', items:[
+      { name:'Guest only (no loyalty)', href:'screen-checkout,screen-checkout!add:no-loyalty' },
+      { name:'Guest + log in to loyalty', href:'screen-checkout,screen-checkout!add:trigger-mode,otp-overlay!add:open' },
+      { name:'Guest + join loyalty', href:'screen-checkout,screen-checkout!add:trigger-mode' },
+      { name:'Logged in (loyalty)', href:'call:demoLoggedInCheckout' },
+    ]},
+    { label:'Order', items:[
+      { name:'Promo code / gift card', href:'screen-checkout' },
+      { name:'Payment method', href:'screen-payment' },
+      { name:'Change store from checkout (HQ)', href:'call:demoStoreChange' },
+    ]},
+  ]},
+  { title:'Account', desc:'Logging in, joining and the account page.', groups:[
+    { items:[
+      { name:'Login / join', href:'screen-signin' },
+      { name:'Sign up form', href:'screen-checkout,otp-overlay,otp-step-phone!add:hidden-step,otp-step-signup!remove:hidden-step' },
+      { name:'Sign up full form', href:'call:demoSignupFull' },
+      { name:'Loyalty detail (from side menu points)', href:'call:demoLoyalty' },
+      { name:'Member QR code', href:'call:demoLoyaltyQr' },
+      { name:'Account page', href:'screen-profile-settings' },
+    ]},
+  ]},
+  { title:'Store & support', desc:'Store details and social links.', groups:[
+    { items:[
+      { name:'Store info (map, hours, contact)', href:'screen-outlet-search' },
+      { name:'Social links', href:'screen-landing' },
+    ]},
+  ]},
+];
+
+const NOTES = { proposal:'Proposal', mobile:'Mobile layout for now', none:'Not yet' };
+let view = 'mobile';
+try { if (localStorage.getItem('flowIndexView') === 'desktop') view = 'desktop'; } catch (e) {}
+
+function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+function render(){
+  const key = view === 'mobile' ? 'm' : 'd';
+  const tally = { built:0, pending:0, none:0, total:0 };
+  let n = 0;
+  document.getElementById('journeys').innerHTML = JOURNEYS.map(j => {
+    n++;
+    let count = 0;
+    const groups = j.groups.map(g => {
+      const chips = g.items.map(it => {
+        const st = it[key] || 'built';
+        count++; tally.total++;
+        if (st === 'built') tally.built++; else if (st === 'none') tally.none++; else tally.pending++;
+        const dot = st === 'built' ? 'dot' : st === 'none' ? 'dot none' : 'dot pending';
+        const note = NOTES[st] ? `<span class="chip-note">${NOTES[st]}</span>` : '';
+        if (st === 'none') return `<span class="chip is-none"><span class="${dot}"></span>${esc(it.name)}${note}</span>`;
+        const url = `prototype.html?view=${view}${it.q || ''}#${it.href}`;
+        return `<a class="chip" href="${url.replace(/&/g,'&amp;')}"><span class="${dot}"></span>${esc(it.name)}${note}</a>`;
+      }).join('');
+      return `<div class="group">${g.label ? `<div class="group-label">${g.label}</div>` : ''}<div class="chips">${chips}</div></div>`;
+    }).join('');
+    return `<section class="journey">
+      <div class="journey-head"><h2><span class="num">${n}</span>${esc(j.title)}</h2><span class="journey-count">${count} use case${count > 1 ? 's' : ''}</span></div>
+      <p class="journey-desc">${esc(j.desc)}</p>${groups}</section>`;
+  }).join('');
+  document.getElementById('coverage').innerHTML =
+    `<span><b>${tally.built} of ${tally.total}</b> built on ${view}</span>` +
+    (tally.pending ? `<span class="legend"><span class="dot pending"></span>${tally.pending} proposal / mobile layout</span>` : '') +
+    (tally.none ? `<span class="legend"><span class="dot none"></span>${tally.none} not yet</span>` : '');
+  document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === view));
+}
+
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  view = b.dataset.view;
+  try { localStorage.setItem('flowIndexView', view); } catch (e) {}
+  render();
+}));
+render();
+</script>
 </body>
 </html>
