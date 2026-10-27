@@ -17,6 +17,9 @@
     apply();
     if(!forced) mq.addEventListener('change', function(){ apply(); window.dispatchEvent(new Event('viewmodechange')); });
   })();
+  /* Desktop is scaled with CSS zoom: getBoundingClientRect() is in zoomed px,
+     scrollTop/offsetTop are not — divide rect deltas by this before mixing. */
+  function deskZoom(){ return parseFloat(getComputedStyle(document.documentElement).zoom) || 1; }
 </script>
 <!-- Type tokens (font size / weight / line-height). See design-system.html. -->
 <link rel="stylesheet" href="design-system.css?v=2026-10-23a">
@@ -1897,7 +1900,7 @@
   .byo-sheet-footer .btn-add{flex:1;width:auto;}
   .byo-sheet-footer .btn-outline{flex:0 0 auto;padding:0 22px;}
   html.is-desktop .byo-overlay{display:flex;align-items:center;justify-content:center;padding:40px;}
-  html.is-desktop .byo-sheet{position:relative;top:auto;width:520px;max-width:100%;height:min(720px,calc(100vh - 80px));border-radius:var(--radius-popup);
+  html.is-desktop .byo-sheet{position:relative;top:auto;width:520px;max-width:100%;height:min(720px,calc(var(--vh100) - 80px));border-radius:var(--radius-popup);
     transform:translateY(16px);opacity:0;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s ease;box-shadow:0 30px 80px rgba(0,0,0,.35);}
   html.is-desktop .byo-overlay.open .byo-sheet{transform:none;opacity:1;}
 
@@ -3783,8 +3786,12 @@
       --cart-w:400px;--content-max:960px;--panel-pad-y:20px;--panel-pad-x:24px;--column-gap:48px;
       --radius-popup:12px;--shadow-popup:0 24px 64px rgba(0,0,0,.30);--dim:rgba(0,0,0,.60);
     }
-  html.is-desktop body{display:block;padding:0;background:var(--bg-page);overflow:hidden;}
-  html.is-desktop .phone{width:100%;height:100vh;border-radius:0;box-shadow:none;overflow:clip;}
+  /* Desktop renders at 80% scale (1440 at 100% felt like browser zoom 125%).
+     Viewport units aren't zoom-aware, so desktop rules use these instead. */
+  html.is-desktop{--desk-zoom:.8;zoom:var(--desk-zoom);
+    --vh1:calc(1vh / var(--desk-zoom));--vh100:calc(100vh / var(--desk-zoom));--vw100:calc(100vw / var(--desk-zoom));}
+  html.is-desktop body{display:block;padding:0;background:var(--bg-page);overflow:hidden;min-height:var(--vh100);}
+  html.is-desktop .phone{width:100%;height:var(--vh100);border-radius:0;box-shadow:none;overflow:clip;}
   /* mobile-only chrome */
   html.is-desktop .statusbar,html.is-desktop .browser-bar,html.is-desktop .mealdetail-topbar,html.is-desktop .screen-menu .menu-header,html.is-desktop .sheet-handle,html.is-desktop .view-toggle-btn{display:none !important;}
   html.is-desktop .screen{top:var(--desk-h);}
@@ -3870,7 +3877,7 @@
   html.is-desktop .screen-nonhq > .hero,html.is-desktop .screen-hq-order > .hero{display:none;}
   html.is-desktop .sheet-backdrop{align-items:center;justify-content:center;padding:40px;}
   html.is-desktop .sheet{
-      width:460px;max-width:100%;max-height:85vh;border-radius:var(--radius-popup);padding:26px 28px 30px;
+      width:460px;max-width:100%;max-height:calc(85 * var(--vh1));border-radius:var(--radius-popup);padding:26px 28px 30px;
       transform:translateY(16px);opacity:0;transition:transform .3s ease,opacity .25s ease;
       box-shadow:0 30px 80px rgba(0,0,0,.3);
     }
@@ -3881,16 +3888,16 @@
   html.is-desktop .suggestion-overlay{justify-content:center;padding:48px;}
   html.is-desktop :is(.otp-backdrop,.guest-backdrop,.method-backdrop,.adyen-backdrop,.terms-backdrop,.suggestion-backdrop,.reorder-modal-backdrop,.byo-backdrop){background:var(--dim);}
   html.is-desktop :is(.otp-sheet,.guest-sheet,.method-sheet,.adyen-sheet,.terms-sheet,.suggestion-sheet){
-      width:480px;max-width:100%;max-height:calc(100vh - 96px);overflow-y:auto;box-sizing:border-box;
+      width:480px;max-width:100%;max-height:calc(var(--vh100) - 96px);overflow-y:auto;box-sizing:border-box;
       border-radius:var(--radius-popup);padding:24px 24px 28px;
       transform:translateY(16px);opacity:0;transition:transform .24s ease,opacity .24s ease;
       box-shadow:var(--shadow-popup);
     }
   html.is-desktop .suggestion-sheet{position:relative;width:560px;}
-  html.is-desktop .terms-sheet{height:min(720px,calc(100vh - 96px));}
+  html.is-desktop .terms-sheet{height:min(720px,calc(var(--vh100) - 96px));}
   html.is-desktop :is(.otp-overlay,.guest-overlay,.method-overlay,.adyen-overlay,.terms-overlay,.suggestion-overlay).open :is(.otp-sheet,.guest-sheet,.method-sheet,.adyen-sheet,.terms-sheet,.suggestion-sheet){transform:none;opacity:1;}
   /* Language: a 480px dialog instead of a sheet rising from the bottom */
-  html.is-desktop .lang-overlay{top:50%;left:50%;right:auto;bottom:auto;z-index:60;width:480px;max-height:calc(100vh - 96px);border-radius:var(--radius-popup);
+  html.is-desktop .lang-overlay{top:50%;left:50%;right:auto;bottom:auto;z-index:60;width:480px;max-height:calc(var(--vh100) - 96px);border-radius:var(--radius-popup);
       transform:translate(-50%,-50%) translateY(16px);opacity:0;pointer-events:none;transition:transform .24s ease,opacity .24s ease;box-shadow:var(--shadow-popup);}
   html.is-desktop .lang-overlay.open{transform:translate(-50%,-50%);opacity:1;pointer-events:auto;}
   html.is-desktop .welcome-toast,html.is-desktop .suggestion-toast{left:calc(50% - 210px);right:calc(50% - 210px);top:calc(var(--desk-h) + 16px);}
@@ -3952,7 +3959,7 @@
   /* Sheets over the menu / checkout cover the header too, like the order-type pop-up */
   html.is-desktop .screen-picktime.over-menu{top:0;}
   /* Address search grows as suggestions appear: pin it near the top so the field doesn't move while typing */
-  html.is-desktop #screen-address .picktime-sheet-backdrop{align-items:flex-start;padding-top:14vh;}
+  html.is-desktop #screen-address .picktime-sheet-backdrop{align-items:flex-start;padding-top:calc(14 * var(--vh1));}
   /* "Sorry, we don't deliver here": a centred dialog over the address step, not a full-width bottom sheet */
   html.is-desktop .addr-oor{align-items:center;justify-content:center;padding:32px;}
   html.is-desktop .addr-oor-sheet{max-width:440px;border-radius:var(--radius-popup);padding:20px 32px 28px;
@@ -3987,7 +3994,7 @@
   html.is-desktop .screen-menu .menu-filters-v2-row{display:none;}
   /* Side margin of the menu column: at least 40px, otherwise whatever centres a 960px content column.
      Shared by the category row, search and menu so their edges line up with the cards. */
-  html.is-desktop .screen-menu{--menu-gutter:max(40px, calc((100vw - var(--cart-w) - var(--content-max)) / 2));--search-w:280px;}
+  html.is-desktop .screen-menu{--menu-gutter:max(40px, calc((var(--vw100) - var(--cart-w) - var(--content-max)) / 2));--search-w:280px;}
   /* Category row under the header: one line of pills that scrolls sideways, then 80px of space, then the search,
      which stays put. The pills fade under a soft shadow at whichever edge has more to scroll to. */
   html.is-desktop .screen-menu .menu-toolbar,
@@ -4030,7 +4037,7 @@
   html.is-desktop .screen-menu.search-active .search-bar-row .search-filter-btn{display:flex;}
   html.is-desktop .screen-menu .search-bar-row .search-filter-btn:hover{border-color:var(--green-mid);}
   html.is-desktop .screen-menu .search-input-pill{flex:none;width:280px;transition:width .2s ease,border-color .15s ease,box-shadow .15s ease;}
-  html.is-desktop .screen-menu.search-active .search-input-pill{width:calc(100vw - var(--cart-w) - 2 * var(--menu-gutter) - 48px);border-color:var(--green-mid);}
+  html.is-desktop .screen-menu.search-active .search-input-pill{width:calc(var(--vw100) - var(--cart-w) - 2 * var(--menu-gutter) - 48px);border-color:var(--green-mid);}
   html.is-desktop .screen-menu .search-input-pill .search-clear-btn{display:none;}
   html.is-desktop .screen-menu.search-active .search-input-pill .search-clear-btn{display:flex;}
   html.is-desktop .screen-menu.search-active .menu-toolbar .cat-tab-scroll,
@@ -4073,7 +4080,7 @@
   html.is-desktop .screen-mealdetail{background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:40px;}
   html.is-desktop .mealdetail-popup-card{
       position:relative;flex:0 1 auto;width:560px;max-width:100%;
-      height:min(820px,calc(100vh - 80px));border-radius:var(--radius-popup);box-shadow:0 30px 80px rgba(0,0,0,.35);
+      height:min(820px,calc(var(--vh100) - 80px));border-radius:var(--radius-popup);box-shadow:0 30px 80px rgba(0,0,0,.35);
     }
   /* ---- Pop-up layer (manual 4.3): 60% dim behind; pop-ups have 12px corners on all four sides ---- */
   .desk-dim{display:none;}
@@ -4082,17 +4089,17 @@
   @keyframes deskPopIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
   /* Sign in, verify code, sign up (manual 6.6): dialogs over the page the customer came from; 480px, sign up 560px */
   html.is-desktop :is(#screen-signin,#screen-otp,#screen-signup-full){
-      top:0;bottom:0;left:0;right:0;margin:auto;width:480px;height:min(600px,calc(100vh - 96px));z-index:60;
+      top:0;bottom:0;left:0;right:0;margin:auto;width:480px;height:min(600px,calc(var(--vh100) - 96px));z-index:60;
       border-radius:var(--radius-popup);overflow:hidden;background:var(--bg-page);box-shadow:var(--shadow-popup);animation:deskPopIn .24s ease-out;
     }
-  html.is-desktop #screen-signup-full{width:560px;height:min(820px,calc(100vh - 64px));}
+  html.is-desktop #screen-signup-full{width:560px;height:min(820px,calc(var(--vh100) - 64px));}
   /* Account detail (Profile) and Sort & Filters: 560px pop-ups too (Profile over the page it was opened from, filters over the menu) */
   html.is-desktop :is(#screen-profile-settings,#screen-menu-filters){
       top:0;bottom:0;left:0;right:0;margin:auto;width:560px;z-index:60;
       border-radius:var(--radius-popup);overflow:hidden;background:var(--bg-page);box-shadow:var(--shadow-popup);animation:deskPopIn .24s ease-out;
     }
-  html.is-desktop #screen-profile-settings{height:min(820px,calc(100vh - 64px));}
-  html.is-desktop #screen-menu-filters{height:min(760px,calc(100vh - 96px));}
+  html.is-desktop #screen-profile-settings{height:min(820px,calc(var(--vh100) - 64px));}
+  html.is-desktop #screen-menu-filters{height:min(760px,calc(var(--vh100) - 96px));}
   html.is-desktop #screen-profile-settings .profile-scroll{padding:24px 24px 24px;}
   html.is-desktop #screen-profile-settings .profile-footer{padding-left:24px;padding-right:24px;}
   html.is-desktop #screen-menu-filters .cart-header{padding:16px 24px;}
@@ -8666,7 +8673,7 @@
     document.getElementById('screen-outlet-search').classList.remove('hidden');
     var list = document.querySelector('#screen-outlet-search .outlet-search-scroll');
     list.scrollTop = 0;
-    if (sel) list.scrollTop = sel.getBoundingClientRect().top - list.getBoundingClientRect().top - 16;
+    if (sel) list.scrollTop = (sel.getBoundingClientRect().top - list.getBoundingClientRect().top) / deskZoom() - 16;
   }
 
   function exitStoreChange(){
@@ -9241,20 +9248,20 @@
     if (!sec || !body.contains(sec)) return;
     /* keep the tapped tab highlighted until the smooth scroll arrives (or gives up after 1.5s) */
     catSpyTarget = sec; catSpyPausedUntil = Date.now() + 1500;
-    var top = sec.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop - 12;
+    var top = (sec.getBoundingClientRect().top - body.getBoundingClientRect().top) / deskZoom() + body.scrollTop - 12;
     body.scrollTo({top:top, behavior:'smooth'});
   }
   function syncCatTabToScroll(){
     var body = document.getElementById('menu-body-scroll'), row = document.getElementById('menu-cat-row');
     if (!body || !row) return;
     if (catSpyTarget) {
-      var off = catSpyTarget.getBoundingClientRect().top - body.getBoundingClientRect().top;
+      var off = (catSpyTarget.getBoundingClientRect().top - body.getBoundingClientRect().top) / deskZoom();
       var atEnd = body.scrollTop + body.clientHeight >= body.scrollHeight - 4;
       if (Math.abs(off - 12) > 4 && !atEnd && Date.now() < catSpyPausedUntil) return;
       catSpyTarget = null;
       return;
     }
-    var edge = body.getBoundingClientRect().top + 60, current = 'Meal deals';
+    var edge = body.getBoundingClientRect().top + 60 * deskZoom(), current = 'Meal deals';
     Object.keys(CAT_SECTIONS).forEach(function(name){
       var sec = document.getElementById(CAT_SECTIONS[name]);
       if (sec && sec.offsetParent && sec.getBoundingClientRect().top <= edge) current = name;
@@ -9816,7 +9823,7 @@
     byoRender();
     var scroller = document.querySelector('#screen-mealdetail .mealdetail-scroll');   // scroll only the item page, not the frame
     var target = document.getElementById('byo-sec-' + first);
-    scroller.scrollTo({top: scroller.scrollTop + target.getBoundingClientRect().top - scroller.getBoundingClientRect().top - 12, behavior:'smooth'});
+    scroller.scrollTo({top: scroller.scrollTop + (target.getBoundingClientRect().top - scroller.getBoundingClientRect().top) / deskZoom() - 12, behavior:'smooth'});
     return false;
   }
 
