@@ -3826,10 +3826,10 @@
       z-index:20;background:var(--bg-surface);box-shadow:0 1px 0 var(--border-warm),0 2px 12px rgba(0,0,0,.05);
     }
   html.is-desktop .desk-header-inner{width:100%;padding:0 32px;display:flex;align-items:center;gap:12px;}
-  /* Big screens: the header's sides match the menu's side margin, so the logo lines up with the menu content
-     and the right-hand buttons come in by the same amount instead of sitting in the corners */
+  /* Big screens: the logo lines up with the menu content (its side margin); the account / menu buttons stay
+     32px from the right edge, above the cart column, like at smaller sizes */
   @media (min-width:1600px){
-    html.is-desktop .desk-header-inner{padding:0 max(32px, calc((var(--vw100) - var(--cart-w) - var(--content-max)) / 2));}
+    html.is-desktop .desk-header-inner{padding-left:max(32px, calc((var(--vw100) - var(--cart-w) - var(--content-max)) / 2));}
   }
   html.is-desktop .desk-logo{display:flex;align-items:center;height:44px;padding:0;margin-right:12px;background:none;border:none;cursor:pointer;border-radius:8px;}
   html.is-desktop .desk-logo img{height:36px;width:auto;display:block;}
