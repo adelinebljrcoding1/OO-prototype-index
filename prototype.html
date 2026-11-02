@@ -1734,7 +1734,7 @@
     display:flex;
     align-items:center;
     gap:12px;
-    background:var(--green-pale);
+    background:var(--green-tint);
     border-radius:14px;
     padding:12px 14px;
     margin-bottom:var(--space-section);
@@ -2013,6 +2013,22 @@
     overflow-x:auto;
     padding:0 20px 4px;
   }
+  /* Cart "Customers love adding this!": hidden while the cart is empty, fades in 1s after the first item lands */
+  .cart-upsell.is-hidden{display:none;}
+  #cart-upsell-heading{animation:cart-upsell-in .35s ease;}
+  @keyframes cart-upsell-in{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  /* Cards "deal" out of a stack into the row (after Amicro's Card Deck Fan Cascade): each starts tucked
+     under the first card, slightly fanned, then springs to its own slot, staggered left to right */
+  #cart-upsell-scroll .extra-card{position:relative;z-index:calc(10 - var(--i, 0));
+      animation:cart-upsell-deal .62s cubic-bezier(.34,1.45,.64,1) both;animation-delay:calc(.12s + var(--i, 0) * 90ms);}
+  @keyframes cart-upsell-deal{
+    from{opacity:0;transform:translateX(calc(var(--i, 0) * -134px)) translateY(10px) rotate(calc(-4deg + var(--i, 0) * 3deg)) scale(.94);}
+    35%{opacity:1;}
+    to{opacity:1;transform:none;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #cart-upsell-heading,#cart-upsell-scroll .extra-card{animation:none;}
+  }
   /* Card wrapper now matches .meal-card on the menu grid (white bg,
      border, rounded corners) instead of floating the thumb + text with
      no boundary, so upsell tiles read as the same component. */
@@ -2052,6 +2068,7 @@
   }
   .btn-outline{
     width:100%;
+    font-family:inherit;
     border:1.5px solid var(--green-line);
     background:var(--bg-surface);
     color:var(--green-mid);
@@ -2180,7 +2197,7 @@
     border-radius:10px;
     overflow:hidden;
     flex-shrink:0;
-    background:repeating-conic-gradient(from 0deg, #f7c927 0deg 10deg, #f5b700 10deg 20deg);
+    background:var(--bg-surface);   /* same as the menu thumbnail behind the photo */
   }
   .cart-order-card .order-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
   .cart-order-card .order-info{flex:1;}
@@ -2284,6 +2301,8 @@
     color:var(--text-secondary);
     padding:6px 0;font-weight:var(--fw-regular);
   }
+  /* Discount line (label + deduction) in green mid, so the saving stands apart from the other totals */
+  [id$="checkout-discount-row"]{color:var(--green-mid);}
   .cart-total-row.grand{font-size:var(--fs-headline);font-weight:var(--fw-headline);color:var(--text-primary);border-top:1px solid var(--border-subtle);margin-top:6px;padding-top:14px;}
   .note-row{
     display:flex;
@@ -3512,6 +3531,8 @@
   .order-details-divider{border:none;border-top:1px solid var(--border-subtle);margin:0 0 18px;}
   .order-details-heading{font-size:var(--fs-title-3);font-weight:var(--fw-title-3);color:var(--text-primary);margin-bottom:14px;}
   .order-details-scroll .cart-total-row.grand{font-weight:var(--fw-semibold);}
+  /* Card used for the order, next to Total paid (same mark as the Order status page) */
+  .order-details-paid-with{display:inline-flex;align-items:center;gap:8px;}
   .order-details-item{margin-bottom:14px;}
   .order-details-item-row{display:flex;justify-content:space-between;gap:12px;font-size:var(--fs-body);color:var(--text-primary);font-weight:var(--fw-regular);}
   .order-details-item-row span:first-child{flex:1;}
@@ -3790,6 +3811,10 @@
      Viewport units aren't zoom-aware, so desktop rules use these instead. */
   html.is-desktop{--desk-zoom:.8;zoom:var(--desk-zoom);
     --vh1:calc(1vh / var(--desk-zoom));--vh100:calc(100vh / var(--desk-zoom));--vw100:calc(100vw / var(--desk-zoom));}
+  /* Bigger screens (like the Chipotle reference): scale up and widen the menu so the side margins stay around
+     180–190px instead of growing into empty space. Up to 1599px nothing changes. */
+  @media (min-width:1600px){ html.is-desktop{--desk-zoom:.9;} }
+  @media (min-width:1800px){ html.is-desktop{--desk-zoom:1;--content-max:1100px;} }
   html.is-desktop body{display:block;padding:0;background:var(--bg-page);overflow:hidden;min-height:var(--vh100);}
   html.is-desktop .phone{width:100%;height:var(--vh100);border-radius:0;box-shadow:none;overflow:clip;}
   /* mobile-only chrome */
@@ -3801,6 +3826,11 @@
       z-index:20;background:var(--bg-surface);box-shadow:0 1px 0 var(--border-warm),0 2px 12px rgba(0,0,0,.05);
     }
   html.is-desktop .desk-header-inner{width:100%;padding:0 32px;display:flex;align-items:center;gap:12px;}
+  /* Big screens: the header's sides match the menu's side margin, so the logo lines up with the menu content
+     and the right-hand buttons come in by the same amount instead of sitting in the corners */
+  @media (min-width:1600px){
+    html.is-desktop .desk-header-inner{padding:0 max(32px, calc((var(--vw100) - var(--cart-w) - var(--content-max)) / 2));}
+  }
   html.is-desktop .desk-logo{display:flex;align-items:center;height:44px;padding:0;margin-right:12px;background:none;border:none;cursor:pointer;border-radius:8px;}
   html.is-desktop .desk-logo img{height:36px;width:auto;display:block;}
   html.is-desktop .desk-logo:focus-visible{outline:2px solid var(--green-dark);outline-offset:2px;}
@@ -3894,6 +3924,9 @@
       box-shadow:var(--shadow-popup);
     }
   html.is-desktop .suggestion-sheet{position:relative;width:560px;}
+  /* "Complete your meal" cards share the row evenly (like the cart column's), photos stay square and grow with the card */
+  html.is-desktop .suggestion-sheet .extra-scroll{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;}
+  html.is-desktop .suggestion-sheet .extra-card{width:auto;min-width:0;}
   html.is-desktop .terms-sheet{height:min(720px,calc(var(--vh100) - 96px));}
   html.is-desktop :is(.otp-overlay,.guest-overlay,.method-overlay,.adyen-overlay,.terms-overlay,.suggestion-overlay).open :is(.otp-sheet,.guest-sheet,.method-sheet,.adyen-sheet,.terms-sheet,.suggestion-sheet){transform:none;opacity:1;}
   /* Language: a 480px dialog instead of a sheet rising from the bottom */
@@ -3952,14 +3985,14 @@
   html.is-desktop .outlet-next-footer{padding:16px max(32px,calc((100% - 1100px)/2)) 20px;}
   html.is-desktop .outlet-next-footer .btn-add{width:300px;margin-left:auto;justify-content:center;}
   /* ---- pick-up date & time (centred card) ---- */
-  html.is-desktop .picktime-sheet-backdrop{top:0;align-items:center;justify-content:center;padding:32px;}
+  /* Every order-step pop-up (time, address, room / table number) pins its top edge at the same height, so the
+     dialog doesn't jump between steps or as its content grows (search suggestions, expanded times) */
+  html.is-desktop .picktime-sheet-backdrop{top:0;align-items:flex-start;justify-content:center;padding:calc(14 * var(--vh1)) 32px 32px;}
   /* Order steps at the start (time sheet, room / table number, delivery address): a dimmed modal over the
      page the order started from (landing, or the HQ store list), like the store sheet */
   html.is-desktop .screen-picktime:not(.over-menu){top:0;z-index:35;background:var(--overlay);}
   /* Sheets over the menu / checkout cover the header too, like the order-type pop-up */
   html.is-desktop .screen-picktime.over-menu{top:0;}
-  /* Address search grows as suggestions appear: pin it near the top so the field doesn't move while typing */
-  html.is-desktop #screen-address .picktime-sheet-backdrop{align-items:flex-start;padding-top:calc(14 * var(--vh1));}
   /* "Sorry, we don't deliver here": a centred dialog over the address step, not a full-width bottom sheet */
   html.is-desktop .addr-oor{align-items:center;justify-content:center;padding:32px;}
   html.is-desktop .addr-oor-sheet{max-width:440px;border-radius:var(--radius-popup);padding:20px 32px 28px;
@@ -3995,35 +4028,43 @@
   /* Side margin of the menu column: at least 40px, otherwise whatever centres a 960px content column.
      Shared by the category row, search and menu so their edges line up with the cards. */
   html.is-desktop .screen-menu{--menu-gutter:max(40px, calc((var(--vw100) - var(--cart-w) - var(--content-max)) / 2));--search-w:280px;}
-  /* Category row under the header: one line of pills that scrolls sideways, then 80px of space, then the search,
-     which stays put. The pills fade under a soft shadow at whichever edge has more to scroll to. */
+  /* Category row under the header: as many pills as fit on one line, then "More ⌄" with the rest, then 15px of
+     space, then the search, which stays put. Nothing scrolls sideways, so there is no edge fade. */
   html.is-desktop .screen-menu .menu-toolbar,
   html.is-desktop .screen-menu.search-active .menu-toolbar{
       display:flex;grid-column:1;grid-row:1;align-items:center;gap:0;position:relative;
-      padding:14px calc(var(--menu-gutter) + 280px + 80px) 14px var(--menu-gutter);
+      padding:14px calc(var(--menu-gutter) + 280px + 15px) 14px var(--menu-gutter);
       border-bottom:1px solid var(--border-warm);
     }
   html.is-desktop .screen-menu .menu-toolbar > .icon-round-btn,
   html.is-desktop .screen-menu .menu-toolbar .toolbar-divider,
   html.is-desktop .screen-menu .cat-arrow{display:none !important;}
-  html.is-desktop .screen-menu .cat-tab-scroll{flex-wrap:nowrap;overflow-x:auto;gap:6px;scrollbar-width:none;scroll-behavior:smooth;}
-  html.is-desktop .screen-menu .cat-tab-scroll::-webkit-scrollbar{display:none;}
-  html.is-desktop .screen-menu .menu-toolbar::before,
-  html.is-desktop .screen-menu .menu-toolbar::after{
-      content:"";position:absolute;top:8px;bottom:8px;width:56px;pointer-events:none;opacity:0;transition:opacity .2s ease;z-index:1;
+  html.is-desktop .screen-menu .cat-tab-scroll{flex-wrap:nowrap;overflow:hidden;gap:6px;}
+  html.is-desktop .screen-menu .cat-tab-scroll .cat-tab.is-overflow{display:none;}
+  /* "More ⌄": same look as a pill; shows the category's name (selected style) while the customer is in a section
+     that lives in the list. Its min-width is set to its longest label so the row never reflows while scrolling. */
+  .cat-more{display:none;}
+  html.is-desktop .screen-menu .cat-more{display:block;position:relative;flex:0 0 auto;margin-left:6px;z-index:20;}
+  html.is-desktop .screen-menu .cat-more.is-off{display:none;}
+  html.is-desktop .screen-menu .cat-more-btn{display:inline-flex;align-items:center;justify-content:flex-start;gap:4px;padding-right:12px;}
+  html.is-desktop .screen-menu .cat-more-btn svg{flex:none;transition:transform .2s ease;}
+  html.is-desktop .screen-menu .cat-more.open .cat-more-btn svg{transform:rotate(180deg);}
+  html.is-desktop .screen-menu .cat-more.open .cat-more-btn:not(.selected){background:var(--bg-subtle);}
+  html.is-desktop .screen-menu .cat-more-menu{
+      position:absolute;top:calc(100% + 8px);left:0;min-width:220px;padding:6px;box-sizing:border-box;
+      background:var(--bg-surface);border:1px solid var(--border-warm);border-radius:var(--radius-popup);
+      box-shadow:0 16px 40px rgba(0,0,0,.14);
+      opacity:0;transform:translateY(-6px);visibility:hidden;transition:opacity .16s ease,transform .16s ease,visibility 0s .16s;
     }
-  html.is-desktop .screen-menu .menu-toolbar::before{
-      left:var(--menu-gutter);
-      background:linear-gradient(to right, var(--bg-page) 8px, rgba(250,247,242,0));
-      box-shadow:inset 10px 0 10px -10px rgba(0,0,0,.22);
-    }
-  html.is-desktop .screen-menu .menu-toolbar::after{
-      right:calc(var(--menu-gutter) + 280px + 80px);
-      background:linear-gradient(to left, var(--bg-page) 8px, rgba(250,247,242,0));
-      box-shadow:inset -10px 0 10px -10px rgba(0,0,0,.22);
-    }
-  html.is-desktop .screen-menu .menu-toolbar.can-left::before,
-  html.is-desktop .screen-menu .menu-toolbar.can-right::after{opacity:1;}
+  html.is-desktop .screen-menu .cat-more.open .cat-more-menu{opacity:1;transform:none;visibility:visible;transition:opacity .16s ease,transform .16s ease;}
+  .cat-more-item{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:11px 12px;
+      border:none;border-radius:8px;background:none;text-align:left;cursor:pointer;
+      font-size:var(--fs-callout);font-weight:var(--fw-callout);color:var(--green-mid);}
+  .cat-more-item:hover,.cat-more-item:focus-visible{background:var(--bg-subtle);outline:none;}
+  .cat-more-item svg{flex:none;visibility:hidden;color:var(--green-dark);}
+  .cat-more-item.selected{color:var(--green-dark);}
+  .cat-more-item.selected svg{visibility:visible;}
+  html.is-desktop .screen-menu.search-active .cat-more{visibility:hidden;}
   html.is-desktop .screen-menu .cat-tab:hover{background:var(--bg-subtle);}
   html.is-desktop .screen-menu .cat-tab:focus-visible{outline:2px solid var(--green-dark);outline-offset:1px;}
   /* Search: 280px at the right of the row, its right edge on the menu-card edge. Active: it slides left over the
@@ -4054,7 +4095,9 @@
   html.is-desktop .desk-store-name{margin:0;font-size:var(--fs-display);line-height:var(--lh-display);font-weight:var(--fw-display);color:var(--green-dark);}
   html.is-desktop .desk-store-heading .store-status{margin-top:6px;font-size:var(--fs-callout);}
   /* Category titles 24/28 with 40px above */
-  html.is-desktop .screen-menu .menu-section-title{margin:40px 0 16px;font-size:24px;line-height:28px;}
+  /* Section titles ("You might also like", "Meal deals" …) one clear step below the store name (28px display):
+     Title 2, 20px */
+  html.is-desktop .screen-menu .menu-section-title{margin:40px 0 16px;font-size:var(--fs-title-2);line-height:var(--lh-title-2);font-weight:var(--fw-title-2);}
   /* Cards: same content as mobile, in a grid of cards at least 300px wide: 3 per row at 1440, 2 on smaller laptops */
   html.is-desktop #menu-body-scroll .meal-grid,
   html.is-desktop #menu-body-scroll.list-view .meal-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
@@ -4177,11 +4220,33 @@
   html.is-desktop .desk-os .order-success-footer > button:hover{background:var(--bg-subtle);}
   html.is-desktop .desk-os-side{background:var(--bg-surface);border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06);padding:var(--panel-pad-y) var(--panel-pad-x);}
   html.is-desktop .desk-os-side .order-success-details{margin:0;}
-  /* ---- Order status: the mobile layout in one centred 560px column (photo, status, steps, details) ---- */
-  html.is-desktop #screen-order-status{--page-w:560px;}
-  html.is-desktop .order-status-scroll{padding:32px max(32px, calc((100% - 560px) / 2)) 56px;}
-  html.is-desktop #screen-order-status .order-status-hero{border-radius:12px;}
-  html.is-desktop #screen-order-status .order-status-body{padding:24px 0 0;}
+  /* ---- Order status (two columns, like the reference order page): photo banner across the top; thank-you note and
+     the status card (steps + store) left (640); Order summary panel right (440). Nodes are arranged by layoutOrderPages(). ---- */
+  html.is-desktop #screen-order-status{--page-w:1128px;}
+  html.is-desktop .order-status-scroll{padding:32px 32px 56px;}
+  html.is-desktop .desk-ost{display:grid;grid-template-columns:minmax(0,640px) 440px;column-gap:var(--column-gap);justify-content:center;align-items:start;}
+  html.is-desktop .desk-ost > .order-status-hero{grid-column:1 / -1;height:200px;border-radius:12px;margin-bottom:24px;}
+  html.is-desktop .desk-ost-main{min-width:0;display:flex;flex-direction:column;gap:16px;}
+  html.is-desktop .desk-ost-thanks{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-radius:12px;
+      background:var(--green-tint);color:var(--green-dark);font-size:var(--fs-body);line-height:var(--lh-body);}
+  html.is-desktop .desk-ost-thanks svg{flex:none;margin-top:1px;}
+  html.is-desktop .desk-ost-thanks b{font-weight:var(--fw-semibold);}
+  html.is-desktop :is(.desk-ost-card,.desk-ost-side){background:var(--bg-surface);border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+  html.is-desktop .desk-ost-card{padding:24px 28px 8px;}
+  html.is-desktop .desk-ost-card .order-status-stepper{margin-bottom:24px;}
+  html.is-desktop .desk-ost-card .order-status-divider{margin:0 -28px 12px;}
+  html.is-desktop .desk-ost-side{position:sticky;top:0;padding:var(--panel-pad-y) var(--panel-pad-x);}
+  html.is-desktop .desk-ost-side .order-details-heading{margin-bottom:12px;}
+  html.is-desktop .desk-ost-side .order-status-divider{margin:14px 0;}
+  html.is-desktop .desk-ost-side .order-details-item:last-child{margin-bottom:0;}
+  html.is-desktop .desk-ost-side .btn-outline{margin-top:18px !important;width:100%;}
+  html.is-desktop .desk-ost-side .order-details-footer{padding:16px 0 0;}
+  /* Line heights from the design system, matching each text's role (they were left at the browser's "normal") */
+  html.is-desktop #screen-order-status :is(.order-details-heading){line-height:var(--lh-title-3);}
+  html.is-desktop #screen-order-status .order-status-title{line-height:var(--lh-title-2);}
+  html.is-desktop #screen-order-status :is(.order-status-sub,.order-success-row,.order-details-item-row){line-height:var(--lh-body);}
+  html.is-desktop #screen-order-status :is(.order-details-item-sub,.order-details-footer){line-height:var(--lh-callout);}
+  html.is-desktop #screen-order-status .btn-outline{line-height:var(--lh-headline);}
   /* ---- Loyalty page (template B, 6.13): main 640 + side 440 (a 400 panel with 40px of air), greeting above both ---- */
   html.is-desktop .loyalty-scroll{padding:32px 32px 56px;}
   html.is-desktop .desk-rw{display:grid;grid-template-columns:minmax(0,640px) 440px;column-gap:var(--column-gap);justify-content:center;align-items:start;}
@@ -4202,6 +4267,9 @@
   html.is-desktop .loyalty-qr-body{padding:40px max(32px, calc((100% - 440px) / 2)) 56px;}
   /* ---- Order details / receipt (template C, 6.12): one 640px column ---- */
   html.is-desktop .order-details-scroll{padding:32px max(32px, calc((100% - 640px) / 2)) 56px;}
+  /* White card behind the details (same panel style as the Order status page); support line sits inside, at the bottom */
+  html.is-desktop .order-details-card{background:var(--bg-surface);border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06);padding:24px 28px;}
+  html.is-desktop .order-details-card .order-details-footer{padding:24px 0 0;}
   /* ---- Payment processing (template C, 6.9) ---- */
   html.is-desktop .screen-payment .processing-order-card{max-width:440px;}
 </style>
@@ -5295,6 +5363,11 @@
         <button class="cat-tab" onclick="selectCatTab(this)">Sides</button>
         <button class="cat-tab" onclick="selectCatTab(this)">Drinks</button>
       </div>
+      <!-- Desktop: the categories that don't fit in the row move into this list (see layoutCatOverflow) -->
+      <div class="cat-more is-off" id="cat-more">
+        <button type="button" class="cat-tab cat-more-btn" id="cat-more-btn" onclick="toggleCatMore()" aria-haspopup="menu" aria-expanded="false" aria-controls="cat-more-menu"><span id="cat-more-label">More</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="cat-more-menu" id="cat-more-menu" role="menu" aria-label="More categories"></div>
+      </div>
       <button type="button" class="cat-arrow cat-arrow-next is-off" id="cat-arrow-next" onclick="scrollCatRow(1)" aria-label="More categories"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
       <button type="button" class="view-toggle-btn" id="menu-view-toggle" onclick="toggleMenuView()" aria-label="Switch to grid view" aria-pressed="true">
         <svg id="menu-view-toggle-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -6065,8 +6138,8 @@
       </div>
       <div id="cart-order-list"></div>
 
-      <div class="cart-section-title-minor">Customers love adding this!</div>
-      <div class="extra-scroll" style="padding:0 0 4px;margin-bottom:32px;">
+      <div class="cart-section-title-minor cart-upsell is-hidden" id="cart-upsell-heading">Customers love adding this!</div>
+      <div class="extra-scroll cart-upsell is-hidden" id="cart-upsell-scroll" style="padding:0 0 4px;margin-bottom:32px;">
         <div class="extra-card">
           <div class="extra-thumb meal-thumb" onclick="mealDetailOrigin='screen-cart';openMealDetail(this.closest('.extra-card'))"><span class="tag-badge">Best seller</span><img src="https://rolld.com.au/cdn/shop/files/Seafood_SpringRolls_Shadow.png?v=1764643937&width=608" alt="Seafood Spr Rolls"></div>
           <div class="extra-name meal-name">Seafood Spr Rolls</div>
@@ -6327,7 +6400,7 @@
         You&rsquo;ll earn $4.40 Roll&rsquo;d Dollars
       </div>
       <button class="btn-add" id="cart-pay-btn" onclick="submitOrder()">
-        <span id="cart-pay-btn-label">Pay as a guest</span>
+        <span id="cart-pay-btn-label">Pay</span>
         <span id="cart-pay-price">$12.00</span>
       </button>
       <div class="guest-link-note" id="cart-footer-note">No rewards on this order</div>
@@ -6514,7 +6587,7 @@
         You&rsquo;ll earn $4.40 Roll&rsquo;d Dollars
       </div>
       <button class="btn-add" id="dinein-pay-btn" onclick="submitOrder()">
-        <span id="dinein-pay-btn-label">Pay as a guest</span>
+        <span id="dinein-pay-btn-label">Pay</span>
         <span id="dinein-pay-price">$12.00</span>
       </button>
       <div class="guest-link-note" id="dinein-footer-note">No rewards on this order</div>
@@ -6712,7 +6785,7 @@
         You&rsquo;ll earn $4.40 Roll&rsquo;d Dollars
       </div>
       <button class="btn-add" id="delivery-pay-btn" onclick="submitOrder()">
-        <span id="delivery-pay-btn-label">Pay as a guest</span>
+        <span id="delivery-pay-btn-label">Pay</span>
         <span id="delivery-pay-price">$12.00</span>
       </button>
       <div class="guest-link-note" id="delivery-footer-note">No rewards on this order</div>
@@ -6980,6 +7053,7 @@
     </div>
 
     <div class="order-details-scroll">
+      <div class="order-details-card">
       <div class="order-details-meta">
         <span id="order-details-ordno">Order 123456</span>
         <span id="order-details-date">15 Jul&nbsp; 08:38</span>
@@ -7009,13 +7083,14 @@
       </div>
       <hr class="order-details-divider" style="margin-top:18px;">
 
-      <div class="cart-total-row grand" style="border-top:none;margin-top:0;padding-top:0;"><span>Total paid</span><span id="order-details-total-paid">$47.39</span></div>
+      <div class="cart-total-row grand" style="border-top:none;margin-top:0;padding-top:0;"><span>Total paid</span><span class="order-details-paid-with"><span class="card-icon visa-icon" aria-label="Paid with Visa">VISA</span><span id="order-details-total-paid">$47.39</span></span></div>
       <div class="order-details-earned">
         <span class="order-details-earned-badge">R</span>
         <span id="order-details-earned">$4.73 earned</span>
       </div>
 
       <div class="order-details-footer">Need help? <span class="support-link">Contact our support</span></div>
+      </div>
     </div>
   </div>
 
@@ -9232,10 +9307,11 @@
     'Noodle Soups': 'menu-section-noodlesoups', 'Banh Mi': 'menu-section-banhmi',
     'Rice Paper Rolls': 'menu-section-ricepaperrolls', 'Sides': 'menu-section-sides', 'Drinks': 'menu-section-drinks'
   };
-  var catSpyPausedUntil = 0, catSpyTarget = null;
+  var catSpyPausedUntil = 0, catSpyTarget = null, catSpyHoldBottom = false;
   function markCatTab(btn){
     var row = btn.closest('.cat-tab-scroll');
     [].forEach.call(row.querySelectorAll('.cat-tab'), function(t){ t.classList.toggle('selected', t === btn); });
+    if (row.id === 'menu-cat-row') syncCatMore();
     /* keep the active tab in view in its row */
     var l = btn.offsetLeft - row.offsetLeft, r = l + btn.offsetWidth;
     if (l < row.scrollLeft + 8) row.scrollTo({left:Math.max(0, l - 24), behavior:'smooth'});
@@ -9258,6 +9334,8 @@
       var off = (catSpyTarget.getBoundingClientRect().top - body.getBoundingClientRect().top) / deskZoom();
       var atEnd = body.scrollTop + body.clientHeight >= body.scrollHeight - 4;
       if (Math.abs(off - 12) > 4 && !atEnd && Date.now() < catSpyPausedUntil) return;
+      /* a short section near the end can't reach the top: keep the tapped tab, not "Drinks", while parked at the bottom */
+      catSpyHoldBottom = atEnd;
       catSpyTarget = null;
       return;
     }
@@ -9267,7 +9345,8 @@
       if (sec && sec.offsetParent && sec.getBoundingClientRect().top <= edge) current = name;
     });
     /* scrolled to the very bottom: the last section counts as read */
-    if (body.scrollTop + body.clientHeight >= body.scrollHeight - 4) current = 'Drinks';
+    if (body.scrollTop + body.clientHeight >= body.scrollHeight - 4) { if (catSpyHoldBottom) return; current = 'Drinks'; }
+    catSpyHoldBottom = false;
     var tab = [].filter.call(row.querySelectorAll('.cat-tab'), function(t){ return t.textContent.trim() === current; })[0];
     if (tab && !tab.classList.contains('selected')) markCatTab(tab);
   }
@@ -9284,13 +9363,104 @@
     /* Desktop: the shadow at each edge of the category row shows while there is more to scroll that way */
     row.parentNode.classList.toggle('can-left', !atStart);
     row.parentNode.classList.toggle('can-right', !atEnd);
+    layoutCatOverflow();
   }
+
+  /* Desktop "More ⌄": show as many category pills as fit, move the rest into a list under the button.
+     The button reserves the width of its longest label ("More" or any category in the list) so it can
+     switch to the current section's name without pushing pills in or out of the row. */
+  var CAT_MORE_TICK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  function layoutCatOverflow(){
+    var row = document.getElementById('menu-cat-row'), more = document.getElementById('cat-more');
+    if (!row || !more) return;
+    var tabs = [].slice.call(row.querySelectorAll('.cat-tab'));
+    tabs.forEach(function(t){ t.classList.remove('is-overflow'); });
+    if (!document.documentElement.classList.contains('is-desktop')) { more.classList.add('is-off'); closeCatMore(); return; }
+    var btn = document.getElementById('cat-more-btn'), label = document.getElementById('cat-more-label');
+    more.classList.add('is-off');
+    var full = row.clientWidth;
+    if (!full) return;                                   /* menu not on screen yet */
+    var gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+    var widths = tabs.map(function(t){ return t.offsetWidth; });
+    var total = widths.reduce(function(a, w){ return a + w; }, 0) + gap * (tabs.length - 1);
+    if (total <= full) { syncCatMore(); return; }       /* everything fits: no button */
+    more.classList.remove('is-off');
+    btn.style.minWidth = '';
+    var labelWidth = function(text){ label.textContent = text; return btn.offsetWidth; };
+    var reserve = labelWidth('More'), split = tabs.length;
+    for (var pass = 0; pass < 4; pass++) {
+      var avail = row.clientWidth, used = 0;
+      split = 0;
+      while (split < tabs.length && used + widths[split] <= avail) { used += widths[split] + gap; split++; }
+      var longest = tabs.slice(split).reduce(function(m, t){ return Math.max(m, labelWidth(t.textContent.trim())); }, labelWidth('More'));
+      if (longest === reserve && pass) break;
+      reserve = longest;
+      btn.style.minWidth = reserve + 'px';
+    }
+    tabs.forEach(function(t, i){ t.classList.toggle('is-overflow', i >= split); });
+    var menu = document.getElementById('cat-more-menu');
+    menu.innerHTML = tabs.slice(split).map(function(t){
+      return '<button type="button" role="menuitemradio" class="cat-more-item" data-cat="' + t.textContent.trim() + '">' +
+        '<span>' + t.textContent.trim() + '</span>' + CAT_MORE_TICK + '</button>';
+    }).join('');
+    syncCatMore();
+  }
+  /* Button + list follow the selected pill: a category from the list → the button shows its name, selected */
+  function syncCatMore(){
+    var row = document.getElementById('menu-cat-row'), more = document.getElementById('cat-more');
+    if (!row || !more) return;
+    var sel = row.querySelector('.cat-tab.selected'), hidden = sel && sel.classList.contains('is-overflow');
+    var btn = document.getElementById('cat-more-btn');
+    document.getElementById('cat-more-label').textContent = hidden ? sel.textContent.trim() : 'More';
+    btn.classList.toggle('selected', !!hidden);
+    [].forEach.call(document.querySelectorAll('#cat-more-menu .cat-more-item'), function(item){
+      var on = !!sel && item.getAttribute('data-cat') === sel.textContent.trim();
+      item.classList.toggle('selected', on);
+      item.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+  }
+  function toggleCatMore(){
+    var more = document.getElementById('cat-more');
+    if (more.classList.contains('open')) { closeCatMore(); return; }
+    more.classList.add('open');
+    document.getElementById('cat-more-btn').setAttribute('aria-expanded', 'true');
+    var first = more.querySelector('.cat-more-item.selected') || more.querySelector('.cat-more-item');
+    if (first) first.focus({preventScroll:true});
+  }
+  function closeCatMore(){
+    var more = document.getElementById('cat-more');
+    if (!more || !more.classList.contains('open')) return;
+    more.classList.remove('open');
+    document.getElementById('cat-more-btn').setAttribute('aria-expanded', 'false');
+  }
+  document.addEventListener('click', function(e){
+    var item = e.target.closest && e.target.closest('.cat-more-item');
+    if (item) {
+      var name = item.getAttribute('data-cat');
+      var tab = [].filter.call(document.querySelectorAll('#menu-cat-row .cat-tab'), function(t){ return t.textContent.trim() === name; })[0];
+      closeCatMore();
+      if (tab) selectCatTab(tab);
+      return;
+    }
+    if (!(e.target.closest && e.target.closest('#cat-more'))) closeCatMore();
+  });
+  document.addEventListener('keydown', function(e){
+    var more = document.getElementById('cat-more');
+    if (!more || !more.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeCatMore(); document.getElementById('cat-more-btn').focus(); return; }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      var items = [].slice.call(more.querySelectorAll('.cat-more-item')), i = items.indexOf(document.activeElement);
+      e.preventDefault();
+      items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length].focus();
+    }
+  });
   document.addEventListener('DOMContentLoaded', function(){
     var body = document.getElementById('menu-body-scroll'), row = document.getElementById('menu-cat-row');
     if (body) body.addEventListener('scroll', syncCatTabToScroll, {passive:true});
     if (row) row.addEventListener('scroll', updateCatArrows, {passive:true});
     window.addEventListener('resize', updateCatArrows);
     window.addEventListener('viewmodechange', updateCatArrows);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateCatArrows);
     new MutationObserver(function(){ setTimeout(updateCatArrows, 50); })
       .observe(document.getElementById('screen-menu'), {attributes:true, attributeFilter:['class']});
     setTimeout(updateCatArrows, 0);
@@ -10431,7 +10601,18 @@
     goToCart();
   }
 
+  /* Every cart item shows the same photo as its menu card. Some add paths (reorder, "You might also like",
+     items without a photo in the detail sheet) pass no photo, so look the menu card up by name. */
+  function menuThumbSrc(name){
+    var card = [].filter.call(document.querySelectorAll('#menu-body-scroll .meal-card'), function(c){
+      var n = c.querySelector('.meal-name'); return n && n.textContent.trim() === name;
+    })[0];
+    var img = card && card.querySelector('.meal-thumb img');
+    return img ? img.src : '';
+  }
+
   function renderOrderCardHTML(item){
+    if (!item.thumbSrc) item.thumbSrc = menuThumbSrc(item.name);
     var linesHtml = item.lines.map(function(l){
       return '<div class="order-line"><span>' + escapeHtml(l.text) + '</span><span class="order-line-price">' + formatMoney(l.price) + '</span></div>';
     }).join('');
@@ -10466,6 +10647,26 @@
     return '<div class="checkout-summary-row"><span class="qty-name">' + item.qty + ' x ' + escapeHtml(item.name) + '</span><span>' + formatMoney(item.unitPrice * item.qty) + '</span></div>';
   }
 
+  /* "Customers love adding this!" stays out of an empty cart; once the first item is added it appears
+     1 second later. Emptying the cart hides it again (and cancels a pending reveal). */
+  var cartUpsellTimer = null;
+  function syncCartUpsell(){
+    var els = document.querySelectorAll('.cart-upsell');
+    if (!cartItems.length) {
+      clearTimeout(cartUpsellTimer); cartUpsellTimer = null;
+      els.forEach(function(el){ el.classList.add('is-hidden'); });
+      return;
+    }
+    if (cartUpsellTimer || !els.length || !els[0].classList.contains('is-hidden')) return;
+    cartUpsellTimer = setTimeout(function(){
+      cartUpsellTimer = null;
+      if (!cartItems.length) return;
+      /* Each card's place in the row drives where it's dealt from and its stagger */
+      document.querySelectorAll('#cart-upsell-scroll .extra-card').forEach(function(card, i){ card.style.setProperty('--i', i); });
+      els.forEach(function(el){ el.classList.remove('is-hidden'); });
+    }, 1000);
+  }
+
   function renderCartOrder(){
     var list = document.getElementById('cart-order-list');
     if(list){
@@ -10480,6 +10681,7 @@
       var checkoutBtn = document.getElementById('cart-checkout-btn');
       if (checkoutBtn) checkoutBtn.disabled = unavailableCount > 0;
     }
+    syncCartUpsell();
 
     var subtotal = cartSubtotal();
     var gst = subtotal * 0.1;
@@ -11244,7 +11446,7 @@
       el('coupons-count').textContent = '0 coupons available';
       el('discount-card').classList.remove('active');
       el('discount-card').querySelector('button').disabled = true;
-      el('pay-btn-label').textContent = 'Pay as a guest';
+      el('pay-btn-label').textContent = 'Pay';
       el('footer-note').style.display = '';
       el('footer-earn-note').classList.add('hidden');
       if(el('rolld-toggle-row')) el('rolld-toggle-row').classList.add('hidden');
@@ -12136,6 +12338,41 @@
       osScroll.append(grid);
     } else if(osParked.length){
       var g = osScroll.querySelector('.desk-os'); unpark(osParked); g.remove();
+    }
+    layoutOrderStatus();
+  }
+
+  /* ---- Order status: two columns on desktop ----
+     Left: thank-you note, then the status card (title, steps, store + time). Right: Order summary (order number,
+     the items and total of this order, View order details, support). Photo banner spans both. */
+  var ostParked = [];
+  function layoutOrderStatus(){
+    var st = $('screen-order-status'), scroll = st.querySelector('.order-status-scroll');
+    if(isDesktop()){
+      if(ostParked.length) return;
+      var rows = st.querySelectorAll('.order-success-row');   /* order number, pick up, schedule, total */
+      var grid = el('div', 'desk-ost'), main = el('div', 'desk-ost-main'), card = el('div', 'desk-ost-card'), side = el('aside', 'desk-ost-side');
+      grid.append(park(st.querySelector('.order-status-hero'), ostParked));
+      var thanks = el('div', 'desk-ost-thanks');
+      thanks.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>' +
+        '<div><b>Thank you for ordering!</b> Your payment was successful. Keep this page open for updates on your order.</div>';
+      ['.order-status-title', '.order-status-sub', '.order-status-stepper'].forEach(function(sel){ card.append(park(st.querySelector(sel), ostParked)); });
+      card.append(el('hr', 'order-status-divider'), park(rows[1], ostParked), park(rows[2], ostParked));
+      main.append(thanks, card);
+      var heading = el('div', 'order-details-heading'); heading.textContent = 'Order summary';
+      /* this order's items: the same list Order details opens with */
+      var items = el('div', 'desk-ost-items');
+      items.innerHTML = $('order-details-items-list').innerHTML;
+      var help = el('div', 'order-details-footer');
+      help.innerHTML = 'Need help? <span class="support-link">Contact our support</span>';
+      side.append(heading, park(rows[0], ostParked), el('hr', 'order-status-divider'), items, el('hr', 'order-status-divider'),
+        park(rows[3], ostParked), park(st.querySelector('.order-status-body .btn-outline'), ostParked), help);
+      grid.append(main, side);
+      scroll.append(grid);
+      st.querySelector('.order-status-body').style.display = 'none';
+    } else if(ostParked.length){
+      var g = scroll.querySelector('.desk-ost'); unpark(ostParked); g.remove();
+      st.querySelector('.order-status-body').style.display = '';
     }
   }
 
